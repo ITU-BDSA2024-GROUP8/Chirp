@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 
+//Use dotnet run -- read to run the code
 namespace Chirp {
     class App {
         static void Main(string[] args){
@@ -16,10 +17,6 @@ namespace Chirp {
                     string timestamp = ConnectTimestamp(parts[2]);
                     Console.WriteLine($"{author} @ {timestamp}: {message}");
                 }
-            }
-            else
-            {
-                Console.WriteLine("Usage: Chirp.CLI read");
             }
         }
 
