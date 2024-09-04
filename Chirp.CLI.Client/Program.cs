@@ -1,21 +1,30 @@
 ﻿using System;
+using System.Globalization;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.IO;
 
-
-//Use dotnet run -- read to run the code
-namespace Chirp.CLI.Client {
-    class App {
-        static void Main(string[] args){
+// Use dotnet run -- read to run the code
+namespace Chirp.CLI.Client
+{
+    class App
+    {
+        static void Main(string[] args)
+        {
             if (args.Length > 0 && args[0] == "read")
             {
-                string[] lines = File.ReadAllLines("../SimpleDB/Data/Data.csv");
-                
-                for (int i = 1; i < lines.Length; i++)
+                using var reader = new StreamReader("../SimpleDB/Data/Data.csv");
+                using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
-                    var parts = lines[i].Split(',');
-                    string author = parts[0];
-                    string message = parts[1];
-                    string timestamp = FromUnixTimeMilliseconds(long.Parse(parts[2])).ToString("yyyy-MM-dd HH:mm:ss");
-                    Console.WriteLine($"{author} @ {timestamp}: {message}");
+                    HasHeaderRecord = true,
+                });
+
+                var cheeps = csv.GetRecords<Cheep>();
+
+                foreach (var cheep in cheeps)
+                {
+                    string timestamp = FromUnixTimeMilliseconds(cheep.Timestamp).ToString("yyyy-MM-dd HH:mm:ss");
+                    Console.WriteLine($"{cheep.Author} @ {timestamp}: {cheep.Message}");
                 }
             }
         }
@@ -24,5 +33,7 @@ namespace Chirp.CLI.Client {
         {
             return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
         }
+
+        public record Cheep(string Author, string Message, long Timestamp);
     }
 }
