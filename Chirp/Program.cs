@@ -6,7 +6,7 @@ namespace Chirp {
         static void Main(string[] args){
             if (args.Length > 0 && args[0] == "read")
             {
-                string[] lines = File.ReadAllLines("C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 2 code\\mapProject\\Chirp\\Chirp\\Data\\Data.CSV");
+                string[] lines = File.ReadAllLines("Data/Data.csv");
                 
                 for (int i = 1; i < lines.Length; i++)
                 {
