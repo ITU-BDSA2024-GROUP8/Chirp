@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\Chirp.csproj": {}
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\SimpleDB\\SimpleDB.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\Chirp.csproj": {
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\SimpleDB\\SimpleDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\Chirp.csproj",
-        "projectName": "Chirp",
-        "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\Chirp.csproj",
+        "projectUniqueName": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\SimpleDB\\SimpleDB.csproj",
+        "projectName": "SimpleDB",
+        "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\SimpleDB\\SimpleDB.csproj",
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\obj\\",
+        "outputPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\SimpleDB\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -39,16 +39,6 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "dependencies": {
-            "CsvHelper": {
-              "target": "Package",
-              "version": "[33.0.1, )"
-            },
-            "docopt.net": {
-              "target": "Package",
-              "version": "[0.8.1, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

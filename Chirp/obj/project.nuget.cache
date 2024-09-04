@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "h6uPncmtAYP4gglTtS14cEwXuIEo8e0dxouLxhoUlo2BVisNY7+hsM9kYdkAt5GdiNxXDX9Lfy19bpBXlpwoUA==",
+  "dgSpecHash": "4MidoPtC5eU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 2 code\\mapProject\\Chirp\\Chirp\\Chirp.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp\\Chirp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\bror\\.nuget\\packages\\csvhelper\\33.0.1\\csvhelper.33.0.1.nupkg.sha512",
+    "C:\\Users\\bror\\.nuget\\packages\\docopt.net\\0.8.1\\docopt.net.0.8.1.nupkg.sha512",
+    "C:\\Users\\bror\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
+  ],
   "logs": []
 }

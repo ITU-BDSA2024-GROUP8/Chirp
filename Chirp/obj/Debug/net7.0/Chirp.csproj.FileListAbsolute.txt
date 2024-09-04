@@ -12,3 +12,17 @@ C:\Users\bror\OneDrive\Skrivebord\Semester 2 code\mapProject\Chirp\Chirp\obj\Deb
 C:\Users\bror\OneDrive\Skrivebord\Semester 2 code\mapProject\Chirp\Chirp\obj\Debug\net7.0\Chirp.pdb
 C:\Users\bror\OneDrive\Skrivebord\Semester 2 code\mapProject\Chirp\Chirp\obj\Debug\net7.0\Chirp.genruntimeconfig.cache
 C:\Users\bror\OneDrive\Skrivebord\Semester 2 code\mapProject\Chirp\Chirp\obj\Debug\net7.0\ref\Chirp.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\bin\Debug\net7.0\Chirp.exe
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\bin\Debug\net7.0\Chirp.deps.json
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\bin\Debug\net7.0\Chirp.runtimeconfig.json
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\bin\Debug\net7.0\Chirp.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\bin\Debug\net7.0\Chirp.pdb
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.AssemblyInfoInputs.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.AssemblyInfo.cs
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.csproj.CoreCompileInputs.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\refint\Chirp.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.pdb
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\Chirp.genruntimeconfig.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp\obj\Debug\net7.0\ref\Chirp.dll
