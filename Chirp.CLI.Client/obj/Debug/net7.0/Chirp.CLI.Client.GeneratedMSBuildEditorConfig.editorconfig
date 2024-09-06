@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Chirp.CLI.Client
-build_property.ProjectDir = E:\Chirp\Chirp.CLI.Client\
+build_property.ProjectDir = C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
