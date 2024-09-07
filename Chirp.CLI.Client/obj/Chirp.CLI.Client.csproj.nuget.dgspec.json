@@ -13,18 +13,20 @@
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
         "outputPath": "E:\\Chirp\\Chirp.CLI.Client\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net70"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net70": {
             "projectReferences": {
               "E:\\Chirp\\SimpleDB\\SimpleDB.csproj": {
                 "projectPath": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj"
@@ -39,31 +41,22 @@
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net70": {
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
               "version": "[33.0.1, )"
+            },
+            "docopt.net": {
+              "target": "Package",
+              "version": "[0.8.1, )"
             }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Users\\bror\\.dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+          }
+        }
+      },
+      "runtimes": {
+        "win7-x86": {
+          "#import": []
         }
       }
     },
@@ -76,18 +69,20 @@
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
         "outputPath": "E:\\Chirp\\SimpleDB\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
           "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net70"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net70": {
             "projectReferences": {}
           }
         },
@@ -98,31 +93,13 @@
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net70": {
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
               "version": "[33.0.1, )"
             }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Users\\bror\\.dotnet\\sdk\\7.0.407\\RuntimeIdentifierGraph.json"
+          }
         }
       }
     }

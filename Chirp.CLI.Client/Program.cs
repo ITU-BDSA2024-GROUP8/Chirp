@@ -26,7 +26,7 @@ Options:
 
             if (arguments["read"].IsTrue)
             {
-                int limit = arguments["<limit>"] != null ? int.Parse(arguments["<limit>"].ToString()) : (int?)null;
+                int limit = arguments["<limit>"] != null ? int.Parse(arguments["<limit>"].ToString()) : 0;
                 IEnumerable<Cheep> cheeps = db.Read(limit);
                 UserInterface.PrintCheeps(cheeps);
             }
@@ -36,6 +36,14 @@ Options:
                 Cheep cheep = new Cheep(Environment.UserName, $"\"{message}\"", DateTimeOffset.Now.ToUnixTimeSeconds());
                 db.Store(cheep);
                 UserInterface.CheepStoredMSG();
+            }
+            else if (arguments["--help"].IsTrue)
+            {
+                Console.WriteLine(usage);
+            }
+            else if (arguments["--version"].IsTrue)
+            {
+                Console.WriteLine("Chirp CLI version 1.0");
             }
         }
 
