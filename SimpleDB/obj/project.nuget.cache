@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RdvqBuTDmVQ=",
+  "dgSpecHash": "zy/yUFOklAWNAdWEmQYnh1wLiFFHrj2bcfyHEM77CpsdqkDT63Ike1fDULcHLZxnerHFe9GEoTjfNn3eFM7Z+A==",
   "success": true,
-  "projectFilePath": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj",
+  "projectFilePath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\bror\\.nuget\\packages\\csvhelper\\33.0.1\\csvhelper.33.0.1.nupkg.sha512"
   ],

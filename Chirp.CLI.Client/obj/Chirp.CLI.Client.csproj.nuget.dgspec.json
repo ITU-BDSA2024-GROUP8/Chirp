@@ -1,35 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj": {}
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj": {}
   },
   "projects": {
-    "E:\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj": {
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj",
+        "projectUniqueName": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj",
         "projectName": "Chirp.CLI.Client",
-        "projectPath": "E:\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj",
+        "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp.CLI.Client\\Chirp.CLI.Client.csproj",
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
-        "outputPath": "E:\\Chirp\\Chirp.CLI.Client\\obj\\",
+        "outputPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\Chirp.CLI.Client\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net70"
+          "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net70": {
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {
-              "E:\\Chirp\\SimpleDB\\SimpleDB.csproj": {
-                "projectPath": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj"
+              "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj": {
+                "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj"
               }
             }
           }
@@ -41,7 +41,8 @@
         }
       },
       "frameworks": {
-        "net70": {
+        "net7.0": {
+          "targetAlias": "net7.0",
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
@@ -51,38 +52,50 @@
               "target": "Package",
               "version": "[0.8.1, )"
             }
-          }
-        }
-      },
-      "runtimes": {
-        "win7-x86": {
-          "#import": []
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Chirp\\SimpleDB\\SimpleDB.csproj": {
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj",
+        "projectUniqueName": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj",
         "projectName": "SimpleDB",
-        "projectPath": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj",
+        "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj",
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
-        "outputPath": "E:\\Chirp\\SimpleDB\\obj\\",
+        "outputPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net70"
+          "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net70": {
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -93,13 +106,31 @@
         }
       },
       "frameworks": {
-        "net70": {
+        "net7.0": {
+          "targetAlias": "net7.0",
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
               "version": "[33.0.1, )"
             }
-          }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -16,7 +16,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
         IEnumerable<T> cheeps = csv.GetRecords<T>().ToList();
         
-        return cheeps;
+        return limit.HasValue ? cheeps.Take(limit.Value) : cheeps;;
     }
 
     public void Store(T record)

@@ -1,32 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Chirp\\SimpleDB\\SimpleDB.csproj": {}
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj": {}
   },
   "projects": {
-    "E:\\Chirp\\SimpleDB\\SimpleDB.csproj": {
+    "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj",
+        "projectUniqueName": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj",
         "projectName": "SimpleDB",
-        "projectPath": "E:\\Chirp\\SimpleDB\\SimpleDB.csproj",
+        "projectPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\SimpleDB.csproj",
         "packagesPath": "C:\\Users\\bror\\.nuget\\packages\\",
-        "outputPath": "E:\\Chirp\\SimpleDB\\obj\\",
+        "outputPath": "C:\\Users\\bror\\OneDrive\\Skrivebord\\Semester 3\\Chirp\\SimpleDB\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\bror\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net70"
+          "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net70": {
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -37,13 +37,31 @@
         }
       },
       "frameworks": {
-        "net70": {
+        "net7.0": {
+          "targetAlias": "net7.0",
           "dependencies": {
             "CsvHelper": {
               "target": "Package",
               "version": "[33.0.1, )"
             }
-          }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
