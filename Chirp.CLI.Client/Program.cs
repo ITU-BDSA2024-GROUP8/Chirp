@@ -20,7 +20,7 @@ namespace Chirp.CLI.Client
         {
             foreach (var cheep in cheeps)
             {
-                string timestamp = Util.FromUnixTimeMilliseconds(cheep.Timestamp).ToString("yyyy-MM-dd HH:mm:ss");
+                string timestamp = Util.FromSecondsToDateAndTime(cheep.Timestamp);
                 Console.WriteLine($"{cheep.Author} @ {timestamp}: {cheep.Message}");
             }
         }

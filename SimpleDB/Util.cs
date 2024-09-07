@@ -1,9 +1,13 @@
-﻿namespace SimpleDB;
+﻿using System.Globalization;
 
-public class Util
+namespace SimpleDB;
+
+public static class Util
 {
-    public static DateTimeOffset FromUnixTimeMilliseconds(long milliseconds)
+    public static string FromSecondsToDateAndTime(long seconds)
     {
-        return DateTimeOffset.FromUnixTimeMilliseconds(milliseconds);
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(seconds);
+        DateTime dateTime = dateTimeOffset.UtcDateTime;
+        return dateTime.ToLocalTime().ToString("MM/dd/yy HH:mm:ss", CultureInfo.InvariantCulture);
     }
 }
