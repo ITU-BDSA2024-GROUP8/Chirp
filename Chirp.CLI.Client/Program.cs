@@ -25,9 +25,18 @@ Options:
 
             if (arguments["read"].IsTrue)
             {
-                limit = int.Parse(arguments["<limit>"].ToString());
-                IEnumerable<Cheep> cheeps = db.Read(limit);
-                UserInterface.PrintCheeps(cheeps);
+                if (arguments["<limit>"] == null)
+                {
+                    IEnumerable<Cheep> cheeps = db.Read();
+                    UserInterface.PrintCheeps(cheeps);
+                } else 
+                {
+                    int limit = int.Parse(arguments["<limit>"].ToString());
+                    IEnumerable<Cheep> cheeps = db.Read(limit);
+                    UserInterface.PrintCheeps(cheeps);
+                }
+               
+                
             }
             else if (arguments["cheep"].IsTrue)
             {

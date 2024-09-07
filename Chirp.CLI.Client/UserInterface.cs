@@ -18,3 +18,4 @@ namespace Chirp.CLI.Client
         }
     }
 }
+
