@@ -21,6 +21,16 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     public void Store(T record)
     {
-        throw new Exception();
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            ShouldQuote = (_) => false,
+        };
+        
+        using (var writer = new StreamWriter("../SimpleDB/Data/Data.csv", append: true))
+        using (var csv = new CsvWriter(writer, config))
+        {
+            csv.WriteRecord(record);
+            writer.WriteLine();
+        }
     }
 }

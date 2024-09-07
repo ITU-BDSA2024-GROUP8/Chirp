@@ -7,12 +7,16 @@ namespace Chirp.CLI.Client
     {
         static void Main(string[] args)
         {
+            CSVDatabase<Cheep> db = new CSVDatabase<Cheep>();
+            
             if (args.Length > 0 && args[0] == "read")
             {
-                CSVDatabase<Cheep> db = new CSVDatabase<Cheep>();
                 IEnumerable<Cheep> cheeps = db.Read();
-                
                 PrintCheeps(cheeps);
+            } else if (args.Length > 0 && args[0] == "cheep" && args.Length == 2)
+            {
+                Cheep cheep = new Cheep(Environment.UserName, $"\"{args[1]}\"", DateTimeOffset.Now.ToUnixTimeSeconds());
+                db.Store(cheep);
             }
         }
 
