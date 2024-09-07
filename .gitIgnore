@@ -1,16 +1,18 @@
 ﻿# Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,rider
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,rider
 
-# ignore ALL .log files
-*.log
-
-# ignore ALL files in ANY directory named temp
-temp/
-
-### DotnetCore ###
-# .NET Core build folders
+# Ignore .NET build outputs
 bin/
 obj/
+
+# Ignore Rider-specific files
+.idea/
+.cache/
+Rider/
+
+# Ignore other typical cache and temporary files
+*.log
+*.tmp
 
 # Common node modules locations
 /node_modules
