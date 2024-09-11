@@ -6,11 +6,23 @@ namespace SimpleDB;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private string filePath;
+    private static CSVDatabase<T> instance = null;
+    private string filePath = "../../data/database.csv";
 
-    public CSVDatabase()
+    private CSVDatabase()
     {
-        filePath = "../../data/database.csv";
+    }
+    
+    public static CSVDatabase<T> Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = new CSVDatabase<T>();
+            }
+            return instance;
+        }
     }
     
     public IEnumerable<T> Read(int? limit = null)
@@ -23,7 +35,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
         IEnumerable<T> cheeps = csv.GetRecords<T>().ToList();
         
-        return limit.HasValue ? cheeps.Take(limit.Value) : cheeps;;
+        return limit.HasValue ? cheeps.Take(limit.Value) : cheeps;
     }
 
     public void Store(T record)
