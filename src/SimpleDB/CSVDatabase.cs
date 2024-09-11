@@ -6,9 +6,16 @@ namespace SimpleDB;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
+    private string filePath;
+
+    public CSVDatabase()
+    {
+        filePath = "../../data/database.csv";
+    }
+    
     public IEnumerable<T> Read(int? limit = null)
     {
-        using var reader = new StreamReader("../SimpleDB/Data/Data.csv");
+        using var reader = new StreamReader(filePath);
         using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             HasHeaderRecord = true,
@@ -26,7 +33,7 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
             ShouldQuote = (_) => false,
         };
         
-        using (var writer = new StreamWriter("../SimpleDB/Data/Data.csv", append: true))
+        using (var writer = new StreamWriter(filePath, append: true))
         using (var csv = new CsvWriter(writer, config))
         {
             csv.WriteRecord(record);
