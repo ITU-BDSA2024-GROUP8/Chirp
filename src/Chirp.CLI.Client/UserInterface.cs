@@ -22,7 +22,7 @@ Options:
         public static void Run(string[] args)
         {
             var arguments = new Docopt().Apply(usage, args, version: "1.0", exit: true)!;
-            CSVDatabase<App.Cheep> db = new CSVDatabase<App.Cheep>();
+            CSVDatabase<App.Cheep> db = CSVDatabase<App.Cheep>.Instance;
 
             HandleArguments(arguments, db);
         }
