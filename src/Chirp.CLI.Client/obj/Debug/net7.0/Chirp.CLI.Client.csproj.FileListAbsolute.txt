@@ -1,0 +1,97 @@
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.deps.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfoInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfo.cs
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CoreCompileInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.sourcelink.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\refint\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\ref\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.exe
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.runtimeconfig.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Applications\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.genruntimeconfig.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.exe
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.deps.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.runtimeconfig.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfoInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfo.cs
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CoreCompileInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.sourcelink.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\refint\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.genruntimeconfig.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\ref\Chirp.CLI.Client.dll
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\CsvHelper.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.AssemblyReference.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CL.B59E0514.Up2Date
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.AssemblyReference.cache
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.GeneratedMSBuildEditorConfig.editorconfig
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfoInputs.cache
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfo.cs
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CoreCompileInputs.cache
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.dll
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\refint\Chirp.CLI.Client.dll
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.exe
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.deps.json
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.runtimeconfig.json
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.dll
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.pdb
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\CsvHelper.dll
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\DocoptNet.dll
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.dll
+E:\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.pdb
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CopyComplete
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.genruntimeconfig.cache
+E:\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\ref\Chirp.CLI.Client.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.exe
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.deps.json
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.runtimeconfig.json
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\CsvHelper.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\DocoptNet.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.pdb
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.AssemblyReference.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfoInputs.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfo.cs
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CoreCompileInputs.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CopyComplete
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\refint\Chirp.CLI.Client.dll
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.genruntimeconfig.cache
+C:\Users\bror\OneDrive\Skrivebord\Semester 3\Chirp\Chirp.CLI.Client\obj\Debug\net7.0\ref\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\Chirp.CLI.Client\bin\Debug\net7.0\DocoptNet.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.exe
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.deps.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.runtimeconfig.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\CsvHelper.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\DocoptNet.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\bin\Debug\net7.0\SimpleDB.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.AssemblyReference.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfoInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.AssemblyInfo.cs
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.csproj.CoreCompileInputs.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.sourcelink.json
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CL.B59E0514.Up2Date
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\refint\Chirp.CLI.Client.dll
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.pdb
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\Chirp.CLI.Client.genruntimeconfig.cache
+C:\Users\inies\Documents\BDSA project\ChirpV2\Chirp\src\Chirp.CLI.Client\obj\Debug\net7.0\ref\Chirp.CLI.Client.dll
