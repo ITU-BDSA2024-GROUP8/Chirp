@@ -6,7 +6,7 @@ namespace SimpleDB;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private static CSVDatabase<T> instance = null;
+    private static CSVDatabase<T>? instance = null;
     private string filePath = "../../data/database.csv";
 
     private CSVDatabase()
