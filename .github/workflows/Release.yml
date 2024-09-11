@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Build, Test, and Release Chirp Executable
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Build for Windows (x64)
+      run: dotnet publish -c Release -r win-x64 --output ./publish/win-x64 --self-contained false /p:PublishSingleFile=true
+
+    - name: Build for Linux (x64)
+      run: dotnet publish -c Release -r linux-x64 --output ./publish/linux-x64 --self-contained false /p:PublishSingleFile=true
+
+    - name: Build for Linux (ARM64)
+      run: dotnet publish -c Release -r linux-arm64 --output ./publish/linux-arm64 --self-contained false /p:PublishSingleFile=true
+
+    - name: Build for macOS (x64)
+      run: dotnet publish -c Release -r osx-x64 --output ./publish/osx-x64 --self-contained false /p:PublishSingleFile=true
+
+    - name: Build for macOS (ARM64)
+      run: dotnet publish -c Release -r osx-arm64 --output ./publish/osx-arm64 --self-contained false /p:PublishSingleFile=true
+
+    - name: Compress Windows (x64) executable
+      run: zip -j ./publish/chirp-win-x64.zip ./publish/win-x64/*
+
+    - name: Compress Linux (x64) executable
+      run: zip -j ./publish/chirp-linux-x64.zip ./publish/linux-x64/*
+
+    - name: Compress Linux (ARM64) executable
+      run: zip -j ./publish/chirp-linux-arm64.zip ./publish/linux-arm64/*
+
+    - name: Compress macOS (x64) executable
+      run: zip -j ./publish/chirp-osx-x64.zip ./publish/osx-x64/*
+
+    - name: Compress macOS (ARM64) executable
+      run: zip -j ./publish/chirp-osx-arm64.zip ./publish/osx-arm64/*
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          ./publish/chirp-win-x64.zip
+          ./publish/chirp-linux-x64.zip
+          ./publish/chirp-linux-arm64.zip
+          ./publish/chirp-osx-x64.zip
+          ./publish/chirp-osx-arm64.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
