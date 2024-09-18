@@ -12,10 +12,11 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     env:
-      Solution_Name: Chirp.sln                         
+      Solution_Name: Chirp.sln
+                         
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -30,16 +31,16 @@ jobs:
 
     # Restore the application
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name
+      run: dotnet restore $Solution_Name
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
-      run: dotnet test $env:Solution_Name --configuration ${{ matrix.configuration }}
+      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
 
     # Build the application
     - name: Build the application
-      run: dotnet build $env:Solution_Name --configuration ${{ matrix.configuration }}
+      run: dotnet build $Solution_Name --configuration ${{ matrix.configuration }}
 
     # Publish the application
     - name: Publish the application
-      run: dotnet publish $env:Solution_Name --configuration ${{ matrix.configuration }} -o ./publish
+      run: dotnet publish $Solution_Name --configuration ${{ matrix.configuration }} -o ./publish
