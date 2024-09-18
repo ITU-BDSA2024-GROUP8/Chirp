@@ -27,7 +27,7 @@ jobs:
 
     # Run tests with target framework specified
     - name: Run tests
-      run: dotnet test Chirp.sln --framework net7.0 --no-build --verbosity normal
+      run: dotnet test test/test.csproj --no-build --verbosity normal
 
     # Build for Windows (x64) and create single EXE file
     - name: Build and Publish Single EXE for Windows (x64)
