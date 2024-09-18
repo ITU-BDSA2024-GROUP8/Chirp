@@ -40,19 +40,12 @@ jobs:
 
     # Restore the application
     - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=${{ matrix.configuration }}
+      run: dotnet restore $env:Solution_Name --configuration ${{ matrix.configuration }}
 
     # Build the application
     - name: Build the application
-      run: msbuild $env:Solution_Name /p:Configuration=${{ matrix.configuration }}
+      run: dotnet build $env:Solution_Name --configuration ${{ matrix.configuration }}
 
     # Publish the application
     - name: Publish the application
-      run: dotnet publish $env:Solution_Name -c ${{ matrix.configuration }} -o ./publish
-
-    # Upload the build artifacts
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: Build Output
-        path: ./publish
+      run: dotnet publish $env:Solution_Name --configuration ${{ matrix.configuration }} -o ./publish
