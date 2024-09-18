@@ -14,6 +14,7 @@ app.MapGet("/cheeps", () =>
 app.MapPost("/cheep", (Cheep cheep) =>
 {
     db.Store(cheep);
+    return Results.StatusCode(201);
 });
 
 app.Run();
