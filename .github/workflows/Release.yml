@@ -48,7 +48,7 @@ jobs:
         tag=$(git describe --tags --abbrev=0)
         release_name="App-$tag-${{ matrix.target }}"
 
-        dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj --framework netcoreapp3.1 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+        dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
         if [ "${{ matrix.archive }}" == "zip" ]; then
           zip -r "${release_name}.zip" "$release_name"
@@ -59,7 +59,7 @@ jobs:
         rm -r "$release_name"
 
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2.0.7
       with:
         files: |
           *.zip
