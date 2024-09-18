@@ -15,8 +15,8 @@ jobs:
     runs-on: windows-latest  
 
     env:
-      Solution_Name: Chirp.sln                         # Replace with your solution name
-      Test_Project_Path: test/test.csproj                # Replace with the path to your test project
+      Solution_Name: Chirp.sln                         
+      Test_Project_Path: test/test.csproj                
 
     steps:
     - name: Checkout
@@ -40,7 +40,7 @@ jobs:
 
     # Restore the application
     - name: Restore the application
-      run: dotnet restore $env:Solution_Name --configuration ${{ matrix.configuration }}
+      run: dotnet restore $env:Solution_Name
 
     # Build the application
     - name: Build the application
