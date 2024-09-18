@@ -22,21 +22,18 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: Build the solution
+      run: dotnet build Chirp.sln --configuration Release --no-restore
+
   # Run tests
     - name: Run tests
       run: dotnet test --no-build --verbosity normal
-    
-   # Download the build artifacts from the previous build job
-    - name: Download artifacts from build
-      uses: actions/download-artifact@v3
-      with:
-        name: MSIX Package 
 
-
-  # Convert .NET app into a .exe file.
+   
+      # Convert .NET app into a .exe file.
     - name: Build for Windows (x64)
       run: dotnet publish -c Release -r win-x64 --output ./publish/win-x64 --self-contained false /p:PublishSingleFile=true
-
+      
     - name: Build for Linux (x64)
       run: dotnet publish -c Release -r linux-x64 --output ./publish/linux-x64 --self-contained false /p:PublishSingleFile=true
 
