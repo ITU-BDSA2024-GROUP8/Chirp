@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 7.x
+        dotnet-version: 7.0.410
 
     - name: Restore dependencies
       run: dotnet restore
@@ -25,24 +25,37 @@ jobs:
     - name: Build the solution
       run: dotnet build Chirp.sln --configuration Release --no-restore
 
-    # Run tests with target framework specified
     - name: Run tests
       run: dotnet test test/test.csproj --no-build --verbosity normal
 
-    # Build for Windows (x64) and create single EXE file
+    # Build for Windows/MacOS/Linux (x64) and create single EXE file
     - name: Build and Publish Single EXE for Windows (x64)
       run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r win-x64 --self-contained false /p:PublishSingleFile=true --output ./publish/win-x64
 
+    - name: Build and Publish Single EXE for MacOS (x64)
+      run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r osx-x64 --self-contained false /p:PublishSingleFile=true --output ./publish/osx-x64
+
+    - name: Build and Publish Single EXE for Linux (x64)
+      run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r linux-x64 --self-contained false /p:PublishSingleFile=true --output ./publish/linux-x64
+
     # Compress the EXE into a ZIP file
-    - name: Compress EXE to ZIP
+    - name: Compress Windows EXE to ZIP
       run: zip -j ./publish/chirp-win-x64.zip ./publish/win-x64/Chirp.CLI.Client.exe
 
-    # Create GitHub Release and attach only the ZIP file
+    - name: Compress MacOS EXE to ZIP
+      run: zip -j ./publish/chirp-osx-x64.zip ./publish/osx-x64/Chirp.CLI.Client
+      
+    - name: Compress Linux EXE to ZIP
+      run: zip -j ./publish/chirp-linux-x64.zip ./publish/linux-x64/Chirp.CLI.Client
+  
+    # Create GitHub Release and attach all ZIP files
     - name: Create GitHub Release
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
         files: |
           ./publish/chirp-win-x64.zip
+          ./publish/chirp-osx-x64.zip
+          ./publish/chirp-linux-x64.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
