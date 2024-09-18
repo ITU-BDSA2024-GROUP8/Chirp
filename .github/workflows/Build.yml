@@ -16,8 +16,6 @@ jobs:
 
     env:
       Solution_Name: Chirp.sln                         
-      Test_Project_Path: test/test.csproj                
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -36,7 +34,7 @@ jobs:
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
-      run: dotnet test $env:Test_Project_Path --configuration ${{ matrix.configuration }}
+      run: dotnet test $env:Solution_Name --configuration ${{ matrix.configuration }}
 
     # Restore the application
     - name: Restore the application
