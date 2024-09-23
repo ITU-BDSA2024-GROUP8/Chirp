@@ -5,6 +5,8 @@ var app = builder.Build();
 
 CSVDatabase<Cheep> db = CSVDatabase<Cheep>.Instance;
 
+app.MapGet("/", () => "Hello World!");
+
 app.MapGet("/cheeps", () =>
 {
     IEnumerable<Cheep> cheeps = db.Read(); 
@@ -14,7 +16,7 @@ app.MapGet("/cheeps", () =>
 app.MapPost("/cheep", (Cheep cheep) =>
 {
     db.Store(cheep);
-    return Results.StatusCode(201);
+    return Results.StatusCode(200);
 });
 
 app.Run();
