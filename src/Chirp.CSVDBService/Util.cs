@@ -1,7 +1,7 @@
 ﻿// Chirp.CLI.Client/Util.cs
 using System.Globalization;
 
-namespace Chirp.CLI.Client
+namespace Chirp.CSVDBService
 {
     public static class Util
     {
