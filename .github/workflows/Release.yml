@@ -29,7 +29,7 @@ jobs:
 
     # Run tests
     - name: Run tests
-      run: dotnet test test/test.csproj --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
 
     # Build for Windows (x64) and create single EXE file
     - name: Build and Publish Single EXE for Windows (x64)
@@ -38,7 +38,7 @@ jobs:
     # Build for MacOS (x64) and create single EXE file
     - name: Build and Publish Single EXE for MacOS (x64)
       run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r osx-x64 --self-contained false /p:PublishSingleFile=true --output ./publish/osx-x64
-
+  
     # Build for Linux (x64) and create single EXE file
     - name: Build and Publish Single EXE for Linux (x64)
       run: dotnet publish src/Chirp.CLI.Client/Chirp.CLI.Client.csproj -c Release -r linux-x64 --self-contained false /p:PublishSingleFile=true --output ./publish/linux-x64
