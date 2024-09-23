@@ -102,6 +102,4 @@ fabric.properties
 /src/Chirp.CLI.Client/obj
 /src/Chirp.CSVDBService/bin
 /src/Chirp.CSVDBService/obj
-/src/SimpleDB/bin
-/src/SimpleDB/obj
-data/database.csv
+/src/Chirp.CSVDBService/data/database.csv

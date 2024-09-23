@@ -2,12 +2,12 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace SimpleDB;
+namespace Chirp.CSVDBService;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
     private static CSVDatabase<T>? instance = null;
-    private string filePath = "../../data/database.csv";
+    private string filePath = "./data/database.csv";
 
     private CSVDatabase()
     {
