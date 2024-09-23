@@ -29,7 +29,7 @@ jobs:
 
     # Run tests
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Chirp.sln --no-build --verbosity normal
 
     # Build for Windows (x64) and create single EXE file
     - name: Build and Publish Single EXE for Windows (x64)
