@@ -5,9 +5,9 @@ namespace Chirp.CLI.Client
 {
     public class App
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            UserInterface.Run(args);
+            await UserInterface.Run(args);
         }
 
         public record Cheep(string Author, string Message, long Timestamp);

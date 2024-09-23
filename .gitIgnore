@@ -100,6 +100,8 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,rider
 /src/Chirp.CLI.Client/bin
 /src/Chirp.CLI.Client/obj
+/src/Chirp.CSVDBService/bin
+/src/Chirp.CSVDBService/obj
 /src/SimpleDB/bin
 /src/SimpleDB/obj
 data/database.csv

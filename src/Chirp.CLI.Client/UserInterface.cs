@@ -1,5 +1,8 @@
 ﻿using SimpleDB;
 using DocoptNet;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace Chirp.CLI.Client
 {
@@ -19,16 +22,22 @@ Options:
   version     Show version.
 ";
 
-        public static void Run(string[] args)
+        public static async Task Run(string[] args)
         {
             var arguments = new Docopt().Apply(usage, args, version: "1.0", exit: true)!;
             CSVDatabase<App.Cheep> db = CSVDatabase<App.Cheep>.Instance;
 
-            HandleArguments(arguments, db);
+            await HandleArguments(arguments, db);
         }
 
-        private static void HandleArguments(IDictionary<string, ValueObject> arguments, CSVDatabase<App.Cheep> db)
+        private static async Task HandleArguments(IDictionary<string, ValueObject> arguments, CSVDatabase<App.Cheep> db)
         {
+            var baseURL = "http://localhost:5279";
+            using HttpClient client = new();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.BaseAddress = new Uri(baseURL);
+            
             if (arguments["read"].IsTrue)
             {
                 var limit = int.Parse(arguments["<limit>"].ToString()); 
@@ -37,15 +46,38 @@ Options:
             }
             else if (arguments["readAll"].IsTrue)
             {
-                IEnumerable<App.Cheep> cheeps = db.Read();
-                PrintCheeps(cheeps);
+                try
+                {
+                    var cheeps = await client.GetFromJsonAsync<IEnumerable<App.Cheep>>("cheeps") ??
+                                 Enumerable.Empty<App.Cheep>();
+                    PrintCheeps(cheeps);
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    Console.WriteLine($"HTTP Request error: {httpEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
             }
             else if (arguments["cheep"].IsTrue)
             {
-                var message = arguments["<message>"].ToString();
-                App.Cheep cheep = new App.Cheep(Environment.UserName, $"\"{message}\"", DateTimeOffset.Now.ToUnixTimeSeconds());
-                db.Store(cheep);
-                CheepStoredMsg();
+                try
+                {
+                    var message = arguments["<message>"].ToString();
+                    App.Cheep cheep = new App.Cheep(Environment.UserName, $"\"{message}\"", DateTimeOffset.Now.ToUnixTimeSeconds());
+                    await client.PostAsJsonAsync("cheep", cheep);
+                    CheepStoredMsg();
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    Console.WriteLine($"HTTP Request error: {httpEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
             }
             else if (arguments["help"].IsTrue || arguments["h"].IsTrue)
             {
