@@ -13,6 +13,12 @@ app.MapGet("/cheeps", () =>
     return cheeps;
 });
 
+app.MapGet("/cheep/{limit}", (int limit) =>
+{
+    IEnumerable<Cheep> cheeps = db.Read(limit); 
+    return cheeps;
+});
+
 app.MapPost("/cheep", (Cheep cheep) =>
 {
     db.Store(cheep);

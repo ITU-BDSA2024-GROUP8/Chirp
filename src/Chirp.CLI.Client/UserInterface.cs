@@ -40,9 +40,21 @@ Options:
             
             if (arguments["read"].IsTrue)
             {
-                var limit = int.Parse(arguments["<limit>"].ToString()); 
-                IEnumerable<App.Cheep> cheeps = db.Read(limit); 
-                PrintCheeps(cheeps);
+                try
+                {
+                    var limit = int.Parse(arguments["<limit>"].ToString()); 
+                    IEnumerable<App.Cheep> cheeps = await client.GetFromJsonAsync<IEnumerable<App.Cheep>>($"cheep/{limit}") ??
+                                 Enumerable.Empty<App.Cheep>(); 
+                    PrintCheeps(cheeps);
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    Console.WriteLine($"HTTP Request error: {httpEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
             }
             else if (arguments["readAll"].IsTrue)
             {
