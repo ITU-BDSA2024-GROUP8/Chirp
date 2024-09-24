@@ -11,7 +11,28 @@ public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 
     private CSVDatabase()
     {
+        filePath = DetermineFilePath();
     }
+
+   private string DetermineFilePath()
+        {
+            string[] possiblePaths = {
+                "../../data/database.csv",
+                "../../../../data/database.csv"
+            };
+
+            foreach (var path in possiblePaths)
+            {
+                if (File.Exists(path))
+                {
+                    return path;
+                }
+            }
+
+            // Default to the first path if none exist
+            return possiblePaths[0];
+        }
+   
     
     public static CSVDatabase<T> Instance
     {
