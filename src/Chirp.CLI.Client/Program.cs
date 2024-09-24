@@ -1,7 +1,4 @@
-﻿using SimpleDB;
-using DocoptNet;
-
-namespace Chirp.CLI.Client
+﻿namespace Chirp.CLI.Client
 {
     public class App
     {
