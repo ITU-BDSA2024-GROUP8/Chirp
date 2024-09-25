@@ -98,6 +98,7 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,rider
+.idea
 /src/Chirp.CLI.Client/bin
 /src/Chirp.CLI.Client/obj
 /src/Chirp.CSVDBService/bin
