@@ -480,3 +480,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+.idea
+/Chirp.Razor/obj
+/Chirp.Razor/bin
