@@ -1,0 +1,38 @@
+name: Pack Nuget to GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  release:
+    name: Nuget Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Nuget Pack
+        shell: bash
+        run: |
+          Version=${TAG#v}
+
+          # Dotnet Pack
+          dotnet pack -o build -p:PackageVersion=$Version
+        env:
+          TAG: ${{ github.ref_name }}
+          DOTNET_CLI_TELEMETRY_OPTOUT: 1
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: "build/BDSA.TEMPLATES*.nupkg"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
