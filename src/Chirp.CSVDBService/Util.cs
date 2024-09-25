@@ -1,4 +1,5 @@
-﻿// Chirp.CLI.Client/Util.cs
+﻿
+// Chirp.CLI.Client/Util.cs
 using System.Globalization;
 
 namespace Chirp.CSVDBService
