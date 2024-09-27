@@ -14,7 +14,7 @@ public class DBFacade
     
     public bool dbExists(string path)
     {
-        return false;
+        return File.Exists(path);
     }
 
     public void addDummyData()
