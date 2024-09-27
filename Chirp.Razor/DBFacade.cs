@@ -9,7 +9,7 @@ public class DBFacade
 
     public string getDbPath()
     {
-        return "";
+        return Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
     }
     
     public bool dbExists(string path)
