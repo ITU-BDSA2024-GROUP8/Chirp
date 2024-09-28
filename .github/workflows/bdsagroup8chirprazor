@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup8chirpremotedb
+name: Build and deploy Razor Chirp App to Azure Web App - bdsagroup<no>chirprazor
 
 on:
   push:
@@ -21,12 +21,19 @@ jobs:
         with:
           dotnet-version: '8.x'
 
+      # Build Razor Chirp app
       - name: Build with dotnet
-        run: dotnet build src/Chirp.CSVDBService/ --configuration Release
+        run: dotnet build src/Chirp.Razor/ --configuration Release
 
+      # Run tests for Razor Chirp app
+      - name: Run tests
+        run: dotnet test src/Chirp.Razor.Tests/ --configuration Release
+
+      # Publish Razor Chirp app
       - name: dotnet publish
-        run: dotnet publish src/Chirp.CSVDBService/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish src/Chirp.Razor/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      # Upload artifact for deployment job
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -40,14 +47,13 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-      
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -55,11 +61,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8039889EB4474FBFBCA77A1CD949C33A }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CEEBCEAD87E24B9082900B5A51E4BEF5 }}
 
+       # Deploy to the correct Web App (chirprazor)
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'bdsagroup8chirpremotedb'
+          app-name: 'bdsagroup8chirprazor'
           slot-name: 'Production'
           package: .
           
