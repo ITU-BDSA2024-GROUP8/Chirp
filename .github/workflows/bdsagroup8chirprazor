@@ -23,15 +23,15 @@ jobs:
 
       # Build Razor Chirp app
       - name: Build with dotnet
-        run: dotnet build src/Chirp.Razor/ --configuration Release
+        run: dotnet build Chirp.Razor --configuration Release
 
       # Run tests for Razor Chirp app
       - name: Run tests
-        run: dotnet test src/Chirp.Razor.Tests/ --configuration Release
+        run: dotnet test Chirp.Razor.Tests --configuration Release
 
       # Publish Razor Chirp app
       - name: dotnet publish
-        run: dotnet publish src/Chirp.Razor/ -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish Chirp.Razor -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       # Upload artifact for deployment job
       - name: Upload artifact for deployment job
