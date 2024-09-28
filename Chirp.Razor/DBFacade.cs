@@ -1,15 +1,17 @@
 ﻿namespace Chirp.Razor;
 
-public class DBFacade
+public class DBFacade : IDBFacade
 {
+    private readonly string _dbPath;
+    
+    public DBFacade(string dbPath)
+    {
+        _dbPath = dbPath;
+    }
+    
     public void createDB()
     {
-        
-    }
-
-    public string getDbPath()
-    {
-        return Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
+        Console.WriteLine("Created Database");
     }
     
     public bool dbExists(string path)
