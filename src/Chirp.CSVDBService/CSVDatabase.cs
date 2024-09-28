@@ -2,37 +2,16 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace SimpleDB;
+namespace Chirp.CSVDBService;
 
 public sealed class CSVDatabase<T> : IDatabaseRepository<T>
 {
     private static CSVDatabase<T>? instance = null;
-    private string filePath = "../../data/database.csv";
+    private string filePath = "./data/database.csv";
 
     private CSVDatabase()
     {
-        filePath = DetermineFilePath();
     }
-
-   private string DetermineFilePath()
-        {
-            string[] possiblePaths = {
-                "../../data/database.csv",
-                "../../../../data/databaseForTesting.csv"
-            };
-
-            foreach (var path in possiblePaths)
-            {
-                if (File.Exists(path))
-                {
-                    return path;
-                }
-            }
-
-            // Default to the first path if none exist
-            return possiblePaths[0];
-        }
-   
     
     public static CSVDatabase<T> Instance
     {

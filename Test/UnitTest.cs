@@ -4,49 +4,54 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using SimpleDB; 
 using Chirp.CLI.Client;
+using DocoptNet;
+
 
 namespace Chirp.test.UserInterfaceTests
 
 {
 public class UserInterfaceTests {
-  private record Cheep(string Author, string Message, long Timestamp);
+
     [Fact]
     public void testReadStore() {
-        Cheep cheep = new Cheep("adot", "Hey there! new test", 2);
-        CSVDatabase<Cheep> csvDatabase = CSVDatabase<Cheep>.Instance;
+        //clean up
+        
+
+        App.Cheep cheep = new App.Cheep("adot", "Hey there! new test", 2);
+        CSVDatabase<App.Cheep> csvDatabase = CSVDatabase<App.Cheep>.Instance;
+        ClearCSV();
         csvDatabase.Store(cheep);
 
-        IEnumerable<Cheep> cheeps = new List<Cheep> { cheep };
-     
+      IDictionary<string, ValueObject> arguments = new Docopt().Apply(UserInterface.usage, new string[] {"read", "1"}, version: "1.0", exit: true)!;
 
      using (var sw = new StringWriter())
             {
-                Console.SetOut(sw);
-
+         Console.SetOut(sw);
                 // Act
-                UserInterface.PrintCheeps(cheeps);
-
+                UserInterface.HandleArguments(arguments, csvDatabase);
+               
                 // Assert
-                var expectedOutput = "adot: Hey there! at 2";
-                                   
-                Assert.Equal(expectedOutput, sw.ToString());
+                 var timestamp = Util.FromSecondsToDateAndTime(cheep.Timestamp);
+                var expectedOutput = ($"{cheep.Author} @ {timestamp}: {cheep.Message}");;
+                var Output = sw.ToString().Trim();                   
+                Assert.Equal(expectedOutput, Output);
+               
+        
+                 
             }
-      //clean up
-      ClearCSV();
+    //clean up
+    ClearCSV();
 
     }
 
 
-    private void ClearCSV()
-        {
-            var lines = File.ReadAllLines("../../../../data/database.csv").ToList();
-            if (lines.Count > 0)
-            {
-                lines.RemoveAt(lines.Count - 1);
-                File.WriteAllLines("../../../../data/database.csv", lines);
-            }
-        }
+   private void ClearCSV()
+{
+    var header = "Author,Message,Timestamp"; 
+    File.WriteAllLines("../../../../data/databaseForTesting.csv", new List<string> { header });
 }
 
 }
+
+}   
 */

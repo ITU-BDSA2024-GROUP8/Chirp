@@ -1,11 +1,12 @@
 ﻿using SimpleDB;
 using DocoptNet;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Chirp.CLI.Client
 {
     public static class UserInterface
     {
-        private const string usage = @"
+        public const string usage = @"
 
 Usage:
   chirp read <limit>
@@ -23,11 +24,11 @@ Options:
         {
             var arguments = new Docopt().Apply(usage, args, version: "1.0", exit: true)!;
             CSVDatabase<App.Cheep> db = CSVDatabase<App.Cheep>.Instance;
-
             HandleArguments(arguments, db);
+    
         }
 
-        private static void HandleArguments(IDictionary<string, ValueObject> arguments, CSVDatabase<App.Cheep> db)
+        public static void HandleArguments(IDictionary<string, ValueObject> arguments, CSVDatabase<App.Cheep> db)
         {
             if (arguments["read"].IsTrue)
             {
@@ -63,6 +64,7 @@ Options:
             {
                 var timestamp = Util.FromSecondsToDateAndTime(cheep.Timestamp);
                 Console.WriteLine($"{cheep.Author} @ {timestamp}: {cheep.Message}");
+
             }
         }
 
