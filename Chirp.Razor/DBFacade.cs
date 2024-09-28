@@ -15,11 +15,8 @@ public class DBFacade : IDBFacade
     
     public void createDB()
     {
-        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
-        using var reader = embeddedProvider.GetFileInfo("data/schema.sql").CreateReadStream();
-        using var sr = new StreamReader(reader);
-        
-        var query = sr.ReadToEnd();
+        Console.WriteLine("Creating DB...");
+        string query = getQueryFromEmbeddedFile("data/schema.sql");
         
         // Creates database file and executes SQL query from data/schema.sql file.
         using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
@@ -30,6 +27,7 @@ public class DBFacade : IDBFacade
             command.CommandText = query;
         
             command.ExecuteNonQuery();
+            addDummyData();
         }
     }
     
@@ -38,8 +36,37 @@ public class DBFacade : IDBFacade
         return File.Exists(path);
     }
 
-    public void addDummyData()
+    public void addDummyData(SqliteConnection? connection = null)
     {
+        string query = getQueryFromEmbeddedFile("data/dump.sql");
         
+        if (connection is null)
+        {
+            using (var dbconnection = new SqliteConnection($"Data Source={_dbPath}"))
+            {
+                dbconnection.Open();
+        
+                var command = dbconnection.CreateCommand();
+                command.CommandText = query;
+        
+                command.ExecuteNonQuery();
+            }
+        }
+        else
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+        
+            command.ExecuteNonQuery();
+        }
+    }
+
+    public string getQueryFromEmbeddedFile(string filePath)
+    {
+        var embeddedProvider = new EmbeddedFileProvider(Assembly.GetExecutingAssembly());
+        using var reader = embeddedProvider.GetFileInfo(filePath).CreateReadStream();
+        using var sr = new StreamReader(reader);
+        
+        return sr.ReadToEnd();
     }
 }

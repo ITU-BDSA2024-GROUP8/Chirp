@@ -1,4 +1,5 @@
 ﻿namespace Chirp.Razor;
+using Microsoft.Data.Sqlite;
 
 public interface IDBFacade
 {
@@ -6,5 +7,5 @@ public interface IDBFacade
 
     public bool dbExists(string path);
 
-    public void addDummyData();
+    public void addDummyData(SqliteConnection? connection);
 }
