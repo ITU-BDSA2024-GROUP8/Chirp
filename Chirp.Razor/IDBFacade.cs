@@ -8,4 +8,6 @@ public interface IDBFacade
     public bool dbExists(string path);
 
     public void addDummyData(SqliteConnection? connection);
+
+    public List<CheepViewModel> getCheeps();
 }

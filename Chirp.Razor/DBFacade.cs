@@ -69,4 +69,39 @@ public class DBFacade : IDBFacade
         
         return sr.ReadToEnd();
     }
+
+    public List<CheepViewModel> getCheeps()
+    {
+        var query = @"
+            SELECT * FROM message M
+            JOIN user U 
+            ON M.author_id = U.user_id
+            ORDER by M.pub_date desc
+            LIMIT 32
+        ";
+
+        List<CheepViewModel> cheeps = new List<CheepViewModel>();
+        
+        using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
+        {
+            connection.Open();
+        
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+            
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var message = reader.GetString(2);
+                    var author = reader.GetString(5);
+                    var pubDate = CheepService.UnixTimeStampToDateTimeString(Double.Parse(reader.GetString(3) as string));
+
+                    cheeps.Add(new CheepViewModel(author, message, pubDate)); 
+                }
+            }
+        }
+
+        return cheeps;
+    }
 }
