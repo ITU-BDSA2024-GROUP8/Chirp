@@ -4,10 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddSingleton<ICheepService, CheepService>();
 
 string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
-builder.Services.AddSingleton<IDBFacade>(new DBFacade(dbPath));
+
+builder.Services.AddSingleton<IDBFacade>(_ => new DBFacade(dbPath));
+builder.Services.AddSingleton<ICheepService, CheepService>();
 
 var app = builder.Build();
 
