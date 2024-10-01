@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Data.Sqlite;
 
@@ -90,7 +90,7 @@ public class DBFacade : IDBFacade
             var command = connection.CreateCommand();
             command.CommandText = query;
 
-            command.Parameters.AddWithValue("@offset", page*32-32);
+            command.Parameters.AddWithValue("@offset", (page*32)-32);
             
             using (var reader = command.ExecuteReader())
             {
@@ -131,7 +131,7 @@ public class DBFacade : IDBFacade
             command.CommandText = query;
 
             command.Parameters.AddWithValue("@author", author);
-            command.Parameters.AddWithValue("@offset", page*32-32);
+            command.Parameters.AddWithValue("@offset", (page*32)-32);
             
             using (var reader = command.ExecuteReader())
             {
