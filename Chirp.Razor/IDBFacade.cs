@@ -10,4 +10,6 @@ public interface IDBFacade
     public void addDummyData(SqliteConnection? connection);
 
     public List<CheepViewModel> getCheeps();
+
+    public List<CheepViewModel> getCheepsFromAuthor(string author);
 }

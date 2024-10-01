@@ -73,11 +73,10 @@ public class DBFacade : IDBFacade
     public List<CheepViewModel> getCheeps()
     {
         var query = @"
-            SELECT * FROM message M
+            SELECT M.text, M.pub_date, U.username FROM message M
             JOIN user U 
             ON M.author_id = U.user_id
             ORDER by M.pub_date desc
-            LIMIT 32
         ";
 
         List<CheepViewModel> cheeps = new List<CheepViewModel>();
@@ -93,9 +92,46 @@ public class DBFacade : IDBFacade
             {
                 while (reader.Read())
                 {
-                    var message = reader.GetString(2);
-                    var author = reader.GetString(5);
-                    var pubDate = CheepService.UnixTimeStampToDateTimeString(Double.Parse(reader.GetString(3) as string));
+                    var message = reader.GetString(0);
+                    var author = reader.GetString(2);
+                    var pubDate = CheepService.UnixTimeStampToDateTimeString(Double.Parse(reader.GetString(1) as string));
+
+                    cheeps.Add(new CheepViewModel(author, message, pubDate)); 
+                }
+            }
+        }
+
+        return cheeps;
+    }
+
+        public List<CheepViewModel> getCheepsFromAuthor(string author)
+    {
+        // filter by the provided author name
+        var query = @"
+            SELECT M.text, M.pub_date FROM message M
+            JOIN user U 
+            ON M.author_id = U.user_id
+            WHERE U.username = @author
+            ORDER by M.pub_date desc
+        ";
+
+        List<CheepViewModel> cheeps = new List<CheepViewModel>();
+        
+        using (var connection = new SqliteConnection($"Data Source={_dbPath}"))
+        {
+            connection.Open();
+        
+            var command = connection.CreateCommand();
+            command.CommandText = query;
+
+            command.Parameters.AddWithValue("@author", author);
+            
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var message = reader.GetString(0);
+                    var pubDate = CheepService.UnixTimeStampToDateTimeString(Double.Parse(reader.GetString(1) as string));
 
                     cheeps.Add(new CheepViewModel(author, message, pubDate)); 
                 }

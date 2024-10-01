@@ -32,7 +32,7 @@ public class CheepService : ICheepService
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        return _dbFacade.getCheepsFromAuthor(author);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
