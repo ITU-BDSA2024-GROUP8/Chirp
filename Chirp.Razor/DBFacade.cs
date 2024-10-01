@@ -70,13 +70,15 @@ public class DBFacade : IDBFacade
         return sr.ReadToEnd();
     }
 
-    public List<CheepViewModel> getCheeps()
+    public List<CheepViewModel> getCheeps(int page)
     {
         var query = @"
             SELECT M.text, M.pub_date, U.username FROM message M
             JOIN user U 
             ON M.author_id = U.user_id
             ORDER by M.pub_date desc
+            LIMIT 32
+            OFFSET @offset
         ";
 
         List<CheepViewModel> cheeps = new List<CheepViewModel>();
@@ -87,6 +89,8 @@ public class DBFacade : IDBFacade
         
             var command = connection.CreateCommand();
             command.CommandText = query;
+
+            command.Parameters.AddWithValue("@offset", page*32-32);
             
             using (var reader = command.ExecuteReader())
             {
@@ -104,7 +108,7 @@ public class DBFacade : IDBFacade
         return cheeps;
     }
 
-        public List<CheepViewModel> getCheepsFromAuthor(string author)
+        public List<CheepViewModel> getCheepsFromAuthor(int page, string author)
     {
         // filter by the provided author name
         var query = @"
@@ -113,6 +117,8 @@ public class DBFacade : IDBFacade
             ON M.author_id = U.user_id
             WHERE U.username = @author
             ORDER by M.pub_date desc
+            LIMIT 32
+            OFFSET @offset
         ";
 
         List<CheepViewModel> cheeps = new List<CheepViewModel>();
@@ -125,6 +131,7 @@ public class DBFacade : IDBFacade
             command.CommandText = query;
 
             command.Parameters.AddWithValue("@author", author);
+            command.Parameters.AddWithValue("@offset", page*32-32);
             
             using (var reader = command.ExecuteReader())
             {

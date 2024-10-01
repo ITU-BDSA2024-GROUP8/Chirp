@@ -15,7 +15,9 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet()
     {
-        Cheeps = _service.GetCheeps();
+        var pageQuery = Request.Query["page"];
+        int page = int.TryParse(pageQuery, out page) ? Math.Abs(page) : 1;
+        Cheeps = _service.GetCheeps(page);
         return Page();
     }
 }
