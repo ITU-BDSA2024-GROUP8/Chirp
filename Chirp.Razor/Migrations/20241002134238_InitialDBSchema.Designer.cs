@@ -3,16 +3,19 @@ using System;
 using Chirp.Razor.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Chirp.Razor.Migrations
 {
-    [DbContext(typeof(CheepDBContext))]
-    partial class CheepDBContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ChirpDBContext))]
+    [Migration("20241002134238_InitialDBSchema")]
+    partial class InitialDBSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
