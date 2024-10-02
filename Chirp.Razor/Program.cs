@@ -1,4 +1,6 @@
 using Chirp.Razor;
+using Chirp.Razor.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,9 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
+builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Data Source={dbPath}";
 
-builder.Services.AddSingleton<IDBFacade>(_ => new DBFacade(dbPath));
-builder.Services.AddSingleton<ICheepService, CheepService>();
+string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddScoped<IDBFacade>(_ => new DBFacade(dbPath));
+builder.Services.AddScoped<ICheepService, CheepService>();
 
 var app = builder.Build();
 
@@ -27,7 +33,6 @@ app.UseRouting();
 
 app.MapRazorPages();
 
-var db = app.Services.GetRequiredService<IDBFacade>();
-if (!db.dbExists(dbPath)) db.createDB();
+if(!DbInitializer.DbExists(dbPath)) await DbInitializer.CreateDb(app);
 
 app.Run();
