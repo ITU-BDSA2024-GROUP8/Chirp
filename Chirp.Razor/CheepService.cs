@@ -16,23 +16,16 @@ public class CheepService : ICheepService
             new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
-    
-    private readonly IDBFacade _dbFacade;
-
-    public CheepService(IDBFacade dbFacade)
-    {
-        _dbFacade = dbFacade;
-    }
 
     public List<CheepViewModel> GetCheeps(int page)
     {
-        return _dbFacade.getCheeps(page);
+        return _cheeps;
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(int page, string author)
     {
         // filter by the provided author name
-        return _dbFacade.getCheepsFromAuthor(page, author);
+        return _cheeps.Where(x => x.Author == author).ToList();
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)

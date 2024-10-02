@@ -13,7 +13,6 @@ builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Data Source={db
 string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
 
-builder.Services.AddScoped<IDBFacade>(_ => new DBFacade(dbPath));
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 var app = builder.Build();
