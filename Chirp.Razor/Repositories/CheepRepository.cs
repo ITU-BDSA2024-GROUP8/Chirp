@@ -1,4 +1,5 @@
 ﻿using Chirp.Razor.Data;
+using Chirp.Razor.DTOs;
 using Chirp.Razor.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,13 +8,6 @@ namespace Chirp.Razor.Repositories;
 public interface ICheepRepository
 {
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
-}
-
-public class CheepDTO
-{
-    public string Author { get; set; }
-    public string Message { get; set; }
-    public string Timestamp { get; set; }
 }
 
 public class CheepRepository : ICheepRepository

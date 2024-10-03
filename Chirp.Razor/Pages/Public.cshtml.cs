@@ -1,4 +1,5 @@
-﻿using Chirp.Razor.Repositories;
+﻿using Chirp.Razor.DTOs;
+using Chirp.Razor.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
