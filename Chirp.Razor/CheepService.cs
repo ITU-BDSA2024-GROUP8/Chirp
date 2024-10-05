@@ -1,10 +1,12 @@
 using Chirp.Razor;
+using Chirp.Razor.DTOs;
+using Chirp.Razor.Repositories;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps(int page);
+    public Task<List<CheepDTO>> GetCheeps(int page);
     public List<CheepViewModel> GetCheepsFromAuthor(int page, string author);
 }
 
@@ -17,22 +19,22 @@ public class CheepService : ICheepService
             new CheepViewModel("Adrian", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
     
-    private readonly IDBFacade _dbFacade;
+    private readonly ICheepRepository _cheepRepository;
 
-    public CheepService(IDBFacade dbFacade)
+    public CheepService(ICheepRepository cheepRepository)
     {
-        _dbFacade = dbFacade;
+        _cheepRepository = cheepRepository;
     }
-
-    public List<CheepViewModel> GetCheeps(int page)
+    
+    public async Task<List<CheepDTO>> GetCheeps(int page)
     {
-        return _dbFacade.getCheeps(page);
+        return await _cheepRepository.GetCheepsAsync(page);
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(int page, string author)
     {
         // filter by the provided author name
-        return _dbFacade.getCheepsFromAuthor(page, author);
+        return _cheeps.Where(x => x.Author == author).ToList();
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
