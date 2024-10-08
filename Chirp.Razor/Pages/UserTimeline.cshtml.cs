@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chirp.Razor.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Razor.Pages;
@@ -6,18 +7,18 @@ namespace Chirp.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepService _service;
-    public List<CheepViewModel> Cheeps { get; set; }
+    public List<CheepDTO> Cheeps { get; set; }
 
     public UserTimelineModel(ICheepService service)
     {
         _service = service;
     }
 
-    public ActionResult OnGet(string author)
+    public async Task<ActionResult> OnGet(string author)
     {
         var pageQuery = Request.Query["page"];
         int page = int.TryParse(pageQuery, out page) ? Math.Abs(page) : 1;
-        Cheeps = _service.GetCheepsFromAuthor(page, author);
+        Cheeps = await _service.GetCheepsFromAuthor(page, author);
         return Page();
     }
 }
