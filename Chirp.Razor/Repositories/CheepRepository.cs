@@ -42,41 +42,43 @@ public class CheepRepository : ICheepRepository
         return await query.ToListAsync();
     }
     
-    //creates a new message
-    public async Task<int> CreateMessage(MessageDTO message)
-    {
-        Message newMessage = new() { Text = message.Text, ... };
-        var queryResult = await _dbContext.Messages.AddAsync(newMessage); // does not write to the database!
-
-        await _dbContext.SaveChangesAsync(); // persist the changes in the database
-        return queryResult.Entity.CheepId;
-    }
-    //gets all messages from a specific author
+    // gets all messages from a specific author
     public async Task<List<CheepDTO>> GetCheepsByAuthorAsync(int authorId)
     {
-        return await _dbContext.Cheeps
-            .Where(c => c.AuthorId == authorId)
-            .Select(c => new CheepDTO
+        var query = (
+            from c in _dbContext.Cheeps
+            join a in _dbContext.Authors
+                on c.AuthorId equals a.AuthorId
+            where c.AuthorId == authorId
+            select new CheepDTO
             {
-                Author = c.Author.Name,
+                Author = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
-            }).ToListAsync();
+            });
+
+        return await query.ToListAsync();
     }
-    //gets the latest cheeps
+
+// gets the latest cheeps
     public async Task<List<CheepDTO>> GetLatestCheepsAsync(int count = 10)
     {
-        return await _dbContext.Cheeps
-            .OrderByDescending(c => c.TimeStamp)
-            .Take(count)
-            .Select(c => new CheepDTO
+        var query = (
+            from c in _dbContext.Cheeps
+            join a in _dbContext.Authors
+                on c.AuthorId equals a.AuthorId
+            orderby c.TimeStamp descending
+            select new CheepDTO
             {
-                Author = c.Author.Name,
+                Author = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
-            }).ToListAsync();
+            }).Take(count);
+
+        return await query.ToListAsync();
     }
-    //deletes a cheep by cheep id
+
+// deletes a cheep by cheep id
     public async Task DeleteCheepAsync(int cheepId)
     {
         var cheep = await _dbContext.Cheeps.FindAsync(cheepId);
@@ -86,28 +88,32 @@ public class CheepRepository : ICheepRepository
             await _dbContext.SaveChangesAsync();
         }
     }
-    //gets the top authors with most cheeps
+
+// gets the top authors with most cheeps
     public async Task<List<AuthorDTO>> GetTopAuthorsAsync(int count = 5)
     {
-        return await _dbContext.Authors
-            .OrderByDescending(a => a.Cheeps.Count)
-            .Take(count)
-            .Select(a => new AuthorDTO
+        var query = (
+            from a in _dbContext.Authors
+            orderby a.Cheeps.Count descending
+            select new AuthorDTO
             {
                 Name = a.Name,
                 Email = a.Email,
                 CheepCount = a.Cheeps.Count
-            }).ToListAsync();
+            }).Take(count);
+
+        return await query.ToListAsync();
     }
-    // Gets the email of an author by their ID
+
+// gets the email of an author by their ID
     public async Task<string> GetAuthorEmailAsync(int authorId)
     {
-        var author = await _dbContext.Authors
-            .Where(a => a.AuthorId == authorId)
-            .Select(a => a.Email)
-            .FirstOrDefaultAsync();
+        var query = (
+            from a in _dbContext.Authors
+            where a.AuthorId == authorId
+            select a.Email).FirstOrDefaultAsync();
 
-        return author;
+        return await query;
     }
     
 }
