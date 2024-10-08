@@ -7,7 +7,7 @@ public record CheepViewModel(string Author, string Message, string Timestamp);
 public interface ICheepService
 {
     public Task<List<CheepDTO>> GetCheeps(int page);
-    public List<CheepViewModel> GetCheepsFromAuthor(int page, string author);
+    public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author);
 }
 
 public class CheepService : ICheepService
@@ -31,10 +31,10 @@ public class CheepService : ICheepService
         return await _cheepRepository.GetCheepsAsync(page);
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(int page, string author)
+    public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author)
     {
         // filter by the provided author name
-        return _cheeps.Where(x => x.Author == author).ToList();
+        return await _cheepRepository.GetCheepsFromAuthorAsync(page, author);
     }
 
     public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
