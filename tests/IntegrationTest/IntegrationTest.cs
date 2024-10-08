@@ -18,14 +18,13 @@ public class IntegrationTest : IDisposable
         context = new ChirpDBContext(options);
     }
 
-
     [Theory]
     [InlineData("Helge", "Hello, BDSA students!")]
     public async void create_db_and_read_data_from_author(string author, string message)
     {
         //Ensure the database is created and initialized
             context.Database.EnsureCreated();
-            await DbInitializer.CreateDb(context); //Populate the test data 
+            DbInitializer.SeedDatabase(context);
 
             //Query the data
             var cheeps = await context.Cheeps

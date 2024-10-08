@@ -32,6 +32,10 @@ app.UseRouting();
 
 app.MapRazorPages();
 
-if(!DbInitializer.DbExists(dbPath)) await DbInitializer.CreateDb(app);
+using (var scope = app.Services.CreateScope())
+{
+    using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
+    if(DbInitializer.CreateDb(context)) DbInitializer.SeedDatabase(context);
+}
 
 app.Run();
