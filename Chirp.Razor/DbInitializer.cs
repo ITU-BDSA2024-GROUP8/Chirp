@@ -19,6 +19,13 @@ public static class DbInitializer
         }
     }
 
+    public static async Task CreateDb(ChirpDBContext context)
+    {
+        Console.WriteLine("Creating database...");
+        await context.Database.MigrateAsync();
+        SeedDatabase(context);
+    }
+
     public static bool DbExists(string path)
     {
         return File.Exists(path);
