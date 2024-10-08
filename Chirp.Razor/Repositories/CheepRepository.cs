@@ -8,6 +8,12 @@ namespace Chirp.Razor.Repositories;
 public interface ICheepRepository
 {
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
+    public Task<int> CreateMessage(MessageDTO message);
+    public Task<List<CheepDTO>> GetCheepsByAuthorAsync(int authorId);
+    public Task<List<CheepDTO>> GetLatestCheepsAsync(int count = 10);
+    public Task DeleteCheepAsync(int cheepId);
+    public Task<List<AuthorDTO>> GetTopAuthorsAsync(int count = 5);
+    public Task<string> GetAuthorEmailAsync(int authorId);
 }
 
 public class CheepRepository : ICheepRepository
@@ -93,6 +99,15 @@ public class CheepRepository : ICheepRepository
                 CheepCount = a.Cheeps.Count
             }).ToListAsync();
     }
+    // Gets the email of an author by their ID
+    public async Task<string> GetAuthorEmailAsync(int authorId)
+    {
+        var author = await _dbContext.Authors
+            .Where(a => a.AuthorId == authorId)
+            .Select(a => a.Email)
+            .FirstOrDefaultAsync();
 
+        return author;
+    }
     
 }
