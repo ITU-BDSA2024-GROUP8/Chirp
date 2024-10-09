@@ -9,10 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
-builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Data Source={dbPath}";
 
-string? connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
@@ -34,6 +32,10 @@ app.UseRouting();
 
 app.MapRazorPages();
 
-if(!DbInitializer.DbExists(dbPath)) await DbInitializer.CreateDb(app);
+using (var scope = app.Services.CreateScope())
+{
+    using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
+    if(DbInitializer.CreateDb(context)) DbInitializer.SeedDatabase(context);
+}
 
 app.Run();
