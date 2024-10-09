@@ -1,6 +1,5 @@
-using Chirp.Razor;
-using Chirp.Razor.DTOs;
-using Chirp.Razor.Repositories;
+using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Chirp.Repositories;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);
 

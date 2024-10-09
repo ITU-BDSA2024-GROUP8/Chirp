@@ -1,10 +1,7 @@
-﻿using Chirp.Razor.Data;
-using Chirp.Razor.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace Chirp.Razor;
-
+﻿using Chirp.Infrastructure.Data;
 using System;
+
+namespace Chirp.Infrastructure;
 
 public static class DbInitializer
 {
