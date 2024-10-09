@@ -1,24 +1,13 @@
 ﻿using Chirp.Infrastructure.Data;
-using System;
+using Chirp.Infrastructure.Models;
 
 namespace Chirp.Infrastructure;
 
 public static class DbInitializer
 {
-    public static async Task CreateDb(WebApplication app)
+    public static bool CreateDb(ChirpDBContext context)
     {
-        Console.WriteLine("Creating database...");
-        using (var scope = app.Services.CreateScope())
-        {
-            using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
-            await context.Database.MigrateAsync();
-            SeedDatabase(context);
-        }
-    }
-
-    public static bool DbExists(string path)
-    {
-        return File.Exists(path);
+        return context.Database.EnsureCreated();
     }
     
     public static void SeedDatabase(ChirpDBContext chirpContext)
