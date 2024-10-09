@@ -1,8 +1,4 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Xunit;
-using Chirp.Razor;
 
 namespace apiTest;
 public class TestAPI : IClassFixture<WebApplicationFactory<Program>>

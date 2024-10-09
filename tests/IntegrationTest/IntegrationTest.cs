@@ -1,8 +1,6 @@
-using Chirp.Razor;
-using Chirp.Razor.Data;
-
+using Chirp.Infrastructure;
+using Chirp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace IntegrationTest;
 
