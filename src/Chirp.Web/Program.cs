@@ -35,6 +35,7 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
+    if (context == null) return;
     if(DbInitializer.CreateDb(context)) DbInitializer.SeedDatabase(context);
 }
 
