@@ -1,9 +1,17 @@
-﻿namespace Chirp.Infrastructure.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Chirp.Infrastructure.Models;
 
 public class Author
 {
-    public int AuthorId { get; set; }
-    public string Name { get; set; }
-    public string Email { get; set; }
-    public ICollection<Cheep> Cheeps { get; set; }
+    [Required]
+    public required int AuthorId { get; set; }
+
+    [Required]
+    public required string Name { get; set; }
+
+    [Required]
+    public required string Email { get; set; }
+    
+    public ICollection<Cheep>? Cheeps { get; set; }
 }
