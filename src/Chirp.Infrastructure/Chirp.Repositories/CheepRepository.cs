@@ -9,6 +9,10 @@ public interface ICheepRepository
 {
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
     public Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author);
+    public Task<Author?> GetAuthorByNameAsync(string name);
+    public Task<Author?> GetAuthorByEmailAsync(string email);
+    public Task NewCheepAsync(string authorName, string authorEmail, string text);
+    public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
 }
 
 public class CheepRepository : ICheepRepository
@@ -71,5 +75,45 @@ public class CheepRepository : ICheepRepository
             select a);
         
         return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task NewCheepAsync(string authorName, string authorEmail, string text)
+    {
+        var author = await GetAuthorByNameAsync(authorName);
+
+        if (author == null)
+        {
+            author = await NewAuthorAsync(authorName, authorEmail);
+        }
+
+        var newCheep = new Cheep
+        {
+            AuthorId = author.AuthorId,
+            Author = author,
+            Text = text,
+            TimeStamp = DateTime.Now
+        };
+
+        _dbContext.Cheeps.Add(newCheep);
+
+        author.Cheeps.Add(newCheep);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Author> NewAuthorAsync(string authorName, string authorEmail)
+    {
+        var newAuthor = new Author
+        {
+            Name = authorName,
+            Email = authorEmail,
+            Cheeps = new List<Cheep>()
+        };
+
+        _dbContext.Authors.Add(newAuthor);
+
+        await _dbContext.SaveChangesAsync();
+
+        return newAuthor;
     }
 }
