@@ -3,3 +3,5 @@ Welcome to goup 8's "Chirp", a Twitter clone project developed as part of the An
 
 ## Project Overview
 Chirp is a social media platform that replicates core Twitter functionalities, allowing users to post messages, follow other users, and engage with content through likes and retweets. The project is structured to emphasize best practices in software architecture, design patterns, and quality software development.
+
+Our azure deployment link: https://bdsagroup8chirprazor.azurewebsites.net/

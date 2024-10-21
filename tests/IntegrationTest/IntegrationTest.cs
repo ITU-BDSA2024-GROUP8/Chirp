@@ -1,8 +1,7 @@
 
-using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Models;
-using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Chirp.Repositories;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,9 +77,9 @@ public class IntegrationTest
 
     private async Task SeedData(ChirpDBContext context)
     {
-           Author author1 = new Author { AuthorId = 1, Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
+        Author author1 = new Author { AuthorId = 1, Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
         Author author2 = new Author { AuthorId = 2, Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
-       // Seed data
+        // Seed data
         context.Authors.AddRange(author1, author2);
 
         context.Cheeps.AddRange(
