@@ -1,8 +1,8 @@
 
-using Chirp.Razor.DTOs;
-using Chirp.Razor.Models;
-using Chirp.Razor.Data;
-using Chirp.Razor.Repositories;
+using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Models;
+using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Chirp.Repositories;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
