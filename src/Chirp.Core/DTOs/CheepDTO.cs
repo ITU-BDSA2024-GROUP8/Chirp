@@ -1,8 +1,13 @@
-﻿namespace Chirp.Core.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Chirp.Core.DTOs;
 
 public class CheepDTO
 {
-    public string Author { get; set; }
-    public string Message { get; set; }
-    public string Timestamp { get; set; }
+    [Required]
+    public required string Author { get; set; }
+    [Required]
+    public required string Message { get; set; }
+    [Required]
+    public required string Timestamp { get; set; }
 }

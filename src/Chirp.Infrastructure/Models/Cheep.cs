@@ -1,10 +1,22 @@
-﻿namespace Chirp.Infrastructure.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Chirp.Infrastructure.Models;
 
 public class Cheep
 {
-    public int CheepId { get; set; }
-    public string Text { get; set; }
-    public DateTime TimeStamp { get; set; }
-    public int AuthorId { get; set; }
-    public Author Author { get; set; }
+    [Required]
+    public required int CheepId { get; set; }
+
+    [Required]
+    [StringLength(500)]
+    public required string Text { get; set; }
+
+    [Required]
+    public required DateTime TimeStamp { get; set; }
+
+    [Required]
+    public required int AuthorId { get; set; }
+    
+    [Required]
+    public required Author Author { get; set; }
 }

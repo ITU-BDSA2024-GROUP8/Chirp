@@ -1,5 +1,6 @@
 ﻿using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
@@ -50,5 +51,25 @@ public class CheepRepository : ICheepRepository
             }).Skip((page*32)-32).Take(32);
         
         return await query.ToListAsync();
+    }
+
+    public async Task<Author?> GetAuthorByNameAsync(string name)
+    {
+        var query = (
+            from a in _dbContext.Authors
+            where a.Name == name
+            select a);
+        
+        return await query.FirstOrDefaultAsync();
+    }
+
+    public async Task<Author?> GetAuthorByEmailAsync(string email)
+    {
+        var query = (
+            from a in _dbContext.Authors
+            where a.Email == email
+            select a);
+        
+        return await query.FirstOrDefaultAsync();
     }
 }
