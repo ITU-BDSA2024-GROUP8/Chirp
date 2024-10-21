@@ -31,7 +31,7 @@ public class IntegrationTest
 
 
     [Fact]
-    public async Task Test_GetCheeps()
+    public async Task Test_GetCheepsUsingCheepService()
     {
         //Initialize the database
            using var context = await CreateInMemoryDatabase();
@@ -48,7 +48,7 @@ public class IntegrationTest
     
     [Theory]
     [InlineData("TestUser1", "Hello World!")]
-    public async Task Test_GetCheepsFromAuthor(string author, string message)
+    public async Task Test_GetCheepsFromAuthorUsingCheepService(string author, string message)
     {
         //Initialize the database
            using var context = await CreateInMemoryDatabase();
@@ -58,6 +58,24 @@ public class IntegrationTest
             ICheepService cheepService = new CheepService(new CheepRepository(context));
             var cheeps = await cheepService.GetCheeps(1);
             var cheepsFromAuthor = await cheepService.GetCheepsFromAuthor(1, author);
+
+            //Assert that the data is correct
+            Assert.Equal(message, cheepsFromAuthor.First().Message);
+    }
+    
+
+       [Theory]
+    [InlineData("TestUser1", "Hello World!")]
+    public async Task Test_GetCheepsFromAuthorUsingCheepRepository(string author, string message)
+    {
+        //Initialize the database
+           using var context = await CreateInMemoryDatabase();
+           
+           
+            //Create the service
+            ICheepRepository cheepRepository = new CheepRepository(context);
+            var cheeps = await cheepRepository.GetCheepsAsync(1);
+            var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author);
 
             //Assert that the data is correct
             Assert.Equal(message, cheepsFromAuthor.First().Message);
