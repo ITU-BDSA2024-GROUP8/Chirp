@@ -88,7 +88,6 @@ public class IntegrationTest
             new Cheep { CheepId = 1, Text = "Hello World!", AuthorId = 1, TimeStamp = CurrentTime, Author = author1},
             new Cheep { CheepId = 2, Text = "Another Cheep, hell yeah", AuthorId = 2, TimeStamp = CurrentTime, Author = author2}
         );
-
     }
 
  
