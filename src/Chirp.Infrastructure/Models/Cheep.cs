@@ -4,8 +4,8 @@ namespace Chirp.Infrastructure.Models;
 
 public class Cheep
 {
-    [Required]
-    public required int CheepId { get; set; }
+    [Key]
+    public int CheepId { get; set; }
 
     [Required]
     [StringLength(500)]

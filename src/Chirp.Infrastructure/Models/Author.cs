@@ -1,17 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Models;
 
+[Index(nameof(Name), IsUnique = true)]
+[Index(nameof(Email), IsUnique = true)]
+
 public class Author
 {
-    [Required]
-    public required int AuthorId { get; set; }
+    [Key]
+    public int AuthorId { get; set; }
 
     [Required]
     public required string Name { get; set; }
 
     [Required]
+    [EmailAddress]
     public required string Email { get; set; }
     
-    public ICollection<Cheep>? Cheeps { get; set; }
+    [Required]
+    public required ICollection<Cheep> Cheeps { get; set; }
 }
