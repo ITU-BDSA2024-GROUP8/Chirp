@@ -1,14 +1,13 @@
-﻿using Chirp.Razor.DTOs;
-using Chirp.Razor.Repositories;
+﻿using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
     private readonly ICheepService _service;
-    public List<CheepDTO> Cheeps { get; set; }
+    public required  List<CheepDTO> Cheeps { get; set; }
 
     public PublicModel(ICheepService service)
     {
