@@ -29,26 +29,10 @@ public class IntegrationTest
         return context;
     }
 
-
-    [Fact]
-    public async Task Test_GetCheepsUsingCheepService()
-    {
-        //Initialize the database
-           using var context = await CreateInMemoryDatabase();
-           
-           
-            //Create the service
-            ICheepService cheepService = new CheepService(new CheepRepository(context));
-            var cheeps = await cheepService.GetCheeps(1);
-        
-            //Assert we have two and only two cheeps
-            Assert.Equal(2, cheeps.Count);
-    }
-    
-    
+ //Test the GetCheepsFromAuthor method from CheepService
     [Theory]
     [InlineData("TestUser1", "Hello World!")]
-    public async Task Test_GetCheepsFromAuthorUsingCheepService(string author, string message)
+    public async Task Test_GetCheepsUsingCheepService(string author, string message)
     {
         //Initialize the database
            using var context = await CreateInMemoryDatabase();
@@ -59,14 +43,20 @@ public class IntegrationTest
             var cheeps = await cheepService.GetCheeps(1);
             var cheepsFromAuthor = await cheepService.GetCheepsFromAuthor(1, author);
 
+
+        
+            //Assert we have two and only two cheeps
+            Assert.Equal(2, cheeps.Count);
             //Assert that the data is correct
             Assert.Equal(message, cheepsFromAuthor.First().Message);
     }
     
 
-       [Theory]
+ //Test the GetCheepsFromAuthor method from CheepRepository
+
+    [Theory]
     [InlineData("TestUser1", "Hello World!")]
-    public async Task Test_GetCheepsFromAuthorUsingCheepRepository(string author, string message)
+    public async Task Test_GetCheepsUsingCheepRepository(string author, string message)
     {
         //Initialize the database
            using var context = await CreateInMemoryDatabase();
@@ -77,6 +67,8 @@ public class IntegrationTest
             var cheeps = await cheepRepository.GetCheepsAsync(1);
             var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author);
 
+            //Assert we have two and only two cheeps
+            Assert.Equal(2, cheeps.Count);
             //Assert that the data is correct
             Assert.Equal(message, cheepsFromAuthor.First().Message);
     }
@@ -85,6 +77,20 @@ public class IntegrationTest
 
 
 
+    [Theory]
+    [InlineData("TestUser1", "Test1@exsample.dk")]
+    public async Task Test_GetAuthor(String author, String email)
+    {
+        //Initialize the database
+        using var context = await CreateInMemoryDatabase();
+        //Create the service
+        ICheepRepository cheepRepository = new CheepRepository(context);
+        var authorByName = await cheepRepository.GetAuthorByNameAsync(author);
+        var authorByEmail = await cheepRepository.GetAuthorByEmailAsync(email);
+        //Assert that the data is correct
+        Assert.Equal(author, authorByName?.Name);
+        Assert.Equal(email, authorByEmail?.Email);
+    }
 
 
 
