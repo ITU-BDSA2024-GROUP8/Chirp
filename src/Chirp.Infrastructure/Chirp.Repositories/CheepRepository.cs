@@ -7,10 +7,13 @@ namespace Chirp.Infrastructure.Chirp.Repositories;
 
 public interface ICheepRepository
 {
+    //Query methods
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
     public Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author);
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
+
+    //Command methods
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
 }
@@ -24,6 +27,7 @@ public class CheepRepository : ICheepRepository
         _dbContext = dbContext;
     }
     
+    //Query methods that return a value
     public async Task<List<CheepDTO>> GetCheepsAsync(int page)
     {
         var query = (
@@ -77,6 +81,8 @@ public class CheepRepository : ICheepRepository
         return await query.FirstOrDefaultAsync();
     }
 
+
+    //Command methods that create, delete and modify data in the DB.
     public async Task NewCheepAsync(string authorName, string authorEmail, string text)
     {
         var author = await GetAuthorByNameAsync(authorName);
