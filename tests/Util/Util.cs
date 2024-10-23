@@ -11,14 +11,14 @@ public class Util
 
     public static async Task SeedData(ChirpDBContext context)
     {
-        Author author1 = new Author { AuthorId = 1, Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
-        Author author2 = new Author { AuthorId = 2, Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
+        Author author1 = new Author { UserName = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
+        Author author2 = new Author { UserName = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
         // Seed data
         context.Authors.AddRange(author1, author2);
 
         context.Cheeps.AddRange(
-            new Cheep { CheepId = 1, Text = "Hello World!", AuthorId = 1, TimeStamp = CurrentTime, Author = author1},
-            new Cheep { CheepId = 2, Text = "Another Cheep, hell yeah", AuthorId = 2, TimeStamp = CurrentTime, Author = author2}
+            new Cheep { CheepId = 1, Text = "Hello World!", AuthorId = author1.Id, TimeStamp = CurrentTime, Author = author1},
+            new Cheep { CheepId = 2, Text = "Another Cheep, hell yeah", AuthorId = author2.Id, TimeStamp = CurrentTime, Author = author2}
         );
     }
     

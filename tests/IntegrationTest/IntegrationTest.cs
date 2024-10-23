@@ -52,7 +52,7 @@ public class IntegrationTest
 
     [Theory]
     [InlineData("TestUser1", "Test1@exsample.dk")]
-    public async Task Test_GetAuthor(String author, String email)
+    public async Task Test_GetAuthor(string author, string email)
     {
         //Initialize the database
         using var context = await Util.CreateInMemoryDatabase();
@@ -61,14 +61,14 @@ public class IntegrationTest
         var authorByName = await cheepRepository.GetAuthorByNameAsync(author);
         var authorByEmail = await cheepRepository.GetAuthorByEmailAsync(email);
         //Assert that the data is correct
-        Assert.Equal(author, authorByName?.Name);
+        Assert.Equal(author, authorByName?.UserName);
         Assert.Equal(email, authorByEmail?.Email);
     }
 
 
     [Theory]
     [InlineData("TestUser1", "Test1@exsample.dk")]
-    public async Task Test_CreateCheep(String author, String email)
+    public async Task Test_CreateCheep(string author, string email)
     {
         //Initialize the database
         using var context = await Util.CreateInMemoryDatabase();
