@@ -83,14 +83,7 @@ jobs:
     - name: Compress Linux ARM executable to ZIP
       run: zip -j ./publish/chirp-linux-arm64.zip ./publish/linux-arm64/Chirp.Web
 
-    # Run the application locally (simulate localhost) with environment variables
-    - name: Run the application (localhost simulation)
-      run: dotnet run --project "src/Chirp.Web/Chirp.Web.csproj" --configuration Release
-      env:
-        ASPNETCORE_ENVIRONMENT: Production
-        CUSTOM_ENV_VAR: MyCustomValue
-        CONNECTION_STRING: ${{ secrets.CONNECTION_STRING }}
-  
+ 
     # Create GitHub Release and attach all ZIP files
     - name: Create GitHub Release
       id: create_release
