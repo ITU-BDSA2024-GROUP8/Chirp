@@ -61,31 +61,31 @@ jobs:
     
     # Compress the EXE into a ZIP file (Windows x64)
     - name: Compress Windows x64 EXE to ZIP
-      run: zip -j ./publish/chirp-win-x64.zip ./publish/win-x64/Chirp.Razor.exe
+      run: zip -j ./publish/chirp-win-x64.zip ./publish/win-x64/Chirp.Web.exe
 
     # Compress the EXE into a ZIP file (Windows ARM)
     - name: Compress Windows ARM EXE to ZIP
-      run: zip -j ./publish/chirp-win-arm64.zip ./publish/win-arm64/Chirp.Razor.exe
+      run: zip -j ./publish/chirp-win-arm64.zip ./publish/win-arm64/Chirp.Web.exe
 
     # Compress the MacOS x64 executable into a ZIP file
     - name: Compress MacOS x64 executable to ZIP
-      run: zip -j ./publish/chirp-osx-x64.zip ./publish/osx-x64/Chirp.Razor
+      run: zip -j ./publish/chirp-osx-x64.zip ./publish/osx-x64/Chirp.Web
 
     # Compress the MacOS ARM executable into a ZIP file
     - name: Compress MacOS ARM executable to ZIP
-      run: zip -j ./publish/chirp-osx-arm64.zip ./publish/osx-arm64/Chirp.Razor
+      run: zip -j ./publish/chirp-osx-arm64.zip ./publish/osx-arm64/Chirp.Web
 
     # Compress the Linux x64 executable into a ZIP file
     - name: Compress Linux x64 executable to ZIP
-      run: zip -j ./publish/chirp-linux-x64.zip ./publish/linux-x64/Chirp.Razor
+      run: zip -j ./publish/chirp-linux-x64.zip ./publish/linux-x64/Chirp.Web
 
     # Compress the Linux ARM executable into a ZIP file
     - name: Compress Linux ARM executable to ZIP
-      run: zip -j ./publish/chirp-linux-arm64.zip ./publish/linux-arm64/Chirp.Razor
+      run: zip -j ./publish/chirp-linux-arm64.zip ./publish/linux-arm64/Chirp.Web
 
     # Run the application locally (simulate localhost) with environment variables
     - name: Run the application (localhost simulation)
-      run: dotnet run --project "src/Chirp.Core/Chirp.Core.csproj" --configuration Release
+      run: dotnet run --project "src/Chirp.Web/Chirp.Web.csproj" --configuration Release
       env:
         ASPNETCORE_ENVIRONMENT: Production
         CUSTOM_ENV_VAR: MyCustomValue
