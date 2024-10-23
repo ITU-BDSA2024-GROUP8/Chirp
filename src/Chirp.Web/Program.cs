@@ -39,5 +39,5 @@ using (var scope = app.Services.CreateScope())
     if (context == null) return;
     if(DbInitializer.CreateDb(context)) DbInitializer.SeedDatabase(context);
 }
-app.Urls.Add("http://localhost:5000");
+
 app.Run();
