@@ -61,25 +61,13 @@ public class UnitTest1
         var author = await cheepRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
 
         var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
-        
-        int cheepsCount = 0;
-        
-        foreach (var cheep in cheepsFromAuthor)
-        {
-            cheepsCount++;
-        }
 
-        Assert.Equal(0, cheepsCount);
+        Assert.Equal(0, cheepsFromAuthor.Count);
         
         await cheepRepository.NewCheepAsync(author.Name, author.Email, "This is a new test cheep");
-        int newCheepsCount = 0;
+        
         var newCheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
         
-        foreach (var cheep in newCheepsFromAuthor)
-        {
-            newCheepsCount++;
-        }
-        
-        Assert.Equal(1, newCheepsCount);
+        Assert.Equal(1, newCheepsFromAuthor.Count);
     }
 }
