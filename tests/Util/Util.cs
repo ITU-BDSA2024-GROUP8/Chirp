@@ -9,7 +9,7 @@ public class Util
 {
     public static DateTime CurrentTime = DateTime.Now;
 
-    public static async Task SeedData(ChirpDBContext context)
+    public static void SeedData(ChirpDBContext context)
     {
         Author author1 = new Author { UserName = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
         Author author2 = new Author { UserName = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
@@ -33,7 +33,7 @@ public class Util
         await context.Database.EnsureCreatedAsync(); 
 
         //pupulate the database
-        await SeedData(context);
+        SeedData(context);
 
         await context.SaveChangesAsync();
 
