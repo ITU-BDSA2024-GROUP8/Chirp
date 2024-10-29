@@ -24,8 +24,8 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     }
 
     [Theory]
-    [InlineData("Helge")]
-    [InlineData("Adrian")]
+    [InlineData("TestUser1")]
+    [InlineData("TestUser2")]
     public async void CanSeePrivateTimeline(string author)
     {
         var response = await _client.GetAsync($"/{author}");
