@@ -33,7 +33,7 @@ public class CheepRepository : ICheepRepository
         var query = (
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
-                on c.AuthorId equals a.AuthorId
+                on c.AuthorId equals a.Id
             select new CheepDTO
             {
                 Author = a.Name,
@@ -49,7 +49,7 @@ public class CheepRepository : ICheepRepository
         var query = (
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
-                on c.AuthorId equals a.AuthorId
+                on c.AuthorId equals a.Id
             where a.Name == author
             select new CheepDTO
             {
@@ -94,7 +94,7 @@ public class CheepRepository : ICheepRepository
 
         var newCheep = new Cheep
         {
-            AuthorId = author.AuthorId,
+            AuthorId = author.Id,
             Author = author,
             Text = text,
             TimeStamp = DateTime.Now

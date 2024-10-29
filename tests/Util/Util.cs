@@ -13,25 +13,25 @@ public class Util
     {
         if (seed == 1)
         {
-            Author author1 = new Author { AuthorId = 1, Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
-            Author author2 = new Author { AuthorId = 2, Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
+            Author author1 = new Author { Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
+            Author author2 = new Author { Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
             // Seed data
             context.Authors.AddRange(author1, author2);
 
             context.Cheeps.AddRange(
-                new Cheep { Text = "Hello World!", AuthorId = 1, TimeStamp = CurrentTime, Author = author1},
-                new Cheep { Text = "Another Cheep, hell yeah", AuthorId = 2, TimeStamp = CurrentTime, Author = author2}
+                new Cheep { Text = "Hello World!", AuthorId = author1.Id, TimeStamp = CurrentTime, Author = author1},
+                new Cheep { Text = "Another Cheep, hell yeah", AuthorId = author2.Id, TimeStamp = CurrentTime, Author = author2}
             );
         }
         else
         {
-            var a1 = new Author() { AuthorId = 1, Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
+            var a1 = new Author() { Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
             
             context.Authors.AddRange(a1);
             
             for (int i = 0; i < 40; i++)
             {
-                var cheep = new Cheep { Text = "" + i, AuthorId = 1, TimeStamp = CurrentTime, Author = a1 };
+                var cheep = new Cheep { Text = "" + i, AuthorId = a1.Id, TimeStamp = CurrentTime, Author = a1 };
                 
                 context.Cheeps.AddRange(cheep);
             }

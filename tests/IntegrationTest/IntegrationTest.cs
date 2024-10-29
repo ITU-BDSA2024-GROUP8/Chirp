@@ -52,7 +52,7 @@ public class IntegrationTest
 
     [Theory]
     [InlineData("TestUser1", "Test1@exsample.dk")]
-    public async Task Test_GetAuthor(String author, String email)
+    public async Task Test_GetAuthor(string author, string email)
     {
         //Initialize the database
         using var context = await Util.CreateInMemoryDatabase(1);
@@ -68,7 +68,7 @@ public class IntegrationTest
 
     [Theory]
     [InlineData("TestUser1", "Test1@exsample.dk")]
-    public async Task Test_CreateCheep(String author, String email)
+    public async Task Test_CreateCheep(string author, string email)
     {
         //Initialize the database
         using var context = await Util.CreateInMemoryDatabase(1);
