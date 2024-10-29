@@ -11,8 +11,8 @@ public class Util
 
     public static void SeedData(ChirpDBContext context)
     {
-        Author author1 = new Author { UserName = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
-        Author author2 = new Author { UserName = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
+        Author author1 = new Author { Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
+        Author author2 = new Author { Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
         // Seed data
         context.Authors.AddRange(author1, author2);
 

@@ -36,7 +36,7 @@ public class CheepRepository : ICheepRepository
                 on c.AuthorId equals a.Id
             select new CheepDTO
             {
-                Author = a.UserName,
+                Author = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
             }).Skip((page*32)-32).Take(32);
@@ -50,10 +50,10 @@ public class CheepRepository : ICheepRepository
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
-            where a.UserName == author
+            where a.Name == author
             select new CheepDTO
             {
-                Author = a.UserName,
+                Author = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
             }).Skip((page*32)-32).Take(32);
@@ -65,7 +65,7 @@ public class CheepRepository : ICheepRepository
     {
         var query = (
             from a in _dbContext.Authors
-            where a.UserName == name
+            where a.Name == name
             select a);
         
         return await query.FirstOrDefaultAsync();
@@ -111,7 +111,7 @@ public class CheepRepository : ICheepRepository
     {
         var newAuthor = new Author
         {
-            UserName = authorName,
+            Name = authorName,
             Email = authorEmail,
             Cheeps = new List<Cheep>()
         };

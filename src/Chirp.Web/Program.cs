@@ -2,6 +2,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,8 +43,9 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
     if (context == null) return;
-    if(DbInitializer.CreateDb(context)) DbInitializer.SeedDatabase(context);
+    if(DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
 }
 
 app.Run();

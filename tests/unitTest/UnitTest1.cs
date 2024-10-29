@@ -17,7 +17,7 @@ public class UnitTest1
         ICheepRepository cheepRepository = new CheepRepository(context);
         var authorByName = await cheepRepository.GetAuthorByNameAsync(Author);
 
-        Assert.Equal(Author, authorByName?.UserName);
+        Assert.Equal(Author, authorByName?.Name);
     }
     
     [Theory]
@@ -44,7 +44,7 @@ public class UnitTest1
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
         var author = await cheepRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
-        var authorByName = await cheepRepository.GetAuthorByNameAsync(author.UserName);
+        var authorByName = await cheepRepository.GetAuthorByNameAsync(author.Name);
         
         Assert.Equal(author, authorByName);
     }
@@ -60,13 +60,13 @@ public class UnitTest1
         
         var author = await cheepRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
 
-        var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.UserName);
+        var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
 
         Assert.Equal(0, cheepsFromAuthor.Count);
         
-        await cheepRepository.NewCheepAsync(author.UserName, author.Email, "This is a new test cheep");
+        await cheepRepository.NewCheepAsync(author.Name, author.Email, "This is a new test cheep");
         
-        var newCheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.UserName);
+        var newCheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
         
         Assert.Equal(1, newCheepsFromAuthor.Count);
     }

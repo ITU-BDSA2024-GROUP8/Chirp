@@ -7,4 +7,7 @@ public class Author : IdentityUser
 {
     [Required]
     public required ICollection<Cheep> Cheeps { get; set; }
+
+    [Required]
+    public required string Name { get; set; }
 }
