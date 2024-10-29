@@ -9,7 +9,7 @@ public class Util
 {
     public static DateTime CurrentTime = DateTime.Now;
 
-    public static async Task SeedData(ChirpDBContext context, int seed)
+    public static void SeedData(ChirpDBContext context, int seed)
     {
         if (seed == 1)
         {
@@ -49,7 +49,7 @@ public class Util
         await context.Database.EnsureCreatedAsync(); 
 
         //pupulate the database
-        await SeedData(context, seed);
+        SeedData(context, seed);
 
         await context.SaveChangesAsync();
 
