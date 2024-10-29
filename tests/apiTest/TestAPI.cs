@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit.Abstractions;
 
 namespace apiTest;
 public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
