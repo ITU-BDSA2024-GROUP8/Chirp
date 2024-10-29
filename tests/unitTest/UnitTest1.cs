@@ -7,7 +7,7 @@ public class UnitTest1
 {
     [Theory]
     [InlineData("TestUser1")]
-    public async Task Test_FindAuthorByName(string author)
+    public async Task Test_FindAuthorByName(string authorName)
     {
         //Initialize the database
         await using var context = await Util.CreateInMemoryDatabase(1);
@@ -15,9 +15,9 @@ public class UnitTest1
            
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
-        var authorByName = await cheepRepository.GetAuthorByNameAsync(author);
+        var authorByName = await cheepRepository.GetAuthorByNameAsync(authorName);
 
-        Assert.Equal(author, authorByName?.Name);
+        Assert.Equal(authorName, authorByName?.Name);
     }
     
     [Theory]
