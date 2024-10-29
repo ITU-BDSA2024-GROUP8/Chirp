@@ -1,3 +1,5 @@
+using Chirp.Infrastructure.Models;
+
 namespace unitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
@@ -85,5 +87,23 @@ public class UnitTest1
 
         Assert.Equal(32, cheepsOnPage1.Count);
         Assert.Equal(8, cheepsOnPage2.Count);
+    }
+    
+    [Fact]
+    public async Task Test_CheepsForACertainPageByAuthor()
+    {
+        //Initialize the database
+        using var context = await Util.CreateInMemoryDatabase(2);
+
+        //Create the service
+        ICheepRepository cheepRepository = new CheepRepository(context);
+
+        var author = await cheepRepository.GetAuthorByNameAsync("Roger Histand");
+        var cheepsOnPage = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
+
+        foreach (var Cheep in cheepsOnPage)
+        {
+            Assert.Equal(Cheep.Author, author.Name);
+        }
     }
 }
