@@ -10,7 +10,7 @@ public class UnitTest1
     public async Task Test_FindAuthorByName(string Author)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
            
            
         //Create the service
@@ -25,7 +25,7 @@ public class UnitTest1
     public async Task Test_FindAuthorByEmail(string Email)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
         
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
@@ -39,7 +39,7 @@ public class UnitTest1
     public async Task Test_CreateNewAuthor()
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
         
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
@@ -53,7 +53,7 @@ public class UnitTest1
     public async Task Test_CreateNewCheep()
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
         
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);

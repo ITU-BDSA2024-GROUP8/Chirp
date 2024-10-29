@@ -13,7 +13,7 @@ public class IntegrationTest
     public async Task Test_GetCheepsUsingCheepService(string author, string message)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
 
 
         //Create the service
@@ -35,7 +35,7 @@ public class IntegrationTest
     public async Task Test_GetCheepsUsingCheepRepository(string author, string message)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
 
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
@@ -55,7 +55,7 @@ public class IntegrationTest
     public async Task Test_GetAuthor(String author, String email)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
         var authorByName = await cheepRepository.GetAuthorByNameAsync(author);
@@ -71,7 +71,7 @@ public class IntegrationTest
     public async Task Test_CreateCheep(String author, String email)
     {
         //Initialize the database
-        using var context = await Util.CreateInMemoryDatabase();
+        using var context = await Util.CreateInMemoryDatabase(1);
 
         //Create the service
         ICheepRepository cheepRepository = new CheepRepository(context);
