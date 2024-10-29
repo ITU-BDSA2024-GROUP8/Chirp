@@ -61,7 +61,7 @@ public class IntegrationTest
         var authorByName = await cheepRepository.GetAuthorByNameAsync(author);
         var authorByEmail = await cheepRepository.GetAuthorByEmailAsync(email);
         //Assert that the data is correct
-        Assert.Equal(author, authorByName?.UserName);
+        Assert.Equal(author, authorByName?.Name);
         Assert.Equal(email, authorByEmail?.Email);
     }
 
