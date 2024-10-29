@@ -70,4 +70,20 @@ public class UnitTest1
         
         Assert.Equal(1, newCheepsFromAuthor.Count);
     }
+    
+    [Fact]
+    public async Task Test_CheepsForACertainPage()
+    {
+        //Initialize the database
+        using var context = await Util.CreateInMemoryDatabase(2);
+
+        //Create the service
+        ICheepRepository cheepRepository = new CheepRepository(context);
+
+        var cheepsOnPage1 = await cheepRepository.GetCheepsAsync(1);
+        var cheepsOnPage2 = await cheepRepository.GetCheepsAsync(2);
+
+        Assert.Equal(32, cheepsOnPage1.Count);
+        Assert.Equal(8, cheepsOnPage2.Count);
+    }
 }
