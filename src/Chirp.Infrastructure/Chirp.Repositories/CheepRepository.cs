@@ -38,7 +38,7 @@ public class CheepRepository : ICheepRepository
             {
                 Author = a.Name,
                 Message = c.Text,
-                Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
+                Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
         
         return await query.ToListAsync();
@@ -55,7 +55,7 @@ public class CheepRepository : ICheepRepository
             {
                 Author = a.Name,
                 Message = c.Text,
-                Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
+                Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
         
         return await query.ToListAsync();

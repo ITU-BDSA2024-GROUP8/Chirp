@@ -9,5 +9,5 @@ public class CheepDTO
     [Required]
     public required string Message { get; set; }
     [Required]
-    public required string Timestamp { get; set; }
+    public required DateTime Timestamp { get; set; }
 }
