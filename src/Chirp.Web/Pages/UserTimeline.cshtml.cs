@@ -9,9 +9,6 @@ public class UserTimelineModel : PageModel
     private readonly ICheepService _service;
     public required List<CheepDTO> Cheeps { get; set; }
 
-    [BindProperty]
-    public string Text { get; set; }
-
     public UserTimelineModel(ICheepService service)
     {
         _service = service;
@@ -23,22 +20,5 @@ public class UserTimelineModel : PageModel
         int page = int.TryParse(pageQuery, out page) ? Math.Abs(page) : 1;
         Cheeps = await _service.GetCheepsFromAuthor(page, author);
         return Page();
-    }
-
-    public async Task<ActionResult> OnPost()
-    {
-        if (!ModelState.IsValid)
-        {
-            return Page();
-        }
-
-        await _service.PostCheep(new CheepDTO
-        {
-            Message = Text,
-            Author = User.Identity.Name,
-            Timestamp = DateTime.Now
-        });
-
-        return RedirectToPage();
     }
 }

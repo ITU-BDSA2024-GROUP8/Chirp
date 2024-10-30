@@ -1,5 +1,10 @@
 ﻿@page "/{author}"
+@using Chirp.Infrastructure.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Author> UserManager
+
 @model Chirp.Web.Pages.UserTimelineModel
+    
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -9,16 +14,11 @@
 <div>
     <h2> @routeName's Timeline </h2>
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        <div class="cheepbox">
-            <h3>What's on your mind @(User.Identity.Name)?</h3>
-            <form method="post">
-                <input style="float: left" type="text" asp-for="Text">
-                <input type="submit" value="Share">
-            </form>
-        </div>
-    }
+    <partial name="_CheepBoxPartial" model="new Chirp.Web.Pages.CheepBoxPartialModel()" />
+
+    <partial name="_HejPartial"/>
+
+    @{ await Html.RenderPartialAsync("_CheepCreationPartial", Chirp.Web.Pages.CheepBoxPartialModel); }
 
     @if (Model.Cheeps.Any())
     {

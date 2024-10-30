@@ -1,19 +1,15 @@
-@using Microsoft.AspNetCore.Identity
-@using Chirp.Infrastructure.Models;
 @inject SignInManager<Author> SignInManager
-@inject UserManager<Author> UserManager
 
 <div class=navigation>
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity!.IsAuthenticated)
     {
         var author = await UserManager.GetUserAsync(User);
-        if(author == null) return;
         
         <div>
-            <a href="/@(author.Name)">my timeline</a> |
+            <a href="/@(author!.Name)">my timeline</a> |
             <a href="/">public timeline</a> |
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
-                <button  type="submit" class="nav-link btn btn-link text-dark">logout [@(User.Identity.Name)]</button>
+                <button  type="submit" class="nav-link btn btn-link text-dark">logout [@(author.Name)]</button>
             </form>
         </div>
     }
