@@ -9,16 +9,13 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
+    var cheepFormModel = new Chirp.Web.Pages.Models.CheepFormModel();
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
 
-    <partial name="_CheepBoxPartial" model="new Chirp.Web.Pages.CheepBoxPartialModel()" />
-
-    <partial name="_HejPartial"/>
-
-    @{ await Html.RenderPartialAsync("_CheepCreationPartial", Chirp.Web.Pages.CheepBoxPartialModel); }
+    <partial name="_CheepFormPartial" model="cheepFormModel" />
 
     @if (Model.Cheeps.Any())
     {
