@@ -1,18 +1,15 @@
 ﻿using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Models;
+using Chirp.Web.Pages.Base;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : BaseCheepFormPage
 {
-    private readonly ICheepService _service;
-    public required List<CheepDTO> Cheeps { get; set; }
-
-    public UserTimelineModel(ICheepService service)
-    {
-        _service = service;
-    }
+    public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
+        : base(service, userManager) {}
 
     public async Task<ActionResult> OnGet(string author)
     {

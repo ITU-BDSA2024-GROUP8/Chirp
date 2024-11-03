@@ -16,6 +16,7 @@ public interface ICheepRepository
     //Command methods
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
+    public Task PostCheepAsync(Cheep cheep);
 }
 
 public class CheepRepository : ICheepRepository
@@ -38,7 +39,7 @@ public class CheepRepository : ICheepRepository
             {
                 Author = a.Name,
                 Message = c.Text,
-                Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
+                Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
         
         return await query.ToListAsync();
@@ -55,7 +56,7 @@ public class CheepRepository : ICheepRepository
             {
                 Author = a.Name,
                 Message = c.Text,
-                Timestamp = c.TimeStamp.ToString("MM/dd/yy H:mm:ss")
+                Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
         
         return await query.ToListAsync();
@@ -121,5 +122,11 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
 
         return newAuthor;
+    }
+
+    public async Task PostCheepAsync(Cheep cheep){
+        _dbContext.Cheeps.Add(cheep);
+        cheep.Author.Cheeps.Add(cheep);
+        await _dbContext.SaveChangesAsync();
     }
 }

@@ -1,0 +1,14 @@
+@model Chirp.Web.Pages.Models.CheepFormModel
+
+@if (User.Identity!.IsAuthenticated)
+{
+    var author = await UserManager.GetUserAsync(User);
+
+    <div class="cheepbox">
+        <h3>What's on your mind @(author!.Name)?</h3>
+        <form method="post">
+            <input style="float: left" type="text" asp-for="Message">
+            <input type="submit" value="Share">
+        </form>
+    </div>
+}

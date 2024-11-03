@@ -5,9 +5,15 @@
     Layout = "Shared/_Layout";
 }
 
+@{
+    var cheepFormModel = new Chirp.Web.Pages.Models.CheepFormModel();
+}
+
 <div>
     <h2> Public Timeline </h2>
-
+    
+    <partial name="_CheepFormPartial" model="cheepFormModel" />
+    
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
@@ -19,7 +25,7 @@
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
+                        <small>&mdash; @cheep.Timestamp.ToString("MM/dd/yy H:mm:ss")</small>
                     </p>
                 </li>
             }

@@ -1,13 +1,21 @@
 ﻿@page "/{author}"
+@using Chirp.Infrastructure.Models
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<Author> UserManager
+
 @model Chirp.Web.Pages.UserTimelineModel
+    
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
+    var cheepFormModel = new Chirp.Web.Pages.Models.CheepFormModel();
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
+
+    <partial name="_CheepFormPartial" model="cheepFormModel" />
 
     @if (Model.Cheeps.Any())
     {
@@ -20,7 +28,7 @@
                             <a href="/@cheep.Author">@cheep.Author</a>
                         </strong>
                         @cheep.Message
-                        <small>&mdash; @cheep.Timestamp</small>
+                        <small>&mdash; @cheep.Timestamp.ToString("MM/dd/yy H:mm:ss")</small>
                     </p>
                 </li>
             }
