@@ -19,7 +19,13 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AuthenticatedOnly", policy =>
+        policy.RequireAuthenticatedUser());
+});
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -39,13 +45,32 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+//Custom redirect policy to the /Register and /Login page
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/Identity/Account/Register") && (context.User.Identity?.IsAuthenticated ?? true))
+    {
+        context.Response.Redirect("/");
+    }
+    else if(context.Request.Path.StartsWithSegments("/Identity/Account/Login") && (context.User.Identity?.IsAuthenticated ?? true)) 
+    {
+        context.Response.Redirect("/");
+    }
+    else
+    {
+        await next();
+    }
+});
 
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
     if (context == null) return;
+     using (context)
+    {
     if(DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
+    }
 }
 
 app.Run();

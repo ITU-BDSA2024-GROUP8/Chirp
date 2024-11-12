@@ -86,5 +86,4 @@ public class IntegrationTest
         //Assert we have three and only three cheeps
         Assert.Equal(3, cheeps.Count);
     }
-
 }
