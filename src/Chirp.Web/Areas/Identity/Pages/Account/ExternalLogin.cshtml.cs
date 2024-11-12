@@ -137,7 +137,6 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             
-            // Create a new user
             var user = CreateUser();
             
             user.Name = username;
