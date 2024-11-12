@@ -20,11 +20,17 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
-builder.Services.AddAuthentication(options => { /* Authentication options */ })
-    .AddGitHub(options =>
+builder.Services.AddAuthentication(options =>
     {
-        options.ClientId = builder.Configuration["authentication_github_clientId"];
-        options.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        options.DefaultChallengeScheme = "GitHub";
+    })
+    .AddCookie()
+    .AddGitHub(o =>
+    {
+        o.ClientId = builder.Configuration["authentication_github_clientId"];
+        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        o.CallbackPath = "/signin-github";
+        o.Scope.Add("user:email");
     });
 
 var app = builder.Build();
@@ -44,7 +50,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-// app.UseSession();
 
 app.MapRazorPages();
 
