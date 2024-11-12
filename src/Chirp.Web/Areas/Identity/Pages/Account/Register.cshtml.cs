@@ -22,7 +22,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
-
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<Author> _signInManager;
