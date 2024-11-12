@@ -19,11 +19,6 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AuthenticatedOnly", policy =>
-        policy.RequireAuthenticatedUser());
-});
 var app = builder.Build();
 
 
