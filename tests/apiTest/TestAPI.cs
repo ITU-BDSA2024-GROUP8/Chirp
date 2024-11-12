@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-
 namespace apiTest;
+
+using Microsoft.AspNetCore.Mvc.Testing;
 public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _fixture;
