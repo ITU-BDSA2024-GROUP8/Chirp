@@ -2,6 +2,7 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,19 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultChallengeScheme = "GitHub";
+    })
+    .AddCookie()
+    .AddGitHub(o =>
+    {
+        o.ClientId = builder.Configuration["authentication_github_clientId"];
+        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        o.CallbackPath = "/signin-github";
+        o.Scope.Add("user:email");
+    });
 
 var app = builder.Build();
 
