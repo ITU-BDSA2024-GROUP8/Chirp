@@ -10,4 +10,10 @@ public class Author : IdentityUser
 
     [Required]
     public required string Name { get; set; }
+    
+    [Required]
+    public required ICollection<AuthorFollower> Followers { get; set; }
+    
+    [Required]
+    public required ICollection<AuthorFollower> Following { get; set; }
 }

@@ -15,18 +15,18 @@ public static class DbInitializer
     {
         if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
         {
-            var a1 = new Author() { Name = "Roger Histand", UserName = "Roger+Histand@hotmail.com", Email = "Roger+Histand@hotmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a2 = new Author() { Name = "Luanna Muro", UserName = "Luanna-Muro@ku.dk", Email = "Luanna-Muro@ku.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a3 = new Author() { Name = "Wendell Ballan", UserName = "Wendell-Ballan@gmail.com", Email = "Wendell-Ballan@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a4 = new Author() { Name = "Nathan Sirmon", UserName = "Nathan+Sirmon@dtu.dk", Email = "Nathan+Sirmon@dtu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a5 = new Author() { Name = "Quintin Sitts", UserName = "Quintin+Sitts@itu.dk", Email = "Quintin+Sitts@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a6 = new Author() { Name = "Mellie Yost", UserName = "Mellie+Yost@ku.dk", Email = "Mellie+Yost@ku.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a7 = new Author() { Name = "Malcolm Janski", UserName = "Malcolm-Janski@gmail.com", Email = "Malcolm-Janski@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a8 = new Author() { Name = "Octavio Wagganer", UserName = "Octavio.Wagganer@dtu.dk", Email = "Octavio.Wagganer@dtu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a9 = new Author() { Name = "Johnnie Calixto", UserName = "Johnnie+Calixto@itu.dk", Email = "Johnnie+Calixto@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a10 = new Author() { Name = "Jacqualine Gilcoine", UserName = "Jacqualine.Gilcoine@gmail.com", Email = "Jacqualine.Gilcoine@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a11 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
-            var a12 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>() };
+            var a1 = new Author() { Name = "Roger Histand", UserName = "Roger+Histand@hotmail.com", Email = "Roger+Histand@hotmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>()};
+            var a2 = new Author() { Name = "Luanna Muro", UserName = "Luanna-Muro@ku.dk", Email = "Luanna-Muro@ku.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a3 = new Author() { Name = "Wendell Ballan", UserName = "Wendell-Ballan@gmail.com", Email = "Wendell-Ballan@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a4 = new Author() { Name = "Nathan Sirmon", UserName = "Nathan+Sirmon@dtu.dk", Email = "Nathan+Sirmon@dtu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a5 = new Author() { Name = "Quintin Sitts", UserName = "Quintin+Sitts@itu.dk", Email = "Quintin+Sitts@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a6 = new Author() { Name = "Mellie Yost", UserName = "Mellie+Yost@ku.dk", Email = "Mellie+Yost@ku.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a7 = new Author() { Name = "Malcolm Janski", UserName = "Malcolm-Janski@gmail.com", Email = "Malcolm-Janski@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a8 = new Author() { Name = "Octavio Wagganer", UserName = "Octavio.Wagganer@dtu.dk", Email = "Octavio.Wagganer@dtu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a9 = new Author() { Name = "Johnnie Calixto", UserName = "Johnnie+Calixto@itu.dk", Email = "Johnnie+Calixto@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a10 = new Author() { Name = "Jacqualine Gilcoine", UserName = "Jacqualine.Gilcoine@gmail.com", Email = "Jacqualine.Gilcoine@gmail.com", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a11 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var a12 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
 
             var c1 = new Cheep() { CheepId = 1, AuthorId = a10.Id, Author = a10, Text = "They were married in Chicago, with old Smith, and was expected aboard every day; meantime, the two went past me.", TimeStamp = DateTime.Parse("2023-08-01 13:14:37") };
             var c2 = new Cheep() { CheepId = 2, AuthorId = a10.Id, Author = a10, Text = "And then, as he listened to all that''s left o'' twenty-one people.", TimeStamp = DateTime.Parse("2023-08-01 13:15:21") };

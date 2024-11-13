@@ -116,7 +116,9 @@ public class CheepRepository : ICheepRepository
         {
             Name = authorName,
             Email = authorEmail,
-            Cheeps = new List<Cheep>()
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
         };
 
         _dbContext.Authors.Add(newAuthor);
