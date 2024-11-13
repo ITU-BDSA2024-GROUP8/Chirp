@@ -41,4 +41,16 @@ public class BaseCheepFormPage : PageModel
 
         return RedirectToPage();
     }
+
+    public async Task<ActionResult> OnPostFollowAuthor(string author)
+    {
+        var currentAuthor = await _userManager.GetUserAsync(User);
+
+        await _service.FollowAuthor(currentAuthor, );
+    }
+    
+    public async Task<ActionResult> OnPostUnfollowAuthor()
+    {
+        
+    }
 }
