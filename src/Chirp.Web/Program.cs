@@ -53,6 +53,22 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
+//Custom redirect policy to the /Register and /Login page
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/Identity/Account/Register") && (context.User.Identity?.IsAuthenticated ?? true))
+    {
+        context.Response.Redirect("/");
+    }
+    else if(context.Request.Path.StartsWithSegments("/Identity/Account/Login") && (context.User.Identity?.IsAuthenticated ?? true)) 
+    {
+        context.Response.Redirect("/");
+    }
+    else
+    {
+        await next();
+    }
+});
 
 using (var scope = app.Services.CreateScope())
 {
