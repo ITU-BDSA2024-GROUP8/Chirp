@@ -8,7 +8,7 @@ public class Cheep
     public int CheepId { get; set; }
 
     [Required]
-    [StringLength(500)]
+    [StringLength(160)]
     public required string Text { get; set; }
 
     [Required]

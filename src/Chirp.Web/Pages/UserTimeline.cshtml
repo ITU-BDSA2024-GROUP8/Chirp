@@ -9,13 +9,12 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
-    var cheepFormModel = new Chirp.Web.Pages.Models.CheepFormModel();
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
 
-    <partial name="_CheepFormPartial" model="cheepFormModel" />
+    <partial name="_CheepFormPartial" model="Model.FormData" />
 
     @if (Model.Cheeps.Any())
     {
@@ -39,3 +38,7 @@
         <em>There are no cheeps so far.</em>
     }
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

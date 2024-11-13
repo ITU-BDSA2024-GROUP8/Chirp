@@ -35,6 +35,7 @@ public class CheepRepository : ICheepRepository
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
+            orderby c.TimeStamp descending
             select new CheepDTO
             {
                 Author = a.Name,
@@ -52,6 +53,7 @@ public class CheepRepository : ICheepRepository
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
             where a.Name == author
+            orderby c.TimeStamp descending
             select new CheepDTO
             {
                 Author = a.Name,
