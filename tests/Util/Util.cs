@@ -13,8 +13,8 @@ public class Util
     {
         if (seed == 1)
         {
-            Author author1 = new Author { Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>()};
-            Author author2 = new Author { Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>()};
+            Author author1 = new Author { Name = "TestUser1", Email = "Test1@exsample.dk", Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>()};
+            Author author2 = new Author { Name = "TestUser2", Email = "Test2@exsample.dk", Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>()};
             // Seed data
             context.Authors.AddRange(author1, author2);
 
@@ -25,7 +25,7 @@ public class Util
         }
         else
         {
-            var a1 = new Author() { Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
+            var a1 = new Author() { Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
             
             context.Authors.AddRange(a1);
             
