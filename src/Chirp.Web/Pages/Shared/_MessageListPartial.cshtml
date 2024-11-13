@@ -6,6 +6,17 @@
                 <strong>
                     <a href="/@cheep.Author">@cheep.Author</a>
                 </strong>
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    if (true)
+                    {
+                        <a>Follow</a>
+                    }
+                    else
+                    {
+                        <a>Unfollow</a>
+                    }
+                }
                 @cheep.Message
                 <small>&mdash; @cheep.Timestamp.ToString("MM/dd/yy H:mm:ss")</small>
             </p>

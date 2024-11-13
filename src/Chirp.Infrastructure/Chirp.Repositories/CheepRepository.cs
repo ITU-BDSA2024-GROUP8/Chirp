@@ -17,6 +17,8 @@ public interface ICheepRepository
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
     public Task PostCheepAsync(Cheep cheep);
+    public Task FollowAuthorAsync(Author currentAuthor, Author targetAuthor);
+    public Task UnfollowAuthorAsync(Author currentAuthor, Author targetAuthor);
 }
 
 public class CheepRepository : ICheepRepository
@@ -131,6 +133,32 @@ public class CheepRepository : ICheepRepository
     public async Task PostCheepAsync(Cheep cheep){
         _dbContext.Cheeps.Add(cheep);
         cheep.Author.Cheeps.Add(cheep);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task FollowAuthorAsync(Author currentAuthor, Author targetAuthor)
+    {
+        var followRelation = new AuthorFollower
+        {
+            FollowerId = currentAuthor.Id,
+            Follower = currentAuthor,
+            FollowingId = targetAuthor.Id,
+            Following = targetAuthor
+        };
+
+        _dbContext.AuthorFollowers.Add(followRelation);
+        
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task UnfollowAuthorAsync(Author currentAuthor, Author targetAuthor)
+    {
+        var followRelation =
+            await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
+                a.Follower == currentAuthor && a.Following == targetAuthor);
+        
+        _dbContext.AuthorFollowers.Remove(followRelation!);
+
         await _dbContext.SaveChangesAsync();
     }
 }

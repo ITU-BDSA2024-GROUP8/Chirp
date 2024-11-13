@@ -7,6 +7,8 @@ public interface ICheepService
     public Task<List<CheepDTO>> GetCheeps(int page);
     public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author);
     public Task PostCheep(Cheep cheep);
+    public Task FollowAuthor(Author currentAuthor, Author targetAuthor);
+    public Task UnfollowAuthor(Author currentAuthor, Author targetAuthor);
 }
 
 public class CheepService : ICheepService
@@ -32,5 +34,13 @@ public class CheepService : ICheepService
 
     public async Task PostCheep(Cheep cheep){
         await _cheepRepository.PostCheepAsync(cheep);
+    }
+
+    public async Task FollowAuthor(Author currentAuthor, Author targetAuthor) {
+        await _cheepRepository.FollowAuthorAsync(currentAuthor, targetAuthor);
+    }
+    
+    public async Task UnfollowAuthor(Author currentAuthor, Author targetAuthor) {
+        await _cheepRepository.UnfollowAuthorAsync(currentAuthor, targetAuthor);
     }
 }
