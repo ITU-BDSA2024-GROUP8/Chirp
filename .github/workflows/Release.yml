@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
 
+    env:
+      authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+      authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
