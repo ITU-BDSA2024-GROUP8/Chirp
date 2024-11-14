@@ -15,7 +15,7 @@ public class UserTimelineModel : BaseCheepFormPage
     {
         var pageQuery = Request.Query["page"];
         int page = int.TryParse(pageQuery, out page) ? Math.Abs(page) : 1;
-        Cheeps = await _service.GetCheepsFromAuthor(page, author);
+        Cheeps = await _service.GetCheepsFromUserTimeline(page, author);
 
         if(User.Identity!.IsAuthenticated){
             await FilterFollowers();

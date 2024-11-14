@@ -10,6 +10,7 @@ public interface ICheepRepository
     //Query methods
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
     public Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author);
+    public Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author);
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
 
@@ -56,6 +57,27 @@ public class CheepRepository : ICheepRepository
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
             where a.Name == author
+            orderby c.TimeStamp descending
+            select new CheepDTO
+            {
+                Author = a.Name,
+                Message = c.Text,
+                Timestamp = c.TimeStamp
+            }).Skip((page*32)-32).Take(32);
+        
+        return await query.ToListAsync();
+    }
+
+    public async Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
+    {
+        var query = (
+            from c in _dbContext.Cheeps
+            join a in _dbContext.Authors 
+                on c.AuthorId equals a.Id
+            join f in _dbContext.AuthorFollowers
+                on a.Id equals f.FollowerId
+            where a.Name == author || f.Follower.Name == author
+            
             orderby c.TimeStamp descending
             select new CheepDTO
             {
