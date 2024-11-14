@@ -17,8 +17,8 @@ public interface ICheepRepository
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
     public Task PostCheepAsync(Cheep cheep);
-    public Task FollowAuthorAsync(Author currentAuthor, Author targetAuthor);
-    public Task UnfollowAuthorAsync(Author currentAuthor, Author targetAuthor);
+    public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
+    public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
 }
 
 public class CheepRepository : ICheepRepository
@@ -136,13 +136,16 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task FollowAuthorAsync(Author currentAuthor, Author targetAuthor)
+    public async Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName)
     {
+        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
+        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
+
         var followRelation = new AuthorFollower
         {
-            FollowerId = currentAuthor.Id,
+            FollowerId = currentAuthor!.Id,
             Follower = currentAuthor,
-            FollowingId = targetAuthor.Id,
+            FollowingId = targetAuthor!.Id,
             Following = targetAuthor
         };
 
@@ -151,12 +154,15 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task UnfollowAuthorAsync(Author currentAuthor, Author targetAuthor)
+    public async Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName)
     {
+        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
+        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
+
         var followRelation =
             await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
-                a.Follower == currentAuthor && a.Following == targetAuthor);
-        
+                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+
         _dbContext.AuthorFollowers.Remove(followRelation!);
 
         await _dbContext.SaveChangesAsync();
