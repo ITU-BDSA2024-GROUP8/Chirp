@@ -18,7 +18,7 @@ public class PublicModel : BaseCheepFormPage
         Cheeps = await _service.GetCheeps(page);
 
         if(User.Identity!.IsAuthenticated){
-            await FilterFollowers();
+            await PopulateFollows();
         }
         
         return Page();

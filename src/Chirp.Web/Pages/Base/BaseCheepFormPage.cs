@@ -60,7 +60,7 @@ public class BaseCheepFormPage : PageModel
         return RedirectToPage();
     }
 
-    public async Task FilterFollowers(){
+    public async Task PopulateFollows(){
         Follows = new Dictionary<string, bool>();
 
         var currentAuthor = await _userManager.GetUserAsync(User);
