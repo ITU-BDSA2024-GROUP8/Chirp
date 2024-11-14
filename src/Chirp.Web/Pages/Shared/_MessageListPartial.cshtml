@@ -2,24 +2,36 @@
     @foreach (var cheep in Model.Cheeps)
     {
         <li>
-            <p>
+            <div>
                 <strong>
                     <a href="/@cheep.Author">@cheep.Author</a>
                 </strong>
+
                 @if (User.Identity!.IsAuthenticated)
                 {
                     if (true)
                     {
-                        <a>Follow</a>
+                        <form method="post" asp-page-handler="FollowAuthor" style="display:inline;">
+                            <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
+                            <button type="submit" class="link-style-button">[Follow]</button>
+                        </form>
                     }
                     else
                     {
-                        <a>Unfollow</a>
+                        <form method="post" asp-page-handler="UnfollowAuthor" style="display:inline;">
+                            <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
+                            <button type="submit" class="link-style-button">[Unfollow]</button>
+                        </form>
                     }
                 }
-                @cheep.Message
-                <small>&mdash; @cheep.Timestamp.ToString("MM/dd/yy H:mm:ss")</small>
-            </p>
+
+                <p style="display:inline;">
+                    @cheep.Message
+                    <span>
+                        <small>&mdash; @cheep.Timestamp.ToString("MM/dd/yy H:mm:ss")</small>
+                    </span>
+                </p>
+            </div>
         </li>
     }
 </ul>
