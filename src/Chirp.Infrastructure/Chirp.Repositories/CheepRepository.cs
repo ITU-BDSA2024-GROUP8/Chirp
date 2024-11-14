@@ -70,21 +70,33 @@ public class CheepRepository : ICheepRepository
 
     public async Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
     {
-        var query = (
+        var authorCheeps = (
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
-            join f in _dbContext.AuthorFollowers
-                on a.Id equals f.FollowerId
-            where a.Name == author || f.Follower.Name == author
-            
-            orderby c.TimeStamp descending
+            where a.Name == author
+ 
             select new CheepDTO
             {
                 Author = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
-            }).Skip((page*32)-32).Take(32);
+            });
+
+        var followingCheeps = (
+            from f in _dbContext.AuthorFollowers
+            join c in _dbContext.Cheeps
+                on f.FollowingId equals c.AuthorId
+            where f.Follower.Name == author
+
+            select new CheepDTO
+            {
+                Author = c.Author.Name,
+                Message = c.Text,
+                Timestamp = c.TimeStamp
+            });
+
+        var query = authorCheeps.Union(followingCheeps).OrderByDescending(c => c.Timestamp).Skip((page * 32) - 32).Take(32);
         
         return await query.ToListAsync();
     }
