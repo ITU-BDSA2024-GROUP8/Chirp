@@ -12,7 +12,7 @@ public class BaseCheepFormPage : PageModel
     [BindProperty]
     public CheepFormModel FormData { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public Dictionary<string, bool> Follows { get; set; } = new Dictionary<string, bool>();
+    public Dictionary<string, bool> Follows { get; set; }
     protected readonly ICheepService _service;
     protected readonly UserManager<Author> _userManager;
 
@@ -61,6 +61,8 @@ public class BaseCheepFormPage : PageModel
     }
 
     public async Task FilterFollowers(){
+        Follows = new Dictionary<string, bool>();
+
         var currentAuthor = await _userManager.GetUserAsync(User);
         var currentAuthorName = currentAuthor!.Name;
 
