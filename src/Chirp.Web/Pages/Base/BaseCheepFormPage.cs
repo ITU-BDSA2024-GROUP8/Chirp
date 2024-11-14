@@ -59,4 +59,19 @@ public class BaseCheepFormPage : PageModel
 
         return RedirectToPage();
     }
+
+    public async Task FilterFollowers(){
+        var currentAuthor = await _userManager.GetUserAsync(User);
+        var currentAuthorName = currentAuthor!.Name;
+
+        foreach (var cheep in Cheeps)
+        {
+            var targetAuthorName = cheep.Author;
+            if(Follows.ContainsKey(targetAuthorName)){
+                continue;
+            }
+            var isFollowing = await _service.IsFollowing(currentAuthorName, targetAuthorName);
+            Follows[targetAuthorName] = isFollowing;
+        }
+    }
 }
