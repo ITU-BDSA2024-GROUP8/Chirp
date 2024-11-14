@@ -9,18 +9,18 @@
 
                 @if (User.Identity!.IsAuthenticated)
                 {
-                    if (true)
-                    {
-                        <form method="post" asp-page-handler="FollowAuthor" style="display:inline;">
-                            <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
-                            <button type="submit" class="link-style-button">[Follow]</button>
-                        </form>
-                    }
-                    else
+                    if (Model.Follows[@cheep.Author])
                     {
                         <form method="post" asp-page-handler="UnfollowAuthor" style="display:inline;">
                             <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
                             <button type="submit" class="link-style-button">[Unfollow]</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form method="post" asp-page-handler="FollowAuthor" style="display:inline;">
+                            <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
+                            <button type="submit" class="link-style-button">[Follow]</button>
                         </form>
                     }
                 }
