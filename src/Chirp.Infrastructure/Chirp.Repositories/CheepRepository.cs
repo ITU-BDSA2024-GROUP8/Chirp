@@ -10,6 +10,7 @@ public interface ICheepRepository
     //Query methods
     public Task<List<CheepDTO>> GetCheepsAsync(int page);
     public Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author);
+    public Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author);
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
 
@@ -17,6 +18,9 @@ public interface ICheepRepository
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
     public Task PostCheepAsync(Cheep cheep);
+    public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
+    public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
+    public Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName);
 }
 
 public class CheepRepository : ICheepRepository
@@ -60,6 +64,39 @@ public class CheepRepository : ICheepRepository
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
+        
+        return await query.ToListAsync();
+    }
+
+    public async Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
+    {
+        var authorCheeps = (
+            from c in _dbContext.Cheeps
+            join a in _dbContext.Authors 
+                on c.AuthorId equals a.Id
+            where a.Name == author
+ 
+            select new CheepDTO
+            {
+                Author = a.Name,
+                Message = c.Text,
+                Timestamp = c.TimeStamp
+            });
+
+        var followingCheeps = (
+            from f in _dbContext.AuthorFollowers
+            join c in _dbContext.Cheeps
+                on f.FollowingId equals c.AuthorId
+            where f.Follower.Name == author
+
+            select new CheepDTO
+            {
+                Author = c.Author.Name,
+                Message = c.Text,
+                Timestamp = c.TimeStamp
+            });
+
+        var query = authorCheeps.Union(followingCheeps).OrderByDescending(c => c.Timestamp).Skip((page * 32) - 32).Take(32);
         
         return await query.ToListAsync();
     }
@@ -132,5 +169,48 @@ public class CheepRepository : ICheepRepository
         _dbContext.Cheeps.Add(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    {
+        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
+        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
+
+        var followRelation = new AuthorFollower
+        {
+            FollowerId = currentAuthor!.Id,
+            Follower = currentAuthor,
+            FollowingId = targetAuthor!.Id,
+            Following = targetAuthor
+        };
+
+        _dbContext.AuthorFollowers.Add(followRelation);
+        
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    {
+        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
+        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
+
+        var followRelation =
+            await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
+                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+
+        _dbContext.AuthorFollowers.Remove(followRelation!);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName) {
+        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
+        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
+
+        var followRelation =
+            await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
+                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+        
+        return followRelation != null;
     }
 }

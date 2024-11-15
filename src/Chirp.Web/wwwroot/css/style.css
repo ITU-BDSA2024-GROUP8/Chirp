@@ -287,3 +287,17 @@ ul.nav li a {
 ul.nav li a:hover {
     background-color: #8b4949;
 }
+
+.link-style-button {
+  all:unset;
+  color: #26776F;
+  cursor: pointer;
+  font-weight:bold;
+}
+
+.link-style-button:hover {
+  all:unset;
+  color: #333;
+  cursor: pointer;
+  font-weight:bold;
+}

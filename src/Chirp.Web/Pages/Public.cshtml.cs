@@ -16,6 +16,11 @@ public class PublicModel : BaseCheepFormPage
         var pageQuery = Request.Query["page"];
         int page = int.TryParse(pageQuery, out page) ? Math.Abs(page) : 1;
         Cheeps = await _service.GetCheeps(page);
+
+        if(User.Identity!.IsAuthenticated){
+            await PopulateFollows();
+        }
+        
         return Page();
     }
 }
