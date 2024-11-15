@@ -21,13 +21,12 @@ public class UserTimelineModel : BaseCheepFormPage
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
                 Cheeps = await _service.GetCheepsFromUserTimeline(page, author);
+            } else {
+                Cheeps = await _service.GetCheepsFromAuthor(page, author);
             }
+            await PopulateFollows();
         } else {
             Cheeps = await _service.GetCheepsFromAuthor(page, author);
-        }
-
-        if(User.Identity!.IsAuthenticated){
-            await PopulateFollows();
         }
 
         return Page();
