@@ -183,9 +183,7 @@ public class CheepRepository : ICheepRepository
         var followRelation = new AuthorFollower
         {
             FollowerId = currentAuthor!.Id,
-            Follower = currentAuthor,
             FollowingId = targetAuthor!.Id,
-            Following = targetAuthor
         };
 
         _dbContext.AuthorFollowers.Add(followRelation);
