@@ -33,7 +33,6 @@ public class BaseCheepFormPage : PageModel
         
         await _service.PostCheep(new Cheep
         {
-            Author = author,
             AuthorId = author.Id,
             Text = FormData.Message,
             TimeStamp = DateTime.Now

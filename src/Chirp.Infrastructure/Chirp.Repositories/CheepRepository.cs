@@ -139,7 +139,6 @@ public class CheepRepository : ICheepRepository
         var newCheep = new Cheep
         {
             AuthorId = author.Id,
-            Author = author,
             Text = text,
             TimeStamp = DateTime.Now
         };
