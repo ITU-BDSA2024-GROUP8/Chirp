@@ -20,7 +20,7 @@ public interface ICheepRepository
     public Task PostCheepAsync(Cheep cheep);
     public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
 }
 
 public class CheepRepository : ICheepRepository
@@ -207,13 +207,10 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName) {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
+    public async Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId) {
         var followRelation =
             await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
-                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+                a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
         
         return followRelation != null;
     }

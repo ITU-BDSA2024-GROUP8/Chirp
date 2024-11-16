@@ -10,7 +10,7 @@ public interface ICheepService
     public Task PostCheep(Cheep cheep);
     public Task FollowAuthor(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthor(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowing(string currentAuthorName, string targetAuthorName);
+    public Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId);
 }
 
 public class CheepService : ICheepService
@@ -50,7 +50,7 @@ public class CheepService : ICheepService
         await _cheepRepository.UnfollowAuthorAsync(currentAuthorName, targetAuthorName);
     }
 
-    public async Task<bool> IsFollowing(string currentAuthorName, string targetAuthorName) {
-        return await _cheepRepository.IsFollowingAsync(currentAuthorName, targetAuthorName);
+    public async Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId) {
+        return await _cheepRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
     }
 }
