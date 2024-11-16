@@ -104,7 +104,7 @@ public class UnitTest1
 
         foreach (var cheep in cheepsOnPage)
         {
-            Assert.Equal(cheep.Author, author.Name);
+            Assert.Equal(cheep.AuthorName, author.Name);
         }
     }
 }

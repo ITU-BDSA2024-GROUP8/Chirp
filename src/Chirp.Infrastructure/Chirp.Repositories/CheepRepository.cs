@@ -42,7 +42,8 @@ public class CheepRepository : ICheepRepository
             orderby c.TimeStamp descending
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
@@ -60,7 +61,8 @@ public class CheepRepository : ICheepRepository
             orderby c.TimeStamp descending
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
@@ -78,7 +80,8 @@ public class CheepRepository : ICheepRepository
  
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             });
@@ -91,7 +94,8 @@ public class CheepRepository : ICheepRepository
 
             select new CheepDTO
             {
-                Author = c.Author.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = c.Author.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             });
