@@ -42,12 +42,12 @@ public class CheepService : ICheepService
         await _cheepRepository.PostCheepAsync(cheep);
     }
 
-    public async Task FollowAuthor(string currentAuthorName, string targetAuthorName) {
-        await _cheepRepository.FollowAuthorAsync(currentAuthorName, targetAuthorName);
+    public async Task FollowAuthor(string currentAuthorId, string targetAuthorId) {
+        await _cheepRepository.FollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
     
-    public async Task UnfollowAuthor(string currentAuthorName, string targetAuthorName) {
-        await _cheepRepository.UnfollowAuthorAsync(currentAuthorName, targetAuthorName);
+    public async Task UnfollowAuthor(string currentAuthorId, string targetAuthorId) {
+        await _cheepRepository.UnfollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
 
     public async Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId) {

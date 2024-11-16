@@ -42,20 +42,20 @@ public class BaseCheepFormPage : PageModel
         return RedirectToPage();
     }
 
-    public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorName)
+    public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorId)
     {
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.FollowAuthor(currentAuthor!.Name, targetAuthorName);
+        await _service.FollowAuthor(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
     
-    public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorName)
+    public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorId)
     {
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.UnfollowAuthor(currentAuthor!.Name, targetAuthorName);
+        await _service.UnfollowAuthor(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }

@@ -16,7 +16,7 @@
                         var isFollowing = Model.Follows[cheep.AuthorId];
 
                         <form method="post" asp-page-handler="@(isFollowing ? "UnfollowAuthor" : "FollowAuthor")" style="display:inline;">
-                            <input type="hidden" name="targetAuthorName" value="@cheep.AuthorName" />
+                            <input type="hidden" name="targetAuthorId" value="@cheep.AuthorId" />
                             <button type="submit" class="link-style-button">[@(isFollowing ? "Unfollow" : "Follow")]</button>
                         </form>
                     }

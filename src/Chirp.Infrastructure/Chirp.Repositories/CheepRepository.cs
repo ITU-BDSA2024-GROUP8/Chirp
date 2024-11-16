@@ -175,15 +175,12 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
         var followRelation = new AuthorFollower
         {
-            FollowerId = currentAuthor!.Id,
-            FollowingId = targetAuthor!.Id,
+            FollowerId = currentAuthorId,
+            FollowingId = targetAuthorId
         };
 
         _dbContext.AuthorFollowers.Add(followRelation);
@@ -191,14 +188,11 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
         var followRelation =
             await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
-                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+                a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
 
         _dbContext.AuthorFollowers.Remove(followRelation!);
 
