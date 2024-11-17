@@ -17,6 +17,5 @@ public class Cheep
     [Required]
     public required string AuthorId { get; set; }
     
-    [Required]
     public Author Author { get; set; }
 }
