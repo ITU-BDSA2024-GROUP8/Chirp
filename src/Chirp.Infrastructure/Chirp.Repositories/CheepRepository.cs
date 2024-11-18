@@ -20,7 +20,7 @@ public interface ICheepRepository
     public Task PostCheepAsync(Cheep cheep);
     public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
 }
 
 public class CheepRepository : ICheepRepository
@@ -42,7 +42,8 @@ public class CheepRepository : ICheepRepository
             orderby c.TimeStamp descending
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
@@ -60,7 +61,8 @@ public class CheepRepository : ICheepRepository
             orderby c.TimeStamp descending
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             }).Skip((page*32)-32).Take(32);
@@ -78,7 +80,8 @@ public class CheepRepository : ICheepRepository
  
             select new CheepDTO
             {
-                Author = a.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             });
@@ -91,7 +94,8 @@ public class CheepRepository : ICheepRepository
 
             select new CheepDTO
             {
-                Author = c.Author.Name,
+                AuthorId = c.AuthorId,
+                AuthorName = c.Author.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
             });
@@ -135,7 +139,6 @@ public class CheepRepository : ICheepRepository
         var newCheep = new Cheep
         {
             AuthorId = author.Id,
-            Author = author,
             Text = text,
             TimeStamp = DateTime.Now
         };
@@ -171,17 +174,12 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
         var followRelation = new AuthorFollower
         {
-            FollowerId = currentAuthor!.Id,
-            Follower = currentAuthor,
-            FollowingId = targetAuthor!.Id,
-            Following = targetAuthor
+            FollowerId = currentAuthorId,
+            FollowingId = targetAuthorId
         };
 
         _dbContext.AuthorFollowers.Add(followRelation);
@@ -189,27 +187,21 @@ public class CheepRepository : ICheepRepository
         await _dbContext.SaveChangesAsync();
     }
     
-    public async Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName)
+    public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
         var followRelation =
             await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
-                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+                a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
 
         _dbContext.AuthorFollowers.Remove(followRelation!);
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> IsFollowingAsync(string currentAuthorName, string targetAuthorName) {
-        var currentAuthor = await GetAuthorByNameAsync(currentAuthorName);
-        var targetAuthor = await GetAuthorByNameAsync(targetAuthorName);
-
+    public async Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId) {
         var followRelation =
             await _dbContext.AuthorFollowers.SingleOrDefaultAsync(a =>
-                a.Follower.Id == currentAuthor!.Id && a.Following.Id == targetAuthor!.Id);
+                a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
         
         return followRelation != null;
     }

@@ -33,7 +33,6 @@ public class BaseCheepFormPage : PageModel
         
         await _service.PostCheep(new Cheep
         {
-            Author = author,
             AuthorId = author.Id,
             Text = FormData.Message,
             TimeStamp = DateTime.Now
@@ -42,20 +41,20 @@ public class BaseCheepFormPage : PageModel
         return RedirectToPage();
     }
 
-    public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorName)
+    public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorId)
     {
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.FollowAuthor(currentAuthor!.Name, targetAuthorName);
+        await _service.FollowAuthor(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
     
-    public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorName)
+    public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorId)
     {
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.UnfollowAuthor(currentAuthor!.Name, targetAuthorName);
+        await _service.UnfollowAuthor(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -64,16 +63,16 @@ public class BaseCheepFormPage : PageModel
         Follows = new Dictionary<string, bool>();
 
         var currentAuthor = await _userManager.GetUserAsync(User);
-        var currentAuthorName = currentAuthor!.Name;
+        var currentAuthorId = currentAuthor!.Id;
 
         foreach (var cheep in Cheeps)
         {
-            var targetAuthorName = cheep.Author;
-            if(Follows.ContainsKey(targetAuthorName)){
+            var targetAuthorId = cheep.AuthorId;
+            if(Follows.ContainsKey(targetAuthorId)){
                 continue;
             }
-            var isFollowing = await _service.IsFollowing(currentAuthorName, targetAuthorName);
-            Follows[targetAuthorName] = isFollowing;
+            var isFollowing = await _service.IsFollowing(currentAuthorId, targetAuthorId);
+            Follows[targetAuthorId] = isFollowing;
         }
     }
 }

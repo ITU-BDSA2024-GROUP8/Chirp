@@ -4,19 +4,19 @@
         <li>
             <div>
                 <strong>
-                    <a href="/@cheep.Author">@cheep.Author</a>
+                    <a href="/@cheep.AuthorName">@cheep.AuthorName</a>
                 </strong>
 
                 @if (User.Identity!.IsAuthenticated)
                 {
                     var author = await UserManager.GetUserAsync(User);
 
-                    if (author!.Name != @cheep.Author)
+                    if (author!.Name != cheep.AuthorName)
                     {
-                        var isFollowing = Model.Follows[@cheep.Author];
+                        var isFollowing = Model.Follows[cheep.AuthorId];
 
                         <form method="post" asp-page-handler="@(isFollowing ? "UnfollowAuthor" : "FollowAuthor")" style="display:inline;">
-                            <input type="hidden" name="targetAuthorName" value="@cheep.Author" />
+                            <input type="hidden" name="targetAuthorId" value="@cheep.AuthorId" />
                             <button type="submit" class="link-style-button">[@(isFollowing ? "Unfollow" : "Follow")]</button>
                         </form>
                     }

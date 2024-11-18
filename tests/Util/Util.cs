@@ -19,8 +19,8 @@ public class Util
             context.Authors.AddRange(author1, author2);
 
             context.Cheeps.AddRange(
-                new Cheep { Text = "Hello World!", AuthorId = author1.Id, TimeStamp = CurrentTime, Author = author1},
-                new Cheep { Text = "Another Cheep, hell yeah", AuthorId = author2.Id, TimeStamp = CurrentTime, Author = author2}
+                new Cheep { Text = "Hello World!", AuthorId = author1.Id, TimeStamp = CurrentTime},
+                new Cheep { Text = "Another Cheep, hell yeah", AuthorId = author2.Id, TimeStamp = CurrentTime}
             );
         }
         else
@@ -31,7 +31,7 @@ public class Util
             
             for (int i = 0; i < 40; i++)
             {
-                var cheep = new Cheep { Text = "" + i, AuthorId = a1.Id, TimeStamp = CurrentTime, Author = a1 };
+                var cheep = new Cheep { Text = "" + i, AuthorId = a1.Id, TimeStamp = CurrentTime };
                 
                 context.Cheeps.AddRange(cheep);
             }

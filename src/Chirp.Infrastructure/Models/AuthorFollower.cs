@@ -7,12 +7,10 @@ public class AuthorFollower
     [Required]
     public required string FollowerId { get; set; }
     
-    [Required]
-    public required Author Follower { get; set; }
+    public Author Follower { get; set; }
     
     [Required]
     public required string FollowingId { get; set; }
     
-    [Required]
-    public required Author Following { get; set; }
+    public Author Following { get; set; }
 }
