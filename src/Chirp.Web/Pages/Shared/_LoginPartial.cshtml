@@ -1,6 +1,6 @@
 @inject SignInManager<Author> SignInManager
 
-<div class=navigation>
+<div class=navigation style="display: flex; justify-content: space-between;">
     @if (User.Identity!.IsAuthenticated)
     {
         var author = await UserManager.GetUserAsync(User);
@@ -21,4 +21,10 @@
             <a asp-area="Identity" asp-page="/Account/Login">login</a>
         </div>
     }
+
+    <div>
+        <a href="?page=@(Model.PageNumber-1)">&lt;</a> 
+        <span> @(Model.PageNumber) </span>
+        <a href="?page=@(Model.PageNumber+1)">&gt;</a>
+    </div>
 </div>
