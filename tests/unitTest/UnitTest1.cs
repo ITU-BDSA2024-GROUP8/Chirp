@@ -64,7 +64,7 @@ public class UnitTest1
 
         Assert.Empty(cheepsFromAuthor);
         
-        await cheepRepository.NewCheepAsync(author.Name, author.Email, "This is a new test cheep");
+        await cheepRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
         
         var newCheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
         
