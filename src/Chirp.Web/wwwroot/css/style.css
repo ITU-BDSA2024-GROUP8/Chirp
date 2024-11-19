@@ -140,6 +140,7 @@ div.page ul.cheeps li {
 
 div.page ul.cheeps p {
   margin: 0;
+  word-break: break-word;
 }
 
 div.page ul.cheeps li img {

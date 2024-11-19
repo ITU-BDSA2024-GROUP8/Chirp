@@ -1,6 +1,6 @@
 @inject SignInManager<Author> SignInManager
 
-<div class=navigation>
+<div class=navigation style="display: flex; justify-content: space-between;">
     @if (User.Identity!.IsAuthenticated)
     {
         var author = await UserManager.GetUserAsync(User);
@@ -19,6 +19,14 @@
             <a href="/">public timeline</a> |
             <a asp-area="Identity" asp-page="/Account/Register">register</a> |
             <a asp-area="Identity" asp-page="/Account/Login">login</a>
+        </div>
+    }
+
+    @if (ViewData.ModelMetadata.Properties.Any(p => p.PropertyName == "PageNumber")){
+        <div>
+            <a href="?page=@(Model.PageNumber-1)">&lt;</a> 
+            <span> @(Model.PageNumber) </span>
+            <a href="?page=@(Model.PageNumber+1)">&gt;</a>
         </div>
     }
 </div>
