@@ -20,6 +20,11 @@ builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireCon
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
+var clientId = builder.Configuration["authentication_github_clientId"];
+var clientSecret = builder.Configuration["authentication_github_clientSecret"];
+
+if(clientId == null || clientSecret == null) throw new NullReferenceException("clientId or clientSecret is null");
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultChallengeScheme = "GitHub";
@@ -27,8 +32,8 @@ builder.Services.AddAuthentication(options =>
     .AddCookie()
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["authentication_github_clientId"];
-        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"];
+        o.ClientId = clientId;
+        o.ClientSecret = clientSecret;
         o.CallbackPath = "/signin-github";
         o.Scope.Add("user:email");
     });

@@ -10,7 +10,7 @@ namespace Chirp.Web.Pages.Base;
 public class BaseCheepFormPage : PageModel
 {
     [BindProperty]
-    public CheepFormModel FormData { get; set; }
+    public CheepFormModel? FormData { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     public required int PageNumber { get; set; }
     public Dictionary<string, bool> Follows { get; set; }
@@ -21,6 +21,8 @@ public class BaseCheepFormPage : PageModel
     {
         _service = service;
         _userManager = userManager;
+        PageNumber = 1;
+        Follows = new Dictionary<string, bool>();
     }
 
     public async Task<ActionResult> OnPost()
@@ -31,11 +33,13 @@ public class BaseCheepFormPage : PageModel
         }
 
         var author = await _userManager.GetUserAsync(User);
+
+        if (author == null) return Page();
         
         await _service.PostCheep(new Cheep
         {
             AuthorId = author.Id,
-            Text = FormData.Message,
+            Text = FormData!.Message,
             TimeStamp = DateTime.Now
         });
 
@@ -61,8 +65,6 @@ public class BaseCheepFormPage : PageModel
     }
 
     public async Task PopulateFollows(){
-        Follows = new Dictionary<string, bool>();
-
         var currentAuthor = await _userManager.GetUserAsync(User);
         var currentAuthorId = currentAuthor!.Id;
 
