@@ -2,9 +2,9 @@ using Chirp.Infrastructure;
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,28 +15,58 @@ string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combin
 
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Data Source={dbPath}"));
 
-builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ChirpDBContext>();
-
-builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ChirpDBContext>()
+    .AddUserManager<UserManager<Author>>();
+    
+builder.Services.AddScoped<ICheepQueryRepository, CheepQueryRepository>();
+builder.Services.AddScoped<ICheepCommandRepository, CheepCommandRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
-var clientId = builder.Configuration["authentication_github_clientId"];
-var clientSecret = builder.Configuration["authentication_github_clientSecret"];
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
 
-if(clientId == null || clientSecret == null) throw new NullReferenceException("clientId or clientSecret is null");
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 
+    // User settings
+    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+
+// Configure Authentication with GitHub OAuth
 builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultChallengeScheme = "GitHub";
-    })
-    .AddCookie()
-    .AddGitHub(o =>
-    {
-        o.ClientId = clientId;
-        o.ClientSecret = clientSecret;
-        o.CallbackPath = "/signin-github";
-        o.Scope.Add("user:email");
-    });
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = "GitHub";
+})
+.AddCookie()
+.AddGitHub(options =>
+{
+    options.ClientId = builder.Configuration["authentication_github_clientId"] ?? throw new InvalidOperationException("GitHub ClientId is not configured.");
+    options.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? throw new InvalidOperationException("GitHub ClientSecret is not configured.");
+    options.CallbackPath = "/signin-github";
+});
 
 var app = builder.Build();
 
@@ -44,13 +74,11 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-//test
 app.UseRouting();
 
 app.UseAuthentication();
@@ -58,29 +86,33 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 
-//Custom redirect policy to the /Register and /Login page
-app.Use(async (context, next) =>
+try
 {
-    if (context.Request.Path.StartsWithSegments("/Identity/Account/Register") && (context.User.Identity?.IsAuthenticated ?? true))
+    using (var scope = app.Services.CreateScope())
     {
-        context.Response.Redirect("/");
-    }
-    else if(context.Request.Path.StartsWithSegments("/Identity/Account/Login") && (context.User.Identity?.IsAuthenticated ?? true)) 
-    {
-        context.Response.Redirect("/");
-    }
-    else
-    {
-        await next();
-    }
-});
+        var context = scope.ServiceProvider.GetRequiredService<ChirpDBContext>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-using (var scope = app.Services.CreateScope())
+        try
+        {
+            if (DbInitializer.CreateDb(context))
+            {
+                await DbInitializer.SeedDatabase(context, userManager);
+                logger.LogInformation("Database initialized successfully");
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while initializing the database");
+            throw;
+        }
+    }
+}
+catch (Exception ex)
 {
-    using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
-    if (context == null) return;
-    if(DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
+    app.Logger.LogCritical(ex, "Application startup failed");
+    throw;
 }
 
 app.Run();

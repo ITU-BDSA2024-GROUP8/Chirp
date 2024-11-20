@@ -15,42 +15,43 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
+    private readonly ICheepQueryRepository _cheepQueryRepository;
+    private readonly ICheepCommandRepository _cheepCommandRepository;
 
-    private readonly ICheepRepository _cheepRepository;
-
-    public CheepService(ICheepRepository cheepRepository)
+    public CheepService(ICheepQueryRepository cheepQueryRepository, ICheepCommandRepository cheepCommandRepository)
     {
-        _cheepRepository = cheepRepository;
+        _cheepQueryRepository = cheepQueryRepository;
+        _cheepCommandRepository = cheepCommandRepository;
     }
     
     public async Task<List<CheepDTO>> GetCheeps(int page)
     {
-        return await _cheepRepository.GetCheepsAsync(page);
+        return await _cheepQueryRepository.GetCheepsAsync(page);
     }
 
     public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author)
     {
         // filter by the provided author name
-        return await _cheepRepository.GetCheepsFromAuthorAsync(page, author);
+        return await _cheepQueryRepository.GetCheepsFromAuthorAsync(page, author);
     }
 
     public async Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string author){
-        return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, author);
+        return await _cheepQueryRepository.GetCheepsFromUserTimelineAsync(page, author);
     }
 
     public async Task PostCheep(Cheep cheep){
-        await _cheepRepository.PostCheepAsync(cheep);
+        await _cheepCommandRepository.PostCheepAsync(cheep);
     }
 
     public async Task FollowAuthor(string currentAuthorId, string targetAuthorId) {
-        await _cheepRepository.FollowAuthorAsync(currentAuthorId, targetAuthorId);
+        await _cheepCommandRepository.FollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
     
     public async Task UnfollowAuthor(string currentAuthorId, string targetAuthorId) {
-        await _cheepRepository.UnfollowAuthorAsync(currentAuthorId, targetAuthorId);
+        await _cheepCommandRepository.UnfollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
 
     public async Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId) {
-        return await _cheepRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
+        return await _cheepCommandRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
     }
 }
