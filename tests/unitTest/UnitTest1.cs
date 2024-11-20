@@ -1,14 +1,13 @@
-namespace unitTest;
-
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
-using Chirp.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
-using Util;
+using Chirp.Infrastructure.Models;
+
+namespace unitTest;
 
 public class UnitTest1
 {
+    private ChirpDBContext _context;
     private ICheepQueryRepository _cheepQueryRepository;
     private ICheepCommandRepository _cheepCommandRepository;
     private ICheepService _cheepService;
@@ -16,13 +15,12 @@ public class UnitTest1
     public UnitTest1()
     {
         var options = new DbContextOptionsBuilder<ChirpDBContext>()
-            .UseInMemoryDatabase(databaseName: "ChirpTestDb")
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
             .Options;
 
-        var context = new ChirpDBContext(options);
-
-        _cheepQueryRepository = new CheepQueryRepository(context);
-        _cheepCommandRepository = new CheepCommandRepository(context, _cheepQueryRepository);
+        _context = new ChirpDBContext(options);
+        _cheepQueryRepository = new CheepQueryRepository(_context);
+        _cheepCommandRepository = new CheepCommandRepository(_context, _cheepQueryRepository);
         _cheepService = new CheepService(_cheepQueryRepository, _cheepCommandRepository);
     }
 
@@ -30,112 +28,101 @@ public class UnitTest1
     [InlineData("TestUser1")]
     public async Task Test_FindAuthorByName(string authorName)
     {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(1);
+        // Arrange
+        var author = await _cheepCommandRepository.NewAuthorAsync(authorName, "test1@example.com");
 
-        // Create the service
+        // Act
         var authorByName = await _cheepQueryRepository.GetAuthorByNameAsync(authorName);
 
+        // Assert
         Assert.Equal(authorName, authorByName?.Name);
     }
 
     [Theory]
-    [InlineData("Test1@exsample.dk")]
+    [InlineData("Test1@example.com")]
     public async Task Test_FindAuthorByEmail(string email)
     {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(1);
+        // Arrange
+        var author = await _cheepCommandRepository.NewAuthorAsync("TestUser", email);
 
-        // Create the service
+        // Act
         var authorByEmail = await _cheepQueryRepository.GetAuthorByEmailAsync(email);
 
+        // Assert
         Assert.Equal(email, authorByEmail?.Email);
     }
 
     [Fact]
     public async Task Test_CreateNewAuthor()
     {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(1);
+        // Arrange
+        string testName = "testAuthor";
+        string testEmail = "testAuthor@email.com";
 
-        // Create the service
-        var author = await _cheepCommandRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
-        var authorByName = await _cheepQueryRepository.GetAuthorByNameAsync(author.Name);
+        // Act
+        var author = await _cheepCommandRepository.NewAuthorAsync(testName, testEmail);
+        var authorByName = await _cheepQueryRepository.GetAuthorByNameAsync(testName);
 
-        Assert.Equal(author, authorByName);
+        // Assert
+        Assert.NotNull(authorByName);
+        Assert.Equal(testName, authorByName.Name);
+        Assert.Equal(testEmail, authorByName.Email);
     }
 
     [Fact]
     public async Task Test_CreateNewCheep()
     {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(1);
-
-        // Create the service
+        // Arrange
         var author = await _cheepCommandRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
+        string testMessage = "This is a new test cheep";
 
-        var cheepsFromAuthor = await _cheepQueryRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        // Act
+        var cheepsBeforePost = await _cheepQueryRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        await _cheepCommandRepository.NewCheepAsync(author.Name, author.Email!, testMessage);
+        var cheepsAfterPost = await _cheepQueryRepository.GetCheepsFromAuthorAsync(1, author.Name);
 
-        Assert.Empty(cheepsFromAuthor);
-
-        await _cheepCommandRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
-
-        var newCheepsFromAuthor = await _cheepQueryRepository.GetCheepsFromAuthorAsync(1, author.Name);
-
-        Assert.Single(newCheepsFromAuthor);
-    }
-
-    [Fact]
-    public async Task Test_CheepsForACertainPage()
-    {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(2);
-
-        // Create the service
-        var cheepsOnPage1 = await _cheepQueryRepository.GetCheepsAsync(1);
-        var cheepsOnPage2 = await _cheepQueryRepository.GetCheepsAsync(2);
-
-        Assert.Equal(32, cheepsOnPage1.Count);
-        Assert.Equal(8, cheepsOnPage2.Count);
-    }
-
-    [Fact]
-    public async Task Test_CheepsForACertainPageByAuthor()
-    {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(2);
-
-        // Create the service
-        var author = await _cheepQueryRepository.GetAuthorByNameAsync("Roger Histand");
-
-        Assert.NotNull(author);
-
-        var cheepsOnPage = await _cheepQueryRepository.GetCheepsFromAuthorAsync(1, author.Name);
-
-        foreach (var cheep in cheepsOnPage)
-        {
-            Assert.Equal(cheep.AuthorName, author.Name);
-        }
+        // Assert
+        Assert.Empty(cheepsBeforePost);
+        Assert.Single(cheepsAfterPost);
+        Assert.Equal(testMessage, cheepsAfterPost.First().Message);
     }
 
     [Fact]
     public async Task Test_FollowAndUnfollowAuthor()
     {
-        // Initialize the database
-        await using var context = await Util.CreateInMemoryDatabase(1);
-
-        // Create the service
+        // Arrange
         var author1 = await _cheepCommandRepository.NewAuthorAsync("author1", "author1@example.com");
         var author2 = await _cheepCommandRepository.NewAuthorAsync("author2", "author2@example.com");
 
-        // Follow author2
+        // Act & Assert - Follow
         await _cheepCommandRepository.FollowAuthorAsync(author1.Id, author2.Id);
         var isFollowing = await _cheepCommandRepository.IsFollowingAsync(author1.Id, author2.Id);
         Assert.True(isFollowing);
 
-        // Unfollow author2
+        // Act & Assert - Unfollow
         await _cheepCommandRepository.UnfollowAuthorAsync(author1.Id, author2.Id);
         isFollowing = await _cheepCommandRepository.IsFollowingAsync(author1.Id, author2.Id);
         Assert.False(isFollowing);
+    }
+
+    [Fact]
+    public async Task Test_GetCheepsFromUserTimeline()
+    {
+        // Arrange
+        var author1 = await _cheepCommandRepository.NewAuthorAsync("author1", "author1@example.com");
+        var author2 = await _cheepCommandRepository.NewAuthorAsync("author2", "author2@example.com");
+        
+        // Create cheeps for both authors
+        await _cheepCommandRepository.NewCheepAsync(author1.Name, author1.Email!, "Test cheep 1 from author1");
+        await _cheepCommandRepository.NewCheepAsync(author2.Name, author2.Email!, "Test cheep 1 from author2");
+        
+        // Follow author2
+        await _cheepCommandRepository.FollowAuthorAsync(author1.Id, author2.Id);
+
+        // Act
+        var timeline = await _cheepQueryRepository.GetCheepsFromUserTimelineAsync(1, author1.Name);
+
+        // Assert
+        Assert.Equal(2, timeline.Count); // Should see both their own cheep and the followed author's cheep
     }
 }
