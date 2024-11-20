@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   release:
@@ -37,13 +40,19 @@ jobs:
     - name: Run tests
       run: dotnet test --configuration Release --verbosity normal
 
-    # Create GitHub Release
+    # Publish the binary (only for tagged pushes)
+    - name: Publish binary
+      if: startsWith(github.ref, 'refs/tags/')
+      run: dotnet publish Chirp.sln --configuration Release --output ./publish
+
+    # Create GitHub Release (only for tagged pushes)
     - name: Create GitHub Release
       id: create_release
       uses: softprops/action-gh-release@v2
-      if: ${{ success() }}
+      if: startsWith(github.ref, 'refs/tags/') && success()
       with:
         tag_name: ${{ github.ref_name }}
         name: "Release ${{ github.ref_name }}"
+        files: ./publish/*
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
