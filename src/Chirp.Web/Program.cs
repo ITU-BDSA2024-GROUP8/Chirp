@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Dat
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ChirpDBContext>();
 
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
 
 var clientId = builder.Configuration["authentication_github_clientId"];
