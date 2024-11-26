@@ -46,7 +46,7 @@ public class AboutMeModel : PageModel
 
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.DeleteCheepsByAuthor(currentAuthor.Id);
+        await _service.DeleteCheepsByAuthor(currentAuthor!.Id);
         await _service.DeleteFollowersAndFollowing(currentAuthor.Id);
         await _userManager.DeleteAsync(currentAuthor);
 
