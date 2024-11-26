@@ -1,6 +1,6 @@
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Models;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -37,5 +37,20 @@ public class AboutMeModel : PageModel
             Follows = await _service.GetFollowing(currentAuthor.Id);
         }
         return Page();
+    }
+
+    public async Task<ActionResult> OnPostForgetMe(){
+        if(!User.Identity!.IsAuthenticated){
+            return Page();
+        }
+
+        var currentAuthor = await _userManager.GetUserAsync(User);
+
+        await _service.DeleteCheepsByAuthor(currentAuthor.Id);
+        await _service.DeleteFollowersAndFollowing(currentAuthor.Id);
+        await _userManager.DeleteAsync(currentAuthor);
+
+        await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+        return RedirectToPage("/Public");
     }
 }
