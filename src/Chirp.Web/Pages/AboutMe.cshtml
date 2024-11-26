@@ -22,7 +22,9 @@
                 <ul>
                     @foreach (var follow in Model.Follows)
                     {
-                        <li>@follow</li>
+                        <li>
+                            <a href="/@follow">@follow</a>
+                        </li>
                     }
                 </ul>
             }
