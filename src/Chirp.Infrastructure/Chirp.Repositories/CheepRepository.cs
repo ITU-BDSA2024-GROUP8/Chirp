@@ -21,6 +21,7 @@ public interface ICheepRepository
     public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<List<string>> GetFollowingAsync(string authorId);
 }
 
 public class CheepRepository : ICheepRepository
@@ -204,5 +205,14 @@ public class CheepRepository : ICheepRepository
                 a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
         
         return followRelation != null;
+    }
+
+    public async Task<List<string>> GetFollowingAsync(string authorId){
+        var query = (
+            from a in _dbContext.AuthorFollowers
+            where a.FollowerId == authorId
+            select a.Following.Name);
+        
+        return await query.ToListAsync();
     }
 }
