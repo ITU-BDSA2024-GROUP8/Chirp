@@ -8,35 +8,39 @@
 <div>
     <h2>About Me</h2>
 
-    <div>
-        <h3>Profile Information</h3>
-        <p><strong>Name:</strong> @Model.Name</p>
-        <p><strong>Email:</strong> @Model.Email</p>
-    </div>
+    @if (User.Identity!.IsAuthenticated){
+        <div>
+            <h3>Profile Information</h3>
+            <p><strong>Name:</strong> @Model.Name</p>
+            <p><strong>Email:</strong> @Model.Email</p>
+        </div>
 
-    <div>
-        <h3>People I Follow</h3>
-        @if (Model.Follows != null && Model.Follows.Any())
+        <div>
+            <h3>People I Follow</h3>
+            @if (Model.Follows != null && Model.Follows.Any())
+            {
+                <ul>
+                    @foreach (var follow in Model.Follows)
+                    {
+                        <li>@follow</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>You are not following anyone yet.</p>
+            }
+        </div>
+
+        @if (Model.Cheeps.Any())
         {
-            <ul>
-                @foreach (var follow in Model.Follows)
-                {
-                    <li>@follow</li>
-                }
-            </ul>
+            <partial name="_MessageListPartial" model="Model" />
         }
         else
         {
-            <p>You are not following anyone yet.</p>
+            <em>There are no cheeps so far.</em>
         }
-    </div>
-
-    @if (Model.Cheeps.Any())
-    {
-        <partial name="_MessageListPartial" model="Model" />
-    }
-    else
-    {
-        <em>There are no cheeps so far.</em>
+    } else {
+        <em>Login to see this page.</em>
     }
 </div>

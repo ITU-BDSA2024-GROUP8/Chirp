@@ -29,12 +29,13 @@ public class AboutMeModel : PageModel
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
 
-        var currentAuthor = await _userManager.GetUserAsync(User);
-        Cheeps = await _service.GetCheepsFromAuthor(PageNumber, currentAuthor.Name);
-        Follows = await _service.GetFollowing(currentAuthor.Id);
-        Name = currentAuthor.Name;
-        Email = currentAuthor.Email;
-        
+        if(User.Identity!.IsAuthenticated){
+            var currentAuthor = await _userManager.GetUserAsync(User);
+            Name = currentAuthor!.Name;
+            Email = currentAuthor.Email!;
+            Cheeps = await _service.GetCheepsFromAuthor(PageNumber, Name);
+            Follows = await _service.GetFollowing(currentAuthor.Id);
+        }
         return Page();
     }
 }
