@@ -1,15 +1,18 @@
-name: Release
+name: Build, Test, and Release Chirp
+
+permissions: write-all
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*' # Trigger on tag pushes
   pull_request:
     branches:
-      - main
+      - main # Trigger on pull requests to main
+  workflow_dispatch: # Allow manual dispatch
 
 jobs:
-  release:
+  build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
 
@@ -18,55 +21,88 @@ jobs:
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
     
     steps:
-    # Checkout the code from the repository
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history and tags
 
-    # Setup .NET environment
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.x
+      # Setup .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
 
-    # Restore dependencies
-    - name: Restore dependencies
-      run: dotnet restore
+      # Restore dependencies
+      - name: Restore dependencies
+        run: dotnet restore
 
-    # Build the solution
-    - name: Build the solution
-      run: dotnet build Chirp.sln --configuration Release --no-restore
+      # Build the solution
+      - name: Build the solution
+        run: dotnet build Chirp.sln --configuration Release --no-restore
 
-    # Run tests
-    - name: Run tests
-      run: dotnet test --configuration Release --verbosity normal
+      # Install Playwright (optional step if required for tests)
+      - name: Install Playwright
+        working-directory: Chirp/test/PlaywrightTests/bin/Debug/net8.0/
+        run: pwsh playwright.ps1 install --with-deps
+      
+      # Run tests
+      - name: Run tests
+        env:
+          authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+          authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+        run: dotnet test --configuration Release --verbosity normal
 
-     # Publish the executable (only for tagged pushes)
-    - name: Publish Chirp Web Executable
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        dotnet publish src/Chirp.Web/Chirp.Web.csproj \
-          --configuration Release \
-          --output ./publish \
-          --self-contained true \
-          -r linux-x64 \
-          /p:PublishSingleFile=true
+      # Publish executables (only for tagged pushes)
+      - name: Publish Chirp Web Executable
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj \
+            --configuration Release \
+            --self-contained true \
+            --output ./publish \
+            -r linux-x64 \
+            /p:PublishSingleFile=true
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj \
+            --configuration Release \
+            --self-contained true \
+            --output ./publish \
+            -r win-x64 \
+            /p:PublishSingleFile=true
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj \
+            --configuration Release \
+            --self-contained true \
+            --output ./publish \
+            -r osx-x64 \
+            /p:PublishSingleFile=true
 
-    # Archive the published binary
-    - name: Archive the Chirp Executable
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: actions/upload-artifact@v3
-      with:
-        name: chirp-executable
-        path: ./publish/*
+      # Create ZIP files for release artifacts
+      - name: Create ZIP files
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd publish
+          zip -r chirp-linux-x64.zip linux-x64/
+          zip -r chirp-win-x64.zip win-x64/
+          zip -r chirp-osx-x64.zip osx-x64/
 
-    # Create GitHub Release (only for tagged pushes)
-    - name: Create GitHub Release
-      id: create_release
-      uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/') && success()
-      with:
-        tag_name: ${{ github.ref_name }}
-        name: "Release ${{ github.ref_name }}"
-        files: ./publish/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Upload release artifacts
+      - name: Upload Release Artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v3
+        with:
+          name: Chirp Release Artifacts
+          path: publish/*.zip
+
+      # Create GitHub Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          files: |
+            publish/chirp-linux-x64.zip
+            publish/chirp-win-x64.zip
+            publish/chirp-osx-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
