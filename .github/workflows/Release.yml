@@ -1,6 +1,4 @@
-name: Build, Test, and Release Chirp
-
-permissions: write-all
+name: Build, Test, and Release Chirp Executable
 
 on:
   push:
@@ -15,7 +13,7 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
-
+    
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
@@ -26,17 +24,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history and tags
-
+      
       # Setup .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-
+      
       # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
-
+      
       # Build the solution
       - name: Build the solution
         run: dotnet build Chirp.sln --configuration Release --no-restore
@@ -47,7 +45,7 @@ jobs:
           authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
           authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
         run: dotnet test --configuration Release --verbosity normal
-
+      
       # Publish executables (only for tagged pushes)
       - name: Publish Chirp Web Executable
         if: startsWith(github.ref, 'refs/tags/')
@@ -55,31 +53,33 @@ jobs:
           dotnet publish src/Chirp.Web/Chirp.Web.csproj \
             --configuration Release \
             --self-contained true \
-            --output ./publish \
+            --output ./publish/linux-x64 \
             -r linux-x64 \
             /p:PublishSingleFile=true
+          
           dotnet publish src/Chirp.Web/Chirp.Web.csproj \
             --configuration Release \
             --self-contained true \
-            --output ./publish \
+            --output ./publish/win-x64 \
             -r win-x64 \
             /p:PublishSingleFile=true
+          
           dotnet publish src/Chirp.Web/Chirp.Web.csproj \
             --configuration Release \
             --self-contained true \
-            --output ./publish \
+            --output ./publish/osx-x64 \
             -r osx-x64 \
             /p:PublishSingleFile=true
-
+      
       # Create ZIP files for release artifacts
       - name: Create ZIP files
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           cd publish
-          zip -r chirp-linux-x64.zip linux-x64/
-          zip -r chirp-win-x64.zip win-x64/
-          zip -r chirp-osx-x64.zip osx-x64/
-
+          zip -r chirp-linux-x64.zip linux-x64
+          zip -r chirp-win-x64.zip win-x64
+          zip -r chirp-osx-x64.zip osx-x64
+      
       # Upload release artifacts
       - name: Upload Release Artifacts
         if: startsWith(github.ref, 'refs/tags/')
@@ -87,7 +87,7 @@ jobs:
         with:
           name: Chirp Release Artifacts
           path: publish/*.zip
-
+      
       # Create GitHub Release
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
