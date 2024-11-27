@@ -43,7 +43,7 @@ jobs:
     # Publish the binary (only for tagged pushes)
     - name: Publish binary
       if: startsWith(github.ref, 'refs/tags/')
-      run: dotnet publish Chirp.sln --configuration Release --output ./publish
+      run: dotnet publish Chirp.sln --configuration Release --output ./publish --self-contained true /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
 
     # Create GitHub Release (only for tagged pushes)
     - name: Create GitHub Release
