@@ -40,10 +40,24 @@ jobs:
     - name: Run tests
       run: dotnet test --configuration Release --verbosity normal
 
-    # Publish the binary (only for tagged pushes)
-    - name: Publish binary
+     # Publish the executable (only for tagged pushes)
+    - name: Publish Chirp Web Executable
       if: startsWith(github.ref, 'refs/tags/')
-      run: dotnet publish Chirp.sln --configuration Release --output ./publish --self-contained true /p:PublishSingleFile=true /p:IncludeAllContentForSelfExtract=true
+      run: |
+        dotnet publish src/Chirp.Web/Chirp.Web.csproj \
+          --configuration Release \
+          --output ./publish \
+          --self-contained true \
+          -r linux-x64 \
+          /p:PublishSingleFile=true
+
+    # Archive the published binary
+    - name: Archive the Chirp Executable
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v3
+      with:
+        name: chirp-executable
+        path: ./publish/*
 
     # Create GitHub Release (only for tagged pushes)
     - name: Create GitHub Release
