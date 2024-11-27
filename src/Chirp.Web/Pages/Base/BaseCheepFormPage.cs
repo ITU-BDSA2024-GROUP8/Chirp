@@ -48,7 +48,11 @@ public class BaseCheepFormPage : PageModel
 
     public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorId)
     {
+        if (User.Identity?.IsAuthenticated != true) return Page();
+        
         var currentAuthor = await _userManager.GetUserAsync(User);
+
+        if (targetAuthorId == currentAuthor!.Id) return Page();
 
         await _service.FollowAuthor(currentAuthor!.Id, targetAuthorId);
 
@@ -57,7 +61,11 @@ public class BaseCheepFormPage : PageModel
     
     public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorId)
     {
+        if (User.Identity?.IsAuthenticated != true) return Page();
+        
         var currentAuthor = await _userManager.GetUserAsync(User);
+        
+        if (targetAuthorId == currentAuthor!.Id) return Page();
 
         await _service.UnfollowAuthor(currentAuthor!.Id, targetAuthorId);
 
