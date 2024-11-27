@@ -21,6 +21,9 @@ public interface ICheepRepository
     public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<List<string>> GetFollowingAsync(string authorId);
+    public Task DeleteCheepsByAuthorAsync(string authorId);
+    public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
 
 public class CheepRepository : ICheepRepository
@@ -204,5 +207,28 @@ public class CheepRepository : ICheepRepository
                 a.Follower.Id == currentAuthorId && a.Following.Id == targetAuthorId);
         
         return followRelation != null;
+    }
+
+    public async Task<List<string>> GetFollowingAsync(string authorId){
+        var query = (
+            from a in _dbContext.AuthorFollowers
+            where a.FollowerId == authorId
+            select a.Following.Name);
+        
+        return await query.ToListAsync();
+    }
+
+    public async Task DeleteCheepsByAuthorAsync(string authorId){
+        var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
+        _dbContext.Cheeps.RemoveRange(cheeps);
+
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteFollowersAndFollowingAsync(string authorId){
+        var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
+        _dbContext.AuthorFollowers.RemoveRange(followers);
+
+        await _dbContext.SaveChangesAsync();
     }
 }

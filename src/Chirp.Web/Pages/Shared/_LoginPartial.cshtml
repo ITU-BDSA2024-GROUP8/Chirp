@@ -8,6 +8,7 @@
         <div>
             <a href="/@(author!.Name)">my timeline</a> |
             <a href="/">public timeline</a> |
+            <a href="/AboutMe">about me</a> |
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
                 <button  type="submit" class="nav-link btn btn-link text-dark">logout [@(author.Name)]</button>
             </form>
