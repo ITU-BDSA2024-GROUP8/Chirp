@@ -4,18 +4,15 @@ using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Util;
-using Moq;
 
 public class UnitTest1
 {
-    private readonly Mock<IAuthorRepository> _mockAuthorRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepRepository _cheepRepository;
     private readonly ChirpDBContext _context;
 
     public UnitTest1()
     {
-        _mockAuthorRepository = new Mock<IAuthorRepository>();
         _context = Util.CreateInMemoryDatabase(1).Result;
         _authorRepository = new AuthorRepository(_context);
         _cheepRepository = new CheepRepository(_context, _authorRepository);

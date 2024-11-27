@@ -62,41 +62,6 @@ public class CheepRepository : ICheepRepository
         
         return await query.ToListAsync();
     }
-
-    // public async Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
-    // {
-    //     var authorCheeps = (
-    //         from c in _dbContext.Cheeps
-    //         join a in _dbContext.Authors 
-    //             on c.AuthorId equals a.Id
-    //         where a.Name == author
-    //
-    //         select new CheepDTO
-    //         {
-    //             AuthorId = c.AuthorId,
-    //             AuthorName = a.Name,
-    //             Message = c.Text,
-    //             Timestamp = c.TimeStamp
-    //         });
-    //
-    //     var followingCheeps = (
-    //         from f in _dbContext.AuthorFollowers
-    //         join c in _dbContext.Cheeps
-    //             on f.FollowingId equals c.AuthorId
-    //         where f.Follower.Name == author
-    //
-    //         select new CheepDTO
-    //         {
-    //             AuthorId = c.AuthorId,
-    //             AuthorName = c.Author.Name,
-    //             Message = c.Text,
-    //             Timestamp = c.TimeStamp
-    //         });
-    //
-    //     var query = authorCheeps.Union(followingCheeps).OrderByDescending(c => c.Timestamp).Skip((page * 32) - 32).Take(32);
-    //     
-    //     return await query.ToListAsync();
-    // }
     public async Task<List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
     {
         const int pageSize = 32;
@@ -105,14 +70,9 @@ public class CheepRepository : ICheepRepository
         var query = 
             from cheep in _dbContext.Cheeps
             join authorEntity in _dbContext.Authors 
-                on cheep.AuthorId equals authorEntity.Id
-            where 
-                // Either the cheep is from the user themselves...
-                authorEntity.Name == author
-                // ...or from someone the user follows
-                || _dbContext.AuthorFollowers.Any(f => 
-                    f.FollowingId == cheep.AuthorId && 
-                    f.Follower.Name == author)
+                   on cheep.AuthorId equals authorEntity.Id
+                  //Where: either the cheep is from the user themselves or from someone the user follows
+            where authorEntity.Name == author || _dbContext.AuthorFollowers.Any(f =>  f.FollowingId == cheep.AuthorId &&  f.Follower.Name == author)        
             orderby cheep.TimeStamp descending
             select new CheepDTO
             {
