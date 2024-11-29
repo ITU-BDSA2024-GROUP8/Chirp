@@ -698,6 +698,72 @@ public static class DbInitializer
             a8.Cheeps = new List<Cheep>() { c55, c124, c139, c151, c164, c263, c310, c328, c360, c375, c430, c470, c564, c576, c605 };
             a11.Cheeps = new List<Cheep>() { c656 };
             a12.Cheeps = new List<Cheep>() { c657 };
+            
+            Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+            Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/Signup-badge.png" };
+            Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/Signup-badge.png" };
+            Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/Signup-badge.png" };
+            Achievement ach5 = new Achievement() { Title = "Night Owl", Description = "Dark mode enabled. Who needs sleep when you can cheep in the shadows?", ImagePath = "/images/Badges/Signup-badge.png" };
+            
+            chirpContext.Achievements.Add(ach1);
+            chirpContext.Achievements.Add(ach2);
+            chirpContext.Achievements.Add(ach3);
+            chirpContext.Achievements.Add(ach4);
+            chirpContext.Achievements.Add(ach5);
+
+            await chirpContext.SaveChangesAsync();
+            
+            AuthorAchievement aAch1 = new AuthorAchievement() { AuthorId = a1.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch2 = new AuthorAchievement() { AuthorId = a2.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch3 = new AuthorAchievement() { AuthorId = a3.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch4 = new AuthorAchievement() { AuthorId = a4.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch5 = new AuthorAchievement() { AuthorId = a5.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch6 = new AuthorAchievement() { AuthorId = a6.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch7 = new AuthorAchievement() { AuthorId = a7.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch8 = new AuthorAchievement() { AuthorId = a8.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch9 = new AuthorAchievement() { AuthorId = a9.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch10 = new AuthorAchievement() { AuthorId = a10.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch11 = new AuthorAchievement() { AuthorId = a11.Id, AchievementId = ach1.AchievementId };
+            AuthorAchievement aAch12 = new AuthorAchievement() { AuthorId = a12.Id, AchievementId = ach1.AchievementId };
+            
+            AuthorAchievement aAch13 = new AuthorAchievement() { AuthorId = a1.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch14 = new AuthorAchievement() { AuthorId = a2.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch15 = new AuthorAchievement() { AuthorId = a3.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch16 = new AuthorAchievement() { AuthorId = a4.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch17 = new AuthorAchievement() { AuthorId = a5.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch18 = new AuthorAchievement() { AuthorId = a6.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch19 = new AuthorAchievement() { AuthorId = a7.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch20 = new AuthorAchievement() { AuthorId = a8.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch21 = new AuthorAchievement() { AuthorId = a9.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch22 = new AuthorAchievement() { AuthorId = a10.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch23 = new AuthorAchievement() { AuthorId = a11.Id, AchievementId = ach2.AchievementId };
+            AuthorAchievement aAch24 = new AuthorAchievement() { AuthorId = a12.Id, AchievementId = ach2.AchievementId };
+
+            a1.AuthorAchievements.Add(aAch1);
+            a2.AuthorAchievements.Add(aAch2);
+            a3.AuthorAchievements.Add(aAch3);
+            a4.AuthorAchievements.Add(aAch4);
+            a5.AuthorAchievements.Add(aAch5);
+            a6.AuthorAchievements.Add(aAch6);
+            a7.AuthorAchievements.Add(aAch7);
+            a8.AuthorAchievements.Add(aAch8);
+            a9.AuthorAchievements.Add(aAch9);
+            a10.AuthorAchievements.Add(aAch10);
+            a11.AuthorAchievements.Add(aAch11);
+            a12.AuthorAchievements.Add(aAch12);
+            
+            a1.AuthorAchievements.Add(aAch13);
+            a2.AuthorAchievements.Add(aAch14);
+            a3.AuthorAchievements.Add(aAch15);
+            a4.AuthorAchievements.Add(aAch16);
+            a5.AuthorAchievements.Add(aAch17);
+            a6.AuthorAchievements.Add(aAch18);
+            a7.AuthorAchievements.Add(aAch19);
+            a8.AuthorAchievements.Add(aAch20);
+            a9.AuthorAchievements.Add(aAch21);
+            a10.AuthorAchievements.Add(aAch22);
+            a11.AuthorAchievements.Add(aAch23);
+            a12.AuthorAchievements.Add(aAch24);
 
             await userManager.CreateAsync(a1, "Password123!");
             await userManager.CreateAsync(a2, "Password123!");
