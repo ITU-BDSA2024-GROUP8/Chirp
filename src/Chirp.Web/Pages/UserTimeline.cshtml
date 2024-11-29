@@ -15,6 +15,11 @@
     <h2> @routeName's Timeline </h2>
 
     <partial name="_CheepFormPartial" model="Model.FormData" />
+    
+    <div style="display: flex; gap: 20px;">
+        <partial name="_FollowedByCardPartial"/>
+        <partial name="_AchievementCardPartial"/>
+    </div>
 
     @if (Model.Cheeps.Any())
     {
