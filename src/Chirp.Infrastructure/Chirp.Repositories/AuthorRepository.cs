@@ -12,6 +12,7 @@ public interface IAuthorRepository
     public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
@@ -96,6 +97,17 @@ public class AuthorRepository : IAuthorRepository
             select a.Following.Name);
         
         return await query.ToListAsync();
+    }
+
+    public async Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId)
+    {
+        var query = (
+            from ach in _dbContext.AuthorAchievements
+            where ach.AuthorId == authorId
+            orderby ach.AchievedAt descending
+            select ach.Achievement);
+
+        return await query.FirstOrDefaultAsync();
     }
 
     public async Task DeleteCheepsByAuthorAsync(string authorId){

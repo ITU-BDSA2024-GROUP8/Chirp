@@ -1,10 +1,23 @@
-﻿<div class="achievement-card">
-    <h3 class="card-heading" style="text-align: center; margin-bottom: 14px;">Newest Achievement</h3>
-    <div class="achievement-container">
-        <img style="width: 110px;" src="images/Badges/Signup-badge.png"/>
-        <div>
-            <h4 class="achievement-heading">Rookie Chirper</h4>
-            <p class="achievement-p">Welcome aboard! You signed up successfully to Chirp</p>
-        </div>
-    </div>
-</div>
+﻿@if (User.Identity!.IsAuthenticated)
+{
+    var author = await UserManager.GetUserAsync(User);
+    var achievement = await Service.GetAuthorNewestAchievement(author!.Id);
+    
+    <div class="achievement-card">
+        <h3 class="card-heading" style="text-align: center; margin-bottom: 14px;">Newest Achievement</h3>
+        @if (achievement == null)
+        {
+            <p style="margin: 0;">You have no achievements yet.</p>
+        }
+        else
+        {
+            <div class="achievement-container">
+                <img style="width: 110px;" src="@(achievement.ImagePath)" alt="Achievement Badge" />
+                <div>
+                    <h4 class="achievement-heading">@(achievement.Title)</h4>
+                    <p class="achievement-p">@achievement.Description</p>
+                </div>
+            </div>   
+        }
+    </div>   
+}
