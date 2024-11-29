@@ -8,6 +8,8 @@ namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : BaseCheepFormPage
 {
+    public string Bio { get; set; }
+
     public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
         : base(service, userManager) {}
 
