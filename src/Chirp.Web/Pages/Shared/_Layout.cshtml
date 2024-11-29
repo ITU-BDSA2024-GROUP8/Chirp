@@ -3,14 +3,16 @@
 <head>
     <title>@ViewData["Title"]</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="/css/darkMode.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
 <body>
-<div class=page>
+<div class="page">
     <h1><a href="/"><img src="/images/icon1.png" alt="Icon1"/></a>Chirp!</h1>
 
     <partial name="_LoginPartial" />
-    
+    <button id="dark-mode-toggle">Dark Mode</button>
+
     <div class=body>
             @RenderBody()
     </div>
@@ -21,4 +23,6 @@
 
 </body>
 @await RenderSectionAsync("Scripts", required: false)
+    <script src="/js/darkModeToggle.js"></script>
+
 </html>
