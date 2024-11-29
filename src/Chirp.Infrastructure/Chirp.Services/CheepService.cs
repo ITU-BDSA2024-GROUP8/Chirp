@@ -4,9 +4,11 @@ using Chirp.Infrastructure.Models;
 
 public interface ICheepService
 {
+    public Task<Author?> GetAuthorByName(string name);
+    public Task<Author?> GetAuthorByEmail(string email);
     public Task<List<CheepDTO>> GetCheeps(int page);
-    public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author);
-    public Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string author);
+    public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string authorId);
+    public Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string authorId);
     public Task PostCheep(Cheep cheep);
     public Task FollowAuthor(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthor(string currentAuthorName, string targetAuthorName);
@@ -26,20 +28,27 @@ public class CheepService : ICheepService
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
     }
-
+    public async Task<Author?> GetAuthorByName(string name)
+    {
+        return await _authorRepository.GetAuthorByNameAsync(name);
+    }
+    public async Task<Author?> GetAuthorByEmail(string email)
+    {
+        return await _authorRepository.GetAuthorByEmailAsync(email);
+    }
     public async Task<List<CheepDTO>> GetCheeps(int page)
     {
         return await _cheepRepository.GetCheepsAsync(page);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author)
+    public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string authorId)
     {
-        return await _cheepRepository.GetCheepsFromAuthorAsync(page, author);
+        return await _cheepRepository.GetCheepsFromAuthorAsync(page, authorId);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string author)
+    public async Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string authorId)
     {
-        return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, author);
+        return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, authorId);
     }
 
     public async Task PostCheep(Cheep cheep)
