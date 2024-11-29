@@ -9,7 +9,9 @@ public class ChirpDBContext : IdentityDbContext<Author>
 {
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; }
+    public DbSet<Achievement> Achievements { get; set; }
     public DbSet<AuthorFollower> AuthorFollowers { get; set; }
+    public DbSet<AuthorAchievement> AuthorAchievements { get; set; }
     
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
     {
@@ -32,5 +34,22 @@ public class ChirpDBContext : IdentityDbContext<Author>
             .HasOne(e => e.Following)
             .WithMany(e => e.Followers)
             .HasForeignKey(e => e.FollowingId);
+        
+        modelBuilder.Entity<AuthorAchievement>()
+            .HasKey(e => new { e.AuthorId, e.AchievementId });
+    
+        modelBuilder.Entity<AuthorAchievement>()
+            .HasOne(e => e.Author)
+            .WithMany(e => e.AuthorAchievements)
+            .HasForeignKey(e => e.AuthorId);
+    
+        modelBuilder.Entity<AuthorAchievement>()
+            .HasOne(e => e.Achievement)
+            .WithMany(e => e.AuthorAchievements)
+            .HasForeignKey(e => e.AchievementId);
+        
+        modelBuilder.Entity<AuthorAchievement>()
+            .Property(a => a.AchievedAt)
+            .HasDefaultValueSql("datetime('now')");
     }
 }
