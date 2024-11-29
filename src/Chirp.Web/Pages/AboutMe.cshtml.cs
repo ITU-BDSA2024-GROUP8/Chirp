@@ -12,8 +12,9 @@ public class AboutMeModel : PageModel
     protected readonly ICheepService _service;
     protected readonly UserManager<Author> _userManager;
     public required int PageNumber { get; set; }
+    public required int CheepCount { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public List<string> Follows { get; set; }
+    public required List<string> Follows { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
     
@@ -22,6 +23,7 @@ public class AboutMeModel : PageModel
     {
         _service = service;
         _userManager = userManager;
+        Follows = new List<string>();
     }
 
     public async Task<ActionResult> OnGet()
@@ -33,7 +35,7 @@ public class AboutMeModel : PageModel
             var currentAuthor = await _userManager.GetUserAsync(User);
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
-            Cheeps = await _service.GetCheepsFromAuthor(PageNumber, Name);
+            (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, Name);
             Follows = await _service.GetFollowing(currentAuthor.Id);
         }
         return Page();
