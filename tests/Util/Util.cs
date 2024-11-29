@@ -18,8 +18,7 @@ public class Util
                 Email = "test1@example.dk", 
                 Cheeps = new List<Cheep>(), 
                 Followers = new List<AuthorFollower>(), 
-                Following = new List<AuthorFollower>(),
-                Bio = ""
+                Following = new List<AuthorFollower>()
             };
             
             Author author2 = new Author { 
@@ -27,8 +26,7 @@ public class Util
                 Email = "test2@example.dk", 
                 Cheeps = new List<Cheep>(), 
                 Followers = new List<AuthorFollower>(), 
-                Following = new List<AuthorFollower>(),
-                Bio = ""
+                Following = new List<AuthorFollower>()
             };
             
             // Seed data
@@ -56,8 +54,7 @@ public class Util
                 Email = "Roger+Histand@hotmail.com", 
                 Cheeps = new List<Cheep>(), 
                 Followers = new List<AuthorFollower>(), 
-                Following = new List<AuthorFollower>(),
-                Bio = ""
+                Following = new List<AuthorFollower>() 
             };
             
             context.Authors.AddRange(a1);
