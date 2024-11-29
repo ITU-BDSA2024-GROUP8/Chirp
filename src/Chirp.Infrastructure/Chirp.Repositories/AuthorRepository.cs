@@ -14,9 +14,11 @@ public interface IAuthorRepository
     public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);
     public Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId);
+    public Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
+    public Task DeleteAuthorAchievementsAsync(string authorId);
 }
 public class AuthorRepository : IAuthorRepository
 {
@@ -97,7 +99,8 @@ public class AuthorRepository : IAuthorRepository
         return followRelation != null;
     }
 
-    public async Task<List<string>> GetFollowingAsync(string authorId){
+    public async Task<List<string>> GetFollowingAsync(string authorId)
+    {
         var query = (
             from a in _dbContext.AuthorFollowers
             where a.FollowerId == authorId
@@ -128,17 +131,38 @@ public class AuthorRepository : IAuthorRepository
 
         return await query.FirstOrDefaultAsync();
     }
+    
+    public async Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId)
+    {
+        var query = (
+            from ach in _dbContext.AuthorAchievements
+            where ach.AuthorId == authorId
+            orderby ach.AchievedAt descending
+            select ach.Achievement);
 
-    public async Task DeleteCheepsByAuthorAsync(string authorId){
+        return await query.ToListAsync();
+    }
+
+    public async Task DeleteCheepsByAuthorAsync(string authorId)
+    {
         var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
         _dbContext.Cheeps.RemoveRange(cheeps);
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteFollowersAndFollowingAsync(string authorId){
+    public async Task DeleteFollowersAndFollowingAsync(string authorId)
+    {
         var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
         _dbContext.AuthorFollowers.RemoveRange(followers);
+
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    public async Task DeleteAuthorAchievementsAsync(string authorId)
+    {
+        var achievements = _dbContext.AuthorAchievements.Where(a => a.AuthorId == authorId);
+        _dbContext.AuthorAchievements.RemoveRange(achievements);
 
         await _dbContext.SaveChangesAsync();
     }

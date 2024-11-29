@@ -14,6 +14,7 @@ public class AboutMeModel : PageModel
     public required int PageNumber { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     public List<string> Follows { get; set; }
+    public required List<Achievement> Achievements { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
     
@@ -22,6 +23,9 @@ public class AboutMeModel : PageModel
     {
         _service = service;
         _userManager = userManager;
+        Cheeps = new List<CheepDTO>();
+        Follows = new List<string>();
+        Achievements = new List<Achievement>();
     }
 
     public async Task<ActionResult> OnGet()
@@ -35,6 +39,7 @@ public class AboutMeModel : PageModel
             Email = currentAuthor.Email!;
             Cheeps = await _service.GetCheepsFromAuthor(PageNumber, Name);
             Follows = await _service.GetFollowing(currentAuthor.Id);
+            Achievements = await _service.GetAuthorAchievements(currentAuthor.Id);
         }
         return Page();
     }
@@ -48,6 +53,7 @@ public class AboutMeModel : PageModel
 
         await _service.DeleteCheepsByAuthor(currentAuthor!.Id);
         await _service.DeleteFollowersAndFollowing(currentAuthor.Id);
+        await _service.DeleteAuthorAchievements(currentAuthor.Id);
         await _userManager.DeleteAsync(currentAuthor);
 
         await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);

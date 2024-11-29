@@ -13,9 +13,11 @@ public interface ICheepService
     public Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId);
     public Task AddNewAuthorAchievement(string authorId, int achievementId);
     public Task<Achievement?> GetAuthorNewestAchievement(string authorId);
+    public Task<List<Achievement>> GetAuthorAchievements(string authorId);
     public Task<List<string>> GetFollowing(string authorId);
     public Task DeleteCheepsByAuthor(string authorId);
     public Task DeleteFollowersAndFollowing(string authorId);
+    public Task DeleteAuthorAchievements(string authorId);
 }
 
 public class CheepService : ICheepService
@@ -73,6 +75,11 @@ public class CheepService : ICheepService
     {
         return await _authorRepository.GetAuthorNewestAchievementAsync(authorId);
     }
+
+    public async Task<List<Achievement>> GetAuthorAchievements(string authorId)
+    {
+        return await _authorRepository.GetAuthorAchievementsAsync(authorId);
+    }
     
     public async Task<List<string>> GetFollowing(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
@@ -83,5 +90,10 @@ public class CheepService : ICheepService
     }
     public async Task DeleteFollowersAndFollowing(string authorId){
         await _authorRepository.DeleteFollowersAndFollowingAsync(authorId);
+    }
+
+    public async Task DeleteAuthorAchievements(string authorId)
+    {
+        await _authorRepository.DeleteAuthorAchievementsAsync(authorId);
     }
 }
