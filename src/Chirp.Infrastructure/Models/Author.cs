@@ -11,8 +11,7 @@ public class Author : IdentityUser
     [Required]
     public required string Name { get; set; }
 
-    [Required]
-    public required string Bio { get; set; }
+    public string? Bio { get; set; }
     
     [Required]
     public required ICollection<AuthorFollower> Followers { get; set; }

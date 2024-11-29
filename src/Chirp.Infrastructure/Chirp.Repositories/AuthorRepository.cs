@@ -8,10 +8,10 @@ public interface IAuthorRepository
 {
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
-    public  Task<Author> NewAuthorAsync(string authorName, string authorEmail);
-    public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
+    public Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
