@@ -12,6 +12,7 @@ public interface IAuthorRepository
     public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);
     public Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task DeleteCheepsByAuthorAsync(string authorId);
@@ -63,6 +64,9 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
+        var hasAchievementFollow = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == currentAuthorId && a.AchievementId == 3);
+        var hasAchievementFollowed = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == targetAuthorId && a.AchievementId == 4);
+        
         var followRelation = new AuthorFollower
         {
             FollowerId = currentAuthorId,
@@ -71,6 +75,9 @@ public class AuthorRepository : IAuthorRepository
 
         _dbContext.AuthorFollowers.Add(followRelation);
         await _dbContext.SaveChangesAsync();
+
+        if (!hasAchievementFollow) await AddNewAuthorAchievementAsync(currentAuthorId, 3);
+        if (!hasAchievementFollowed) await AddNewAuthorAchievementAsync(targetAuthorId, 4);
     }
 
     public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
@@ -97,6 +104,18 @@ public class AuthorRepository : IAuthorRepository
             select a.Following.Name);
         
         return await query.ToListAsync();
+    }
+
+    public async Task AddNewAuthorAchievementAsync(string authorId, int achievementId)
+    {
+        var authorAchievement = new AuthorAchievement()
+        {
+            AuthorId = authorId,
+            AchievementId = achievementId
+        };
+
+        _dbContext.AuthorAchievements.Add(authorAchievement);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId)

@@ -106,9 +106,14 @@ public class CheepRepository : ICheepRepository
     }
     
 
-    public async Task PostCheepAsync(Cheep cheep){
+    public async Task PostCheepAsync(Cheep cheep)
+    {
+        var hasAchievement = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == cheep.AuthorId && a.AchievementId == 2);
+        
         _dbContext.Cheeps.Add(cheep);
         cheep.Author.Cheeps.Add(cheep);
         await _dbContext.SaveChangesAsync();
+
+        if (!hasAchievement) await _authorRepository.AddNewAuthorAchievementAsync(cheep.AuthorId, 2);
     }
 }

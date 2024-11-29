@@ -703,7 +703,7 @@ public static class DbInitializer
             Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/Signup-badge.png" };
             Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/Signup-badge.png" };
             Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/Signup-badge.png" };
-            Achievement ach5 = new Achievement() { Title = "Night Owl", Description = "Dark mode enabled. Who needs sleep when you can cheep in the shadows?", ImagePath = "/images/Badges/Signup-badge.png" };
+            Achievement ach5 = new Achievement() { Title = "Night Owl", Description = "Dark mode explored. Who needs sleep when you can cheep in the shadows?", ImagePath = "/images/Badges/Signup-badge.png" };
             
             chirpContext.Achievements.Add(ach1);
             chirpContext.Achievements.Add(ach2);
