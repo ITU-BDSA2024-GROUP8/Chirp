@@ -13,6 +13,7 @@ public class BaseCheepFormPage : PageModel
     public CheepFormModel? FormData { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     public required int PageNumber { get; set; }
+    public required int CheepCount { get; set; }
     public Dictionary<string, bool> Follows { get; set; }
     protected readonly ICheepService _service;
     protected readonly UserManager<Author> _userManager;
