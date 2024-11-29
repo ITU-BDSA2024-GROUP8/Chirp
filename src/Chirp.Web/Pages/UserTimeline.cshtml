@@ -8,7 +8,7 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var routeName = HttpContext.GetRouteValue("author");
+    var routeName = HttpContext.GetRouteValue("author") as string;
 }
 
 <div>
@@ -16,10 +16,18 @@
 
     <partial name="_CheepFormPartial" model="Model.FormData" />
     
-    <div style="display: flex; gap: 20px;">
-        <partial name="_FollowedByCardPartial"/>
-        <partial name="_AchievementCardPartial"/>
-    </div>
+    @if (User.Identity!.IsAuthenticated)
+    {
+        var author = await UserManager.GetUserAsync(User);
+
+        if (routeName == author!.Name)
+        {
+            <div style="display: flex; gap: 20px;">
+                <partial name="_FollowedByCardPartial"/>
+                <partial name="_AchievementCardPartial" model="author" />
+            </div>   
+        }
+    }
 
     @if (Model.Cheeps.Any())
     {
