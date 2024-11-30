@@ -12,21 +12,19 @@ public interface IAuthorRepository
     public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
-    public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);
-    public Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId);
-    public Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
-    public Task DeleteAuthorAchievementsAsync(string authorId);
 }
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _dbContext;
+    private readonly IAchievementRepository _achievementRepository;
 
-    public AuthorRepository(ChirpDBContext dbContext)
+    public AuthorRepository(ChirpDBContext dbContext, IAchievementRepository achievementRepository)
     {
         _dbContext = dbContext;
+        _achievementRepository = achievementRepository;
     }
 
     public async Task<Author?> GetAuthorByNameAsync(string name)
@@ -78,8 +76,8 @@ public class AuthorRepository : IAuthorRepository
         _dbContext.AuthorFollowers.Add(followRelation);
         await _dbContext.SaveChangesAsync();
 
-        if (!hasAchievementFollow) await AddNewAuthorAchievementAsync(currentAuthorId, 3);
-        if (!hasAchievementFollowed) await AddNewAuthorAchievementAsync(targetAuthorId, 4);
+        if (!hasAchievementFollow) await _achievementRepository.AddNewAuthorAchievementAsync(currentAuthorId, 3);
+        if (!hasAchievementFollowed) await _achievementRepository.AddNewAuthorAchievementAsync(targetAuthorId, 4);
     }
 
     public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
@@ -108,41 +106,7 @@ public class AuthorRepository : IAuthorRepository
         
         return await query.ToListAsync();
     }
-
-    public async Task AddNewAuthorAchievementAsync(string authorId, int achievementId)
-    {
-        var authorAchievement = new AuthorAchievement()
-        {
-            AuthorId = authorId,
-            AchievementId = achievementId
-        };
-
-        _dbContext.AuthorAchievements.Add(authorAchievement);
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId)
-    {
-        var query = (
-            from ach in _dbContext.AuthorAchievements
-            where ach.AuthorId == authorId
-            orderby ach.AchievedAt descending
-            select ach.Achievement);
-
-        return await query.FirstOrDefaultAsync();
-    }
     
-    public async Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId)
-    {
-        var query = (
-            from ach in _dbContext.AuthorAchievements
-            where ach.AuthorId == authorId
-            orderby ach.AchievedAt descending
-            select ach.Achievement);
-
-        return await query.ToListAsync();
-    }
-
     public async Task DeleteCheepsByAuthorAsync(string authorId)
     {
         var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
@@ -155,14 +119,6 @@ public class AuthorRepository : IAuthorRepository
     {
         var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
         _dbContext.AuthorFollowers.RemoveRange(followers);
-
-        await _dbContext.SaveChangesAsync();
-    }
-    
-    public async Task DeleteAuthorAchievementsAsync(string authorId)
-    {
-        var achievements = _dbContext.AuthorAchievements.Where(a => a.AuthorId == authorId);
-        _dbContext.AuthorAchievements.RemoveRange(achievements);
 
         await _dbContext.SaveChangesAsync();
     }

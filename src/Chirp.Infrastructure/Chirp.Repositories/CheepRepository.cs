@@ -19,11 +19,13 @@ public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext _dbContext;
     private readonly IAuthorRepository _authorRepository;
+    private readonly IAchievementRepository _achievementRepository;
 
-    public CheepRepository(ChirpDBContext dbContext, IAuthorRepository authorRepository)
+    public CheepRepository(ChirpDBContext dbContext, IAuthorRepository authorRepository, IAchievementRepository achievementRepository)
     {
         _dbContext = dbContext;
         _authorRepository = authorRepository;
+        _achievementRepository = achievementRepository;
     }
     
     public async Task<List<CheepDTO>> GetCheepsAsync(int page)
@@ -114,6 +116,6 @@ public class CheepRepository : ICheepRepository
         cheep.Author.Cheeps.Add(cheep);
         await _dbContext.SaveChangesAsync();
 
-        if (!hasAchievement) await _authorRepository.AddNewAuthorAchievementAsync(cheep.AuthorId, 2);
+        if (!hasAchievement) await _achievementRepository.AddNewAuthorAchievementAsync(cheep.AuthorId, 2);
     }
 }

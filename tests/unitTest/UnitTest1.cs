@@ -7,6 +7,7 @@ using Util;
 
 public class UnitTest1
 {
+    private readonly IAchievementRepository _achievementRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepRepository _cheepRepository;
     private readonly ChirpDBContext _context;
@@ -14,8 +15,9 @@ public class UnitTest1
     public UnitTest1()
     {
         _context = Util.CreateInMemoryDatabase(1).Result;
-        _authorRepository = new AuthorRepository(_context);
-        _cheepRepository = new CheepRepository(_context, _authorRepository);
+        _achievementRepository = new AchievementRepository(_context);
+        _authorRepository = new AuthorRepository(_context, _achievementRepository);
+        _cheepRepository = new CheepRepository(_context, _authorRepository, _achievementRepository);
     }
 
     [Theory]
@@ -65,8 +67,9 @@ public class UnitTest1
     {
         // Use a new context with more data for this test
         await using var context = await Util.CreateInMemoryDatabase(2);
-        var authorRepo = new AuthorRepository(context);
-        var cheepRepo = new CheepRepository(context, authorRepo);
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
 
         var cheepsOnPage1 = await cheepRepo.GetCheepsAsync(1);
         var cheepsOnPage2 = await cheepRepo.GetCheepsAsync(2);
@@ -80,8 +83,9 @@ public class UnitTest1
     {
         // Use a new context with more data for this test
         await using var context = await Util.CreateInMemoryDatabase(2);
-        var authorRepo = new AuthorRepository(context);
-        var cheepRepo = new CheepRepository(context, authorRepo);
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
 
         var author = await authorRepo.GetAuthorByNameAsync("Roger Histand");
         Assert.NotNull(author);
