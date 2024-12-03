@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleButton = document.getElementById("dark-mode-toggle");
     const body = document.body;
 
-    // Check stored preference and apply dark mode if needed
+    // Check stored preference and apply
     if (localStorage.getItem("dark-mode") === "enabled") {
         body.classList.add("dark-mode");
     }

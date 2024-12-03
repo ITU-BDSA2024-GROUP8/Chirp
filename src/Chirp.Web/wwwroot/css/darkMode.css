@@ -1,13 +1,18 @@
 body.dark-mode {
-    background-color: #1a1a1a;
-
+    --main: #171f27;
+    --off-main: #3b444f;
+    --off-main2: #ababab;
+    --background-color: #151b22;
+    --link-color: #26776F;
+    --link-hover-color: #333;
+    --side-color: #26776F;
+    --side-color2: #1a4641;
+    --side-color3: #0c1117;
+    --side-color4: #47847d;
+    --side-color5: #5f908b;
+    --button-color: #26776F;
+    --button-color2: #1a4641;
+    --shadow-color: #444444;
+    color: white;
 }
 
-a.dark-mode {
-    color: #dedede;
-  }
-  
-  a.dark-mode:hover {
-    color: #ffffff;
-  }
-  

@@ -2,17 +2,25 @@
 <html lang="en">
 <head>
     <title>@ViewData["Title"]</title>
+    <link rel="icon" type="image/png" href="/favicon/favicon.ico">
+<script>
+        // Apply dark mode before the page renders
+        if (localStorage.getItem("dark-mode") === "enabled") {
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link href="/css/darkMode.css" rel="stylesheet" type="text/css" />
-    <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
 <body>
 <div class="page">
+  
     <h1><a href="/"><img src="/images/icon1.png" alt="Icon1"/></a>Chirp!</h1>
-
+    <div class="darkBtn">
+  <button id="dark-mode-toggle">Dark Mode</button>
+</div>
     <partial name="_LoginPartial" />
-    <button id="dark-mode-toggle">Dark Mode</button>
-
+  
     <div class=body>
             @RenderBody()
     </div>
