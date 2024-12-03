@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Chirp.Infrastructure.Chirp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Chirp.Infrastructure.Models;
@@ -30,13 +31,15 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Author> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        protected readonly IAchievementService _achievementService;
 
         public RegisterModel(
             UserManager<Author> userManager,
             IUserStore<Author> userStore,
             SignInManager<Author> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IAchievementService achievementService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +47,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _achievementService = achievementService;
         }
 
         /// <summary>
@@ -127,6 +131,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _achievementService.AddNewAuthorAchievement(user.Id, 1);
+                    
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

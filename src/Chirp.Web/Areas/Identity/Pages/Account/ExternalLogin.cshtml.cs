@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
@@ -30,13 +31,15 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Author> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        protected readonly IAchievementService _achievementService;
 
         public ExternalLoginModel(
             SignInManager<Author> signInManager,
             UserManager<Author> userManager,
             IUserStore<Author> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IAchievementService achievementService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,6 +47,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _achievementService = achievementService;
         }
 
         /// <summary>
@@ -148,6 +152,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             
             if (createResult.Succeeded)
             {
+                await _achievementService.AddNewAuthorAchievement(user.Id, 1);
+                
                 createResult = await _userManager.AddLoginAsync(user, info);
                 if (createResult.Succeeded)
                 {

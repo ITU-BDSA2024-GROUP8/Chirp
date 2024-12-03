@@ -19,10 +19,12 @@ public interface IAuthorRepository
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _dbContext;
+    private readonly IAchievementRepository _achievementRepository;
 
-    public AuthorRepository(ChirpDBContext dbContext)
+    public AuthorRepository(ChirpDBContext dbContext, IAchievementRepository achievementRepository)
     {
         _dbContext = dbContext;
+        _achievementRepository = achievementRepository;
     }
 
     public async Task<Author?> GetAuthorByNameAsync(string name)
@@ -62,6 +64,9 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
+        var hasAchievementFollow = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == currentAuthorId && a.AchievementId == 3);
+        var hasAchievementFollowed = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == targetAuthorId && a.AchievementId == 4);
+        
         var followRelation = new AuthorFollower
         {
             FollowerId = currentAuthorId,
@@ -70,6 +75,9 @@ public class AuthorRepository : IAuthorRepository
 
         _dbContext.AuthorFollowers.Add(followRelation);
         await _dbContext.SaveChangesAsync();
+
+        if (!hasAchievementFollow) await _achievementRepository.AddNewAuthorAchievementAsync(currentAuthorId, 3);
+        if (!hasAchievementFollowed) await _achievementRepository.AddNewAuthorAchievementAsync(targetAuthorId, 4);
     }
 
     public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
@@ -89,7 +97,8 @@ public class AuthorRepository : IAuthorRepository
         return followRelation != null;
     }
 
-    public async Task<List<string>> GetFollowingAsync(string authorId){
+    public async Task<List<string>> GetFollowingAsync(string authorId)
+    {
         var query = (
             from a in _dbContext.AuthorFollowers
             where a.FollowerId == authorId
@@ -97,15 +106,17 @@ public class AuthorRepository : IAuthorRepository
         
         return await query.ToListAsync();
     }
-
-    public async Task DeleteCheepsByAuthorAsync(string authorId){
+    
+    public async Task DeleteCheepsByAuthorAsync(string authorId)
+    {
         var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
         _dbContext.Cheeps.RemoveRange(cheeps);
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteFollowersAndFollowingAsync(string authorId){
+    public async Task DeleteFollowersAndFollowingAsync(string authorId)
+    {
         var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
         _dbContext.AuthorFollowers.RemoveRange(followers);
 

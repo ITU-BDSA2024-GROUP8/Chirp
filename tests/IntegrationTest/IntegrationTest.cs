@@ -14,8 +14,9 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repositories
-        var authorRepository = new AuthorRepository(context);
-        var cheepRepository = new CheepRepository(context, authorRepository);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
+        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
         
         // Create the service
         ICheepService cheepService = new CheepService(cheepRepository, authorRepository);
@@ -37,8 +38,9 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repositories
-        var authorRepository = new AuthorRepository(context);
-        var cheepRepository = new CheepRepository(context, authorRepository);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
+        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
         var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
         var (cheepsFromAuthor, _) = await cheepRepository.GetCheepsFromAuthorAsync(1, author);
@@ -57,7 +59,8 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repository
-        var authorRepository = new AuthorRepository(context);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
 
         var authorByName = await authorRepository.GetAuthorByNameAsync(authorName);
         var authorByEmail = await authorRepository.GetAuthorByEmailAsync(email);
@@ -75,8 +78,9 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repositories
-        var authorRepository = new AuthorRepository(context);
-        var cheepRepository = new CheepRepository(context, authorRepository);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
+        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
         var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
         // Assert we have two and only two cheeps
@@ -98,7 +102,8 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repositories
-        var authorRepository = new AuthorRepository(context);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
         
         // Get authors
         var follower = await authorRepository.GetAuthorByNameAsync(followerName);
@@ -126,8 +131,9 @@ public class IntegrationTest
         using var context = await Util.CreateInMemoryDatabase(1);
         
         // Create the repositories
-        var authorRepository = new AuthorRepository(context);
-        var cheepRepository = new CheepRepository(context, authorRepository);
+        var achievementRepository = new AchievementRepository(context);
+        var authorRepository = new AuthorRepository(context, achievementRepository);
+        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
         
         // Get initial timeline
         var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, authorName);

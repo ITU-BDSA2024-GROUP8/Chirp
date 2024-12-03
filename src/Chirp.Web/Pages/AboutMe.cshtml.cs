@@ -1,4 +1,5 @@
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -9,21 +10,26 @@ namespace Chirp.Web.Pages;
 
 public class AboutMeModel : PageModel
 {
-    protected readonly ICheepService _service;
+    protected readonly ICheepService _cheepService;
+    protected readonly IAchievementService _achievementService;
     protected readonly UserManager<Author> _userManager;
     public required int PageNumber { get; set; }
     public required int CheepCount { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     public required List<string> Follows { get; set; }
+    public required List<Achievement> Achievements { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
     
 
-    public AboutMeModel(ICheepService service, UserManager<Author> userManager)
+    public AboutMeModel(ICheepService cheepService, IAchievementService achievementService, UserManager<Author> userManager)
     {
-        _service = service;
+        _cheepService = cheepService;
+        _achievementService = achievementService;
         _userManager = userManager;
+        Cheeps = new List<CheepDTO>();
         Follows = new List<string>();
+        Achievements = new List<Achievement>();
     }
 
     public async Task<ActionResult> OnGet()
@@ -35,8 +41,9 @@ public class AboutMeModel : PageModel
             var currentAuthor = await _userManager.GetUserAsync(User);
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
-            (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, Name);
-            Follows = await _service.GetFollowing(currentAuthor.Id);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
+            Follows = await _cheepService.GetFollowing(currentAuthor.Id);
+            Achievements = await _achievementService.GetAuthorAchievements(currentAuthor.Id);
         }
         return Page();
     }
@@ -48,8 +55,9 @@ public class AboutMeModel : PageModel
 
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.DeleteCheepsByAuthor(currentAuthor!.Id);
-        await _service.DeleteFollowersAndFollowing(currentAuthor.Id);
+        await _cheepService.DeleteCheepsByAuthor(currentAuthor!.Id);
+        await _cheepService.DeleteFollowersAndFollowing(currentAuthor.Id);
+        await _achievementService.DeleteAuthorAchievements(currentAuthor.Id);
         await _userManager.DeleteAsync(currentAuthor);
 
         await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);

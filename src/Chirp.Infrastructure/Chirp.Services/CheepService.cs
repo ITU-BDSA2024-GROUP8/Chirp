@@ -61,7 +61,7 @@ public class CheepService : ICheepService
     {
         return await _authorRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
     }
-
+    
     public async Task<List<string>> GetFollowing(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
     }
