@@ -8,12 +8,22 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
-    var routeName = HttpContext.GetRouteValue("author");
+    var routeName = HttpContext.GetRouteValue("author") as string;
+    var author = await UserManager.GetUserAsync(User);
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
 
+    @if (User.Identity!.IsAuthenticated && routeName == author!.Name)
+    {
+        <a>It worked!</a>
+    }
+    else if (Model.Bio == null)
+    {
+        <a>@routeName has no bio yet...</a>
+    }
+    
     <div>
         <em>@Model.Bio</em>
     </div>
