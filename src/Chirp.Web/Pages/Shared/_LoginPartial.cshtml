@@ -23,11 +23,20 @@
         </div>
     }
 
-    @if (ViewData.ModelMetadata.Properties.Any(p => p.PropertyName == "PageNumber")){
+    @if (ViewData.ModelMetadata.Properties.Any(p => p.PropertyName == "PageNumber"))
+    {
         <div>
-            <a href="?page=@(Model.PageNumber-1)">&lt;</a> 
+            @if (Model.PageNumber > 1)
+            {
+                <a href="?page=@(Model.PageNumber-1)">&lt;</a>
+            }
+             
             <span> @(Model.PageNumber) </span>
-            <a href="?page=@(Model.PageNumber+1)">&gt;</a>
+
+            @if (Model.PageNumber < (int)Math.Ceiling((double)Model.CheepCount / 32))
+            {
+                <a href="?page=@(Model.PageNumber+1)">&gt;</a>
+            }
         </div>
     }
 </div>

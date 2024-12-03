@@ -7,6 +7,7 @@ using Util;
 
 public class UnitTest1
 {
+    private readonly IAchievementRepository _achievementRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly ICheepRepository _cheepRepository;
     private readonly ChirpDBContext _context;
@@ -14,8 +15,9 @@ public class UnitTest1
     public UnitTest1()
     {
         _context = Util.CreateInMemoryDatabase(1).Result;
-        _authorRepository = new AuthorRepository(_context);
-        _cheepRepository = new CheepRepository(_context, _authorRepository);
+        _achievementRepository = new AchievementRepository(_context);
+        _authorRepository = new AuthorRepository(_context, _achievementRepository);
+        _cheepRepository = new CheepRepository(_context, _authorRepository, _achievementRepository);
     }
 
     [Theory]
@@ -49,14 +51,14 @@ public class UnitTest1
         var author = await _authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
 
         // Check that author has no cheeps initially
-        var cheepsFromAuthor = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        var (cheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Id);
         Assert.Empty(cheepsFromAuthor);
 
         // Create a new cheep
         await _cheepRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
 
         // Verify the cheep was created
-        var newCheepsFromAuthor = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        var (newCheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Id);
         Assert.Single(newCheepsFromAuthor);
     }
 
@@ -65,11 +67,12 @@ public class UnitTest1
     {
         // Use a new context with more data for this test
         await using var context = await Util.CreateInMemoryDatabase(2);
-        var authorRepo = new AuthorRepository(context);
-        var cheepRepo = new CheepRepository(context, authorRepo);
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
 
-        var cheepsOnPage1 = await cheepRepo.GetCheepsAsync(1);
-        var cheepsOnPage2 = await cheepRepo.GetCheepsAsync(2);
+        var (cheepsOnPage1, _) = await cheepRepo.GetCheepsAsync(1);
+        var (cheepsOnPage2, _) = await cheepRepo.GetCheepsAsync(2);
 
         Assert.Equal(32, cheepsOnPage1.Count);
         Assert.Equal(8, cheepsOnPage2.Count);
@@ -80,13 +83,14 @@ public class UnitTest1
     {
         // Use a new context with more data for this test
         await using var context = await Util.CreateInMemoryDatabase(2);
-        var authorRepo = new AuthorRepository(context);
-        var cheepRepo = new CheepRepository(context, authorRepo);
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
 
         var author = await authorRepo.GetAuthorByNameAsync("Roger Histand");
         Assert.NotNull(author);
 
-        var cheepsOnPage = await cheepRepo.GetCheepsFromAuthorAsync(1, author.Name);
+        var (cheepsOnPage, _) = await cheepRepo.GetCheepsFromAuthorAsync(1, author.Id);
 
         foreach (var cheep in cheepsOnPage)
         {
@@ -127,7 +131,7 @@ public class UnitTest1
         await _authorRepository.FollowAuthorAsync(mainAuthor.Id, followedAuthor.Id);
 
         // Get timeline
-        var timeline = await _cheepRepository.GetCheepsFromUserTimelineAsync(1, mainAuthor.Name);
+        var (timeline, _) = await _cheepRepository.GetCheepsFromUserTimelineAsync(1, mainAuthor.Id);
 
         // Should see both cheeps
         Assert.Equal(2, timeline.Count);

@@ -18,4 +18,7 @@ public class Author : IdentityUser
     
     [Required]
     public required ICollection<AuthorFollower> Following { get; set; }
+
+    [Required] 
+    public ICollection<AuthorAchievement> AuthorAchievements { get; set; } = new List<AuthorAchievement>();
 }

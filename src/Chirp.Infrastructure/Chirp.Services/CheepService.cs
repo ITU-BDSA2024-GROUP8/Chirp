@@ -6,9 +6,9 @@ public interface ICheepService
 {
     public Task<Author?> GetAuthorByName(string name);
     public Task<Author?> GetAuthorByEmail(string email);
-    public Task<List<CheepDTO>> GetCheeps(int page);
-    public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string authorId);
-    public Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string authorId);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheeps(int page);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthor(int page, string authorId);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimeline(int page, string authorId);
     public Task PostCheep(Cheep cheep);
     public Task FollowAuthor(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthor(string currentAuthorName, string targetAuthorName);
@@ -28,25 +28,28 @@ public class CheepService : ICheepService
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
     }
+
     public async Task<Author?> GetAuthorByName(string name)
     {
         return await _authorRepository.GetAuthorByNameAsync(name);
     }
+    
     public async Task<Author?> GetAuthorByEmail(string email)
     {
         return await _authorRepository.GetAuthorByEmailAsync(email);
     }
-    public async Task<List<CheepDTO>> GetCheeps(int page)
+    
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheeps(int page)
     {
         return await _cheepRepository.GetCheepsAsync(page);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string authorId)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthor(int page, string authorId)
     {
         return await _cheepRepository.GetCheepsFromAuthorAsync(page, authorId);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string authorId)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimeline(int page, string authorId)
     {
         return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, authorId);
     }
@@ -70,7 +73,7 @@ public class CheepService : ICheepService
     {
         return await _authorRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
     }
-
+    
     public async Task<List<string>> GetFollowing(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
     }

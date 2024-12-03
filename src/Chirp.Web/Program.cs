@@ -1,5 +1,6 @@
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Chirp.Repositories;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,9 +18,11 @@ builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Dat
 
 builder.Services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ChirpDBContext>();
 
+builder.Services.AddScoped<IAchievementRepository, AchievementRepository>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<ICheepService, CheepService>();
+builder.Services.AddScoped<IAchievementService, AchievementService>();
 
 var clientId = builder.Configuration["authentication_github_clientId"];
 var clientSecret = builder.Configuration["authentication_github_clientSecret"];

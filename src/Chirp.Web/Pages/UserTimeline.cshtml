@@ -9,26 +9,36 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author") as string;
-    var author = await UserManager.GetUserAsync(User);
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
-
-    @if (User.Identity!.IsAuthenticated && routeName == author!.Name)
-    {
-        <a>It worked!</a>
-    }
-    else if (Model.Bio == null)
-    {
-        <a>@routeName has no bio yet...</a>
-    }
     
-    <div>
-        <em>@Model.Bio</em>
-    </div>
+    @if (User.Identity!.IsAuthenticated)
+    {
+        var author = await UserManager.GetUserAsync(User);
 
-    <partial name="_CheepFormPartial" model="Model.FormData" />
+        if (routeName == author!.Name)
+        {
+            if (Model.Bio == null)
+            {
+                <a>@routeName has no bio yet...</a>
+            }
+            else
+            {
+                <div>
+                    <em>@Model.Bio</em>
+                </div>
+            }
+            
+            <partial name="_CheepFormPartial" model="Model.FormData" />
+            
+            <div style="display: flex; gap: 20px;">
+                <partial name="_FollowedByCardPartial"/>
+                <partial name="_AchievementCardPartial" model="author" />
+            </div>   
+        }
+    }
 
     @if (Model.Cheeps.Any())
     {
@@ -36,7 +46,7 @@
     }
     else
     {
-        <em>There are no cheeps so far.</em>
+        <div style="margin-top: 10px;"><em>There are no cheeps so far.</em></div>
     }
 </div>
 
