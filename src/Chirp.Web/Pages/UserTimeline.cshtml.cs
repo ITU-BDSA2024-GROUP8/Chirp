@@ -15,19 +15,18 @@ public class UserTimelineModel : BaseCheepFormPage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-        Cheeps = await _service.GetCheeps(PageNumber);
 
         if(User.Identity!.IsAuthenticated){
             var currentAuthor = await _userManager.GetUserAsync(User);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
-                Cheeps = await _service.GetCheepsFromUserTimeline(PageNumber, author);
+                (Cheeps, CheepCount) = await _service.GetCheepsFromUserTimeline(PageNumber, author);
             } else {
-                Cheeps = await _service.GetCheepsFromAuthor(PageNumber, author);
+                (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, author);
             }
             await PopulateFollows();
         } else {
-            Cheeps = await _service.GetCheepsFromAuthor(PageNumber, author);
+            (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, author);
         }
 
         return Page();

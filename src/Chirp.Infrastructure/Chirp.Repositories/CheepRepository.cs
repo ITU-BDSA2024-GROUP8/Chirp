@@ -8,9 +8,9 @@ namespace Chirp.Infrastructure.Chirp.Repositories;
 
 public interface ICheepRepository
 {
-    public Task<List<CheepDTO>> GetCheepsAsync(int page);
-    public Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author);
-    public Task <List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string author);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string author);
     public Task NewCheepAsync(string authorName, string authorEmail, string text);
     public Task PostCheepAsync(Cheep cheep);
 }
@@ -28,9 +28,9 @@ public class CheepRepository : ICheepRepository
         _achievementRepository = achievementRepository;
     }
     
-    public async Task<List<CheepDTO>> GetCheepsAsync(int page)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page)
     {
-        var query = (
+        var query =
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
@@ -41,14 +41,14 @@ public class CheepRepository : ICheepRepository
                 AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
-            }).Skip((page*32)-32).Take(32);
+            };
         
-        return await query.ToListAsync();
+        return (await query.Skip((page*32)-32).Take(32).ToListAsync(), await query.CountAsync());
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromAuthorAsync(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string author)
     {
-        var query = (
+        var query =
             from c in _dbContext.Cheeps
             join a in _dbContext.Authors 
                 on c.AuthorId equals a.Id
@@ -60,14 +60,14 @@ public class CheepRepository : ICheepRepository
                 AuthorName = a.Name,
                 Message = c.Text,
                 Timestamp = c.TimeStamp
-            }).Skip((page*32)-32).Take(32);
+            };
         
-        return await query.ToListAsync();
+        return (await query.Skip((page*32)-32).Take(32).ToListAsync(), await query.CountAsync());
     }
     
-    public async Task<List<CheepDTO>> GetCheepsFromUserTimelineAsync(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string author)
     {
-        var query = (
+        var query =
             from cheep in _dbContext.Cheeps
             join a in _dbContext.Authors
                    on cheep.AuthorId equals a.Id
@@ -79,9 +79,9 @@ public class CheepRepository : ICheepRepository
                 AuthorName = a.Name,
                 Message = cheep.Text,
                 Timestamp = cheep.TimeStamp
-            }).Skip((page*32)-32).Take(32);
+            };
 
-        return await query.ToListAsync();
+        return (await query.Skip((page*32)-32).Take(32).ToListAsync(), await query.CountAsync());
     }
     
     public async Task NewCheepAsync(string authorName, string authorEmail, string text)

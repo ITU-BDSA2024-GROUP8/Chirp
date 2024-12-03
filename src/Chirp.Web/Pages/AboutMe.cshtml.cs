@@ -14,16 +14,17 @@ public class AboutMeModel : PageModel
     protected readonly IAchievementService _achievementService;
     protected readonly UserManager<Author> _userManager;
     public required int PageNumber { get; set; }
+    public required int CheepCount { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public List<string> Follows { get; set; }
+    public required List<string> Follows { get; set; }
     public required List<Achievement> Achievements { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
     
 
-    public AboutMeModel(ICheepService service, IAchievementService achievementService, UserManager<Author> userManager)
+    public AboutMeModel(ICheepService cheepService, IAchievementService achievementService, UserManager<Author> userManager)
     {
-        _cheepService = service;
+        _cheepService = cheepService;
         _achievementService = achievementService;
         _userManager = userManager;
         Cheeps = new List<CheepDTO>();
@@ -40,7 +41,7 @@ public class AboutMeModel : PageModel
             var currentAuthor = await _userManager.GetUserAsync(User);
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
-            Cheeps = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
             Follows = await _cheepService.GetFollowing(currentAuthor.Id);
             Achievements = await _achievementService.GetAuthorAchievements(currentAuthor.Id);
         }

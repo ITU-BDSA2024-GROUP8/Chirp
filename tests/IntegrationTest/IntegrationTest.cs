@@ -21,8 +21,8 @@ public class IntegrationTest
         // Create the service
         ICheepService cheepService = new CheepService(cheepRepository, authorRepository);
         
-        var cheeps = await cheepService.GetCheeps(1);
-        var cheepsFromAuthor = await cheepService.GetCheepsFromAuthor(1, author);
+        var (cheeps, _) = await cheepService.GetCheeps(1);
+        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthor(1, author);
 
         // Assert we have two and only two cheeps
         Assert.Equal(2, cheeps.Count);
@@ -42,8 +42,8 @@ public class IntegrationTest
         var authorRepository = new AuthorRepository(context, achievementRepository);
         var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
-        var cheeps = await cheepRepository.GetCheepsAsync(1);
-        var cheepsFromAuthor = await cheepRepository.GetCheepsFromAuthorAsync(1, author);
+        var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
+        var (cheepsFromAuthor, _) = await cheepRepository.GetCheepsFromAuthorAsync(1, author);
 
         // Assert we have two and only two cheeps
         Assert.Equal(2, cheeps.Count);
@@ -82,13 +82,13 @@ public class IntegrationTest
         var authorRepository = new AuthorRepository(context, achievementRepository);
         var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
-        var cheeps = await cheepRepository.GetCheepsAsync(1);
+        var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
         // Assert we have two and only two cheeps
         Assert.Equal(2, cheeps.Count);
 
         // Create a new cheep
         await cheepRepository.NewCheepAsync(authorName, email, "New Cheep!");
-        cheeps = await cheepRepository.GetCheepsAsync(1);
+        (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
 
         // Assert we have three and only three cheeps
         Assert.Equal(3, cheeps.Count);
@@ -136,7 +136,7 @@ public class IntegrationTest
         var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
         
         // Get initial timeline
-        var timeline = await cheepRepository.GetCheepsFromUserTimelineAsync(1, authorName);
+        var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, authorName);
         var initialCount = timeline.Count;
 
         // Create a new author and have the test user follow them
@@ -156,7 +156,7 @@ public class IntegrationTest
         await cheepRepository.PostCheepAsync(newCheep);
 
         // Get updated timeline
-        var updatedTimeline = await cheepRepository.GetCheepsFromUserTimelineAsync(1, authorName);
+        var (updatedTimeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, authorName);
         
         // Timeline should now include the new cheep
         Assert.Equal(initialCount + 1, updatedTimeline.Count);

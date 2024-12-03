@@ -4,9 +4,9 @@ using Chirp.Infrastructure.Models;
 
 public interface ICheepService
 {
-    public Task<List<CheepDTO>> GetCheeps(int page);
-    public Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author);
-    public Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string author);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheeps(int page);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthor(int page, string author);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimeline(int page, string author);
     public Task PostCheep(Cheep cheep);
     public Task FollowAuthor(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthor(string currentAuthorName, string targetAuthorName);
@@ -27,17 +27,17 @@ public class CheepService : ICheepService
         _authorRepository = authorRepository;
     }
 
-    public async Task<List<CheepDTO>> GetCheeps(int page)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheeps(int page)
     {
         return await _cheepRepository.GetCheepsAsync(page);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromAuthor(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthor(int page, string author)
     {
         return await _cheepRepository.GetCheepsFromAuthorAsync(page, author);
     }
 
-    public async Task<List<CheepDTO>> GetCheepsFromUserTimeline(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimeline(int page, string author)
     {
         return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, author);
     }
