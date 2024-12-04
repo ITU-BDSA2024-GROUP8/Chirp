@@ -46,10 +46,17 @@ jobs:
       
     - name: Install Playwright browsers
       run: playwright install
+      
+ 
+    - name: List build directory contents
+      run: ls -R bin/Debug/net8.0
+      shell: bash
 
-    - name: Install Playwright browsers
+
+    - name: Install Playwright dependencies
       run: pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
-
+      shell: pwsh
+   
     # Execute all unit tests in the test project
     - name: Execute unit tests
       run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
