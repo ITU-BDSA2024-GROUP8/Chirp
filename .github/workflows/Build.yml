@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "AdrianVT-patch-7" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "AdrianVT-patch-7" ]
 
 jobs:
   build:
@@ -35,9 +35,21 @@ jobs:
     - name: Restore the application
       run: dotnet restore $Solution_Name
 
-    # Execute all unit tests in the test project
-    - name: Execute unit tests
-      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
+    - name: Build & Install
+      run: dotnet build
+      
+    - name: Install Playwright CLI
+      run: dotnet tool install --global Microsoft.Playwright.CLI
+
+    - name: Install Playwright browsers
+      run: playwright install
+    
+   # Run tests
+    - name: Run tests
+      env:
+        authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+        authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}  
 
     # Build the application
     - name: Build the application
