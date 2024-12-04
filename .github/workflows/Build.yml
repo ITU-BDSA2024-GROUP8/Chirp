@@ -45,7 +45,7 @@ jobs:
       run: dotnet tool install --global Microsoft.Playwright.CLI
       
     - name: Install Playwright browsers
-      run: playwright install
+      run: pwsh -c "playwright install"
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
