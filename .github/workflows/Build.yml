@@ -34,6 +34,9 @@ jobs:
     # Restore the application
     - name: Restore the application
       run: dotnet restore $Solution_Name
+      
+    - name: Install Playwright browsers
+      run: pwsh -c "playwright install"
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
