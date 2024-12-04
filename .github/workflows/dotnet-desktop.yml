@@ -40,9 +40,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "NewPlayrightTests" ]
+    branches: [ "AdrianVT-patch-7" ]
   pull_request:
-    branches: [ "NewPlayrightTests" ]
+    branches: [ "AdrianVT-patch-7" ]
 
 jobs:
 
