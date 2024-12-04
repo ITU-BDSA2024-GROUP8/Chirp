@@ -26,6 +26,13 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Build & Install
+        run: dotnet build
+      
+      - name: Ensure browsers are installed
+        run: pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+
+    
       - name: Run tests
         run: dotnet test --no-build --configuration Release
 
