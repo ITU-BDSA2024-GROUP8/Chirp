@@ -49,7 +49,7 @@ jobs:
       env:
         authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
         authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
-      run: dotnet test --configuration ${{ matrix.configuration }} Release --verbosity normal
+      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}  
 
     # Build the application
     - name: Build the application
