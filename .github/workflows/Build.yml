@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "NewPlayrightTests" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "NewPlayrightTests" ]
 
 jobs:
   build:
