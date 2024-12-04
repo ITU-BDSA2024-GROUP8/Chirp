@@ -48,7 +48,7 @@ jobs:
       run: playwright install
 
     - name: Install Playwright browsers
-      run: pwsh -c "pwsh bin/Release/net8.0/playwright.ps1 install"
+      run: pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
