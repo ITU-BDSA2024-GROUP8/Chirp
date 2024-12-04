@@ -47,17 +47,23 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install
       
- 
-    - name: List build directory contents
-      run: ls -R bin/Debug/net8.0
+  
+    - name: List all files after build
+      run: ls -R
       shell: bash
 
 
-    - name: Install Playwright dependencies
-      run: pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
-      shell: pwsh
-   
-    # Execute all unit tests in the test project
+    - name: Locate Playwright script
+      run: |
+        SCRIPT_PATH=$(find . -name "playwright.ps1" | head -n 1)
+        if [ -z "$SCRIPT_PATH" ]; then
+          echo "playwright.ps1 not found!"
+          exit 1
+        fi
+        echo "Found playwright.ps1 at $SCRIPT_PATH"
+        pwsh "$SCRIPT_PATH" install --with-deps
+      shell: bash
+
     - name: Execute unit tests
       run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
 
