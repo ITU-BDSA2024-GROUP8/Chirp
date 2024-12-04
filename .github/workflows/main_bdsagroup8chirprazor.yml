@@ -35,8 +35,12 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install
     
+      # Run tests
       - name: Run tests
-        run: dotnet test --no-build --configuration Release
+        env:
+          authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+          authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+        run: dotnet test --configuration Release --verbosity normal
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
