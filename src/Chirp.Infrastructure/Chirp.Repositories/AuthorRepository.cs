@@ -13,6 +13,8 @@ public interface IAuthorRepository
     public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
+    public Task<List<string>> GetFollowedAsync(string authorId);
+
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
@@ -107,6 +109,16 @@ public class AuthorRepository : IAuthorRepository
         return await query.ToListAsync();
     }
     
+    public async Task<List<string>> GetFollowedAsync(string authorId)
+    {
+        var query = (
+            from a in _dbContext.AuthorFollowers
+            where a.FollowingId == authorId
+            select a.Follower.Name);
+        
+        return await query.ToListAsync();
+    }
+
     public async Task DeleteCheepsByAuthorAsync(string authorId)
     {
         var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);

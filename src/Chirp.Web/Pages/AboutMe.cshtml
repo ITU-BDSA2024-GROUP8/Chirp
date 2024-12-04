@@ -14,26 +14,7 @@
             <p><strong>Name:</strong> @Model.Name</p>
             <p><strong>Email:</strong> @Model.Email</p>
         </div>
-
-        <div>
-            <h3>People I Follow</h3>
-            @if (Model.Follows != null && Model.Follows.Any())
-            {
-                <ul>
-                    @foreach (var follow in Model.Follows)
-                    {
-                        <li>
-                            <a href="/@follow">@follow</a>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p>You are not following anyone yet.</p>
-            }
-        </div>
-
+    
         <div>
             <h3>My Cheeps</h3>
             @if (Model.Cheeps.Any())

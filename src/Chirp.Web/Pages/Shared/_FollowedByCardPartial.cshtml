@@ -1,18 +1,46 @@
-﻿<div class="followers-card">
-    <h3 class="card-heading">Followers</h3>
+﻿@model Chirp.Web.Pages.UserTimelineModel
+
+<div class="followers-card">
+    <h3 class="card-heading">
+        <a class="button" href="#popup1">
+            Followers: @Model.FollowedList.Count
+        </a>
+    </h3>
     <ul class="followers-ul">
         <li>
-            <a href="/name">Person 1</a>
+            @if (Model.FollowedList != null && Model.FollowedList.Any())
+            {
+                @foreach (var follower in Model.FollowedList.Take(3))
+                {
+                    <li>
+                        <a href="/@follower">@follower</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <p>No users are following this user.</p>
+            }
         </li>
         <li>
-            <a href="/name">Person 2</a>
-        </li>
-        <li>
-            <a href="/name">Person 3</a>
-        </li>
-        <li>
-            <a href="/name">Person 4</a>
+            <h3 class="card-heading">
+                <a class="button" href="#popup2">
+                    Following: @Model.FollowingList.Count
+                </a>
+            </h3>
+            @if (Model.FollowingList != null && Model.FollowingList.Any())
+            {
+                @foreach (var following in Model.FollowingList.Take(3))
+                {
+                    <li>
+                        <a href="/@following">@following</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <p>You are not following anyone yet.</p>
+            }
         </li>
     </ul>
-    <p style="margin: 0;">And 12 more...</p>
 </div>

@@ -4,7 +4,7 @@
 @inject UserManager<Author> UserManager
 
 @model Chirp.Web.Pages.UserTimelineModel
-    
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -23,7 +23,7 @@
         if (routeName == author!.Name)
         {
             <div style="display: flex; gap: 20px;">
-                <partial name="_FollowedByCardPartial"/>
+                <partial name="_FollowedByCardPartial" model="Model" />
                 <partial name="_AchievementCardPartial" model="author" />
             </div>   
         }

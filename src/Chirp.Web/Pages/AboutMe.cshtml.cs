@@ -16,7 +16,7 @@ public class AboutMeModel : PageModel
     public required int PageNumber { get; set; }
     public required int CheepCount { get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
-    public required List<string> Follows { get; set; }
+    
     public required List<Achievement> Achievements { get; set; }
     public required string Name { get; set; }
     public required string Email { get; set; }
@@ -28,7 +28,7 @@ public class AboutMeModel : PageModel
         _achievementService = achievementService;
         _userManager = userManager;
         Cheeps = new List<CheepDTO>();
-        Follows = new List<string>();
+       
         Achievements = new List<Achievement>();
     }
 
@@ -42,7 +42,7 @@ public class AboutMeModel : PageModel
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
             (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
-            Follows = await _cheepService.GetFollowing(currentAuthor.Id);
+           
             Achievements = await _achievementService.GetAuthorAchievements(currentAuthor.Id);
         }
         return Page();

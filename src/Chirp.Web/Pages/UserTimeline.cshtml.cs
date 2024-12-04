@@ -1,15 +1,21 @@
-﻿using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Models;
+﻿using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
+using Chirp.Infrastructure.Chirp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : BaseCheepFormPage
-{
-    public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
-        : base(service, userManager) {}
+{   
+    protected readonly ICheepService _cheepService;
+    public required List<string> FollowingList { get; set; }
+    public required List<string> FollowedList { get; set; }
+    public UserTimelineModel(ICheepService service, UserManager<Author> userManager) : base(service, userManager) {
+        FollowingList = new List<string>();
+        FollowedList = new List<string>();
+        _cheepService = service;
+    }
 
     public async Task<ActionResult> OnGet(string author)
     {
@@ -18,6 +24,8 @@ public class UserTimelineModel : BaseCheepFormPage
 
         if(User.Identity!.IsAuthenticated){
             var currentAuthor = await _userManager.GetUserAsync(User);
+            FollowingList = await _cheepService.GetFollowing(currentAuthor.Id);
+            FollowedList = await _cheepService.GetFollowers(currentAuthor.Id);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
                 (Cheeps, CheepCount) = await _service.GetCheepsFromUserTimeline(PageNumber, author);
