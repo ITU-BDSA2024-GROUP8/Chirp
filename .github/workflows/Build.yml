@@ -36,7 +36,7 @@ jobs:
       run: dotnet restore $Solution_Name
       
     - name: Install Playwright browsers
-      run: pwsh -c "playwright install"
+      run: pwsh bin/Debug/net8.0/playwright.ps1 install 
 
     # Execute all unit tests in the test project
     - name: Execute unit tests
