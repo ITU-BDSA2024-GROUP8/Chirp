@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "AdrianVT-patch-7" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "AdrianVT-patch-7" ]
+    branches: [ "main" ]
 
 jobs:
   build:
