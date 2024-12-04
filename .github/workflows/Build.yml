@@ -34,7 +34,7 @@ jobs:
     # Restore the application
     - name: Restore the application
       run: dotnet restore $Solution_Name
-      
+
     - name: Build & Install
       run: dotnet build
       
