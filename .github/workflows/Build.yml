@@ -44,8 +44,12 @@ jobs:
     - name: Install Playwright browsers
       run: playwright install
     
-    - name: Execute unit tests
-      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
+   # Run tests
+    - name: Run tests
+      env:
+        authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+        authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
+      run: dotnet test --configuration ${{ matrix.configuration }} Release --verbosity normal
 
     # Build the application
     - name: Build the application
