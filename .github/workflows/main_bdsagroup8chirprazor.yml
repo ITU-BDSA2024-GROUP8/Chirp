@@ -2,9 +2,9 @@ name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup8chirprazor
 
 on:
   push:
-    branches: [ "NewPlayrightTests" ]
+    branches: [ "AdrianVT-patch-7" ]
   pull_request:
-    branches: [ "NewPlayrightTests" ]
+    branches: [ "AdrianVT-patch-7" ]
   workflow_dispatch:
 
 jobs:
