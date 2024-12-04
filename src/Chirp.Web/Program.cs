@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add user secrets
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -87,4 +92,9 @@ using (var scope = app.Services.CreateScope())
     if(DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
 }
 
+//The tests use the instead of a delay to know when the server is ready
+app.Logger.LogInformation("Application started and listening on port 5273");
+
 app.Run();
+
+public partial class Program() {}
