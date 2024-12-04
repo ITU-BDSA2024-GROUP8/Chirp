@@ -38,8 +38,11 @@ jobs:
     - name: Build & Install
       run: dotnet build
       
-    - name: Ensure browsers are installed
-      run: pwsh bin/Debug/net8.0/playwright.ps1 install --with-deps
+    - name: Install Playwright CLI
+      run: dotnet tool install --global Microsoft.Playwright.CLI
+
+    - name: Install Playwright browsers
+      run: playwright install
     
     - name: Execute unit tests
       run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
