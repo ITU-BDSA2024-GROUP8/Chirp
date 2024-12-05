@@ -9,7 +9,6 @@ namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : BaseCheepFormPage
 {
-    // public required string? Bio { get; set; }
     [BindProperty]
     public BioText BioText { get; set; }
 
@@ -52,7 +51,8 @@ public class UserTimelineModel : BaseCheepFormPage
     public async Task<ActionResult> OnPostUpdateBio(string newBio)
     {
         if (User.Identity?.IsAuthenticated != true) return Page();
-        
+
+        ModelState.Remove("Message");
         if (!ModelState.IsValid) return Page();
         
         var currentAuthor = await _userManager.GetUserAsync(User);
