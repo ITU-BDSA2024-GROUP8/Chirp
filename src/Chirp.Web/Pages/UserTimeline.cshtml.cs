@@ -48,10 +48,9 @@ public class UserTimelineModel : BaseCheepFormPage
         return Page();
     }
     
-    public async Task<ActionResult> OnPostUpdateBio(string newBio)
+    public async Task<ActionResult> OnPostUpdateBio(string? newBio)
     {
         if (User.Identity?.IsAuthenticated != true) return Page();
-
         ModelState.Remove("Message");
         if (!ModelState.IsValid) return Page();
         

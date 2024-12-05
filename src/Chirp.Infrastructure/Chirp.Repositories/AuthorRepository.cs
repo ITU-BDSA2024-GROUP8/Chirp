@@ -13,7 +13,7 @@ public interface IAuthorRepository
     public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task<string> UpdateBioAsync(Author author, string newBio);
+    public Task<string?> UpdateBioAsync(Author author, string? newBio);
     public Task DeleteCheepsByAuthorAsync(string authorId);
     public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
@@ -108,7 +108,7 @@ public class AuthorRepository : IAuthorRepository
         return await query.ToListAsync();
     }
 
-    public async Task<string> UpdateBioAsync(Author author, string newBio)
+    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
     {
         author.Bio = newBio;
         
