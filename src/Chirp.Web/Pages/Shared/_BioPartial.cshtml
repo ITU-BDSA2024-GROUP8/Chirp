@@ -1,0 +1,92 @@
+﻿@model Chirp.Web.Pages.Models.BioModel;
+@inject ICheepService cheepService;
+
+@{
+    var routeName = Model.RouteName;
+    var isMyBio = Model.IsMyBio;
+    var author = await cheepService.GetAuthorByName(routeName);
+
+    <style>
+        .link-style-button-edit {
+            background-image: url("images/editButton.svg");
+            padding: 0.7em;
+        }
+
+        .link-style-button-save {
+            background-image: url("images/saveButton.svg");
+            padding: 1em;
+        }
+
+        .link-style-button-edit, .link-style-button-save {
+            border: none;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+            cursor: pointer;
+            background-color: transparent;
+            margin: 0;
+        }
+        
+        .formWrapper {
+            display: flex;
+            justify-items: center;
+        }
+    </style>
+    
+    <script>
+    function enableEditing() {
+        const bioSpan = document.getElementById('authorBio');
+        const editButton = document.getElementById('editButton');
+        const editInput = document.getElementById('editInput');
+        const saveButton = document.getElementById('saveButton');
+
+        // Hide the text and the edit button
+        bioSpan.style.display = 'none';
+        editButton.style.display = 'none';
+
+        // Show the input and the save button
+        editInput.style.display = 'inline';
+        saveButton.style.display = 'inline';
+        saveButton.style.position = 'relative';
+        editInput.style.position = 'relative';
+
+        // Focus on the input field
+        editInput.focus();
+    }
+    </script>
+}
+
+@if (isMyBio)
+{
+    if (string.IsNullOrEmpty(author!.Bio))
+    {
+            <span id="authorBio">@author!.Name has no bio yet...</span>
+            <form class="formWrapper" method="post" asp-page-handler="UpdateBio" style="display:flex;">
+                <button id="editButton" type="button" class="link-style-button-edit" onclick="enableEditing()"></button>
+                <input type="text" name="newBio" id="editInput" style="display:none; position: absolute;" value="@author.Bio" placeholder="Write your new bio here..." maxlength="300"/>
+                <button id="saveButton" type="submit" class="link-style-button-save" style="display:none; position: absolute;"></button>
+            </form>
+    }
+    else
+    {
+            <span id="authorBio">@author.Bio</span>
+            <form class="formWrapper" method="post" asp-page-handler="UpdateBio" style="display:flex;">
+                <button id="editButton" type="button" class="link-style-button-edit" onclick="enableEditing()"></button>
+                <input type="text" name="newBio" id="editInput" style="display:none; position: absolute;" value="@author.Bio" placeholder="Write your new bio here..." maxlength="300"/>
+                <button id="saveButton" type="submit" class="link-style-button-save" style="display:none; position: absolute;"></button>
+            </form>
+    }
+}
+else
+{
+    if (string.IsNullOrEmpty(author!.Bio))
+    {
+        <a>@(author.Name) has no bio yet...</a>
+    }
+    else
+    {
+        <div>
+            <em>@author.Bio</em>
+        </div>
+    }
+}

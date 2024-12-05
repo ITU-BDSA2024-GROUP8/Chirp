@@ -1,5 +1,6 @@
 ﻿@page "/{author}"
 @using Chirp.Infrastructure.Models
+@using Chirp.Web.Pages.Models
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Author> UserManager
 
@@ -13,31 +14,30 @@
 
 <div>
     <h2> @routeName's Timeline </h2>
-    
+
     @if (User.Identity!.IsAuthenticated)
     {
         var author = await UserManager.GetUserAsync(User);
-
+    
         if (routeName == author!.Name)
         {
-            if (Model.Bio == null)
-            {
-                <a>@routeName has no bio yet...</a>
-            }
-            else
-            {
-                <div>
-                    <em>@Model.Bio</em>
-                </div>
-            }
-            
+            <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = true }' />
+    
             <partial name="_CheepFormPartial" model="Model.FormData" />
-            
+    
             <div style="display: flex; gap: 20px;">
                 <partial name="_FollowedByCardPartial"/>
                 <partial name="_AchievementCardPartial" model="author" />
-            </div>   
+            </div>
         }
+        else
+        {
+            <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = false }' />
+        }
+    }
+    else
+    {
+        <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = false }' />
     }
 
     @if (Model.Cheeps.Any())
