@@ -9,6 +9,7 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    
     var routeName = HttpContext.GetRouteValue("author") as string;
 }
 
@@ -21,7 +22,11 @@
     
         if (routeName == author!.Name)
         {
-            <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = true }' />
+            <partial name="_BioPartial" model='new BioModel { 
+                 RouteName = routeName, 
+                 IsMyBio = true,
+                 BioText = Model.BioText
+            }' />
     
             <partial name="_CheepFormPartial" model="Model.FormData" />
     
@@ -32,12 +37,20 @@
         }
         else
         {
-            <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = false }' />
+            <partial name="_BioPartial" model='new BioModel { 
+                 RouteName = routeName, 
+                 IsMyBio = false,
+                 BioText = Model.BioText
+            }' />
         }
     }
     else
     {
-        <partial name="_BioPartial" model='new BioModel { RouteName = @routeName, IsMyBio = false }' />
+        <partial name="_BioPartial" model='new BioModel { 
+             RouteName = routeName, 
+             IsMyBio = false,
+             BioText = Model.BioText
+        }' />
     }
 
     @if (Model.Cheeps.Any())

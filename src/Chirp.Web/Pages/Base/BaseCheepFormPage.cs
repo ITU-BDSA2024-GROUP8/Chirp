@@ -12,9 +12,6 @@ public class BaseCheepFormPage : PageModel
 {
     [BindProperty]
     public CheepFormModel? FormData { get; set; }
-
-    [BindProperty]
-    public BioModel BioData{ get; set; }
     public required List<CheepDTO> Cheeps { get; set; }
     public required int PageNumber { get; set; }
     public required int CheepCount { get; set; }
@@ -28,7 +25,6 @@ public class BaseCheepFormPage : PageModel
         _userManager = userManager;
         PageNumber = 1;
         Follows = new Dictionary<string, bool>();
-        BioData = new BioModel() { RouteName = "test", IsMyBio = true, Bio = "test" };
     }
 
     public async Task<ActionResult> OnPost()
@@ -91,16 +87,5 @@ public class BaseCheepFormPage : PageModel
             var isFollowing = await _service.IsFollowing(currentAuthorId, targetAuthorId);
             Follows[targetAuthorId] = isFollowing;
         }
-    }
-    
-    public async Task<ActionResult> OnPostUpdateBio(string newBio)
-    {
-        if (User.Identity?.IsAuthenticated != true) return Page();
-        
-        var currentAuthor = await _userManager.GetUserAsync(User);
-
-        await _service.UpdateBio(currentAuthor!, newBio);
-        
-        return RedirectToPage();
     }
 }

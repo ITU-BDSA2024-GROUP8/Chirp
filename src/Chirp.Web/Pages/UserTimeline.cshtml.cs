@@ -1,6 +1,7 @@
 ﻿using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
+using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,15 @@ namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : BaseCheepFormPage
 {
-    public required string? Bio { get; set; }
+    // public required string? Bio { get; set; }
+    [BindProperty]
+    public BioText BioText { get; set; }
 
     public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
-        : base(service, userManager) {}
+        : base(service, userManager)
+    {
+        BioText = new BioText();
+    }
 
     public async Task<ActionResult> OnGet(string author)
     {
@@ -25,7 +31,7 @@ public class UserTimelineModel : BaseCheepFormPage
             return Page();
         }
         
-        Bio = authorRequest.Bio;
+        BioText.Bio = authorRequest.Bio;
 
         if(User.Identity!.IsAuthenticated){
             var currentAuthor = await _userManager.GetUserAsync(User);
@@ -41,5 +47,18 @@ public class UserTimelineModel : BaseCheepFormPage
         }
 
         return Page();
+    }
+    
+    public async Task<ActionResult> OnPostUpdateBio(string newBio)
+    {
+        if (User.Identity?.IsAuthenticated != true) return Page();
+        
+        if (!ModelState.IsValid) return Page();
+        
+        var currentAuthor = await _userManager.GetUserAsync(User);
+
+        await _service.UpdateBio(currentAuthor!, newBio);
+        
+        return RedirectToPage();
     }
 }

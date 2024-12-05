@@ -46,30 +46,28 @@
         form.style.display = 'flex';
         editButton.style.display = 'none';
 
-        // Show the input and the save button
-        // editInput.style.display = 'inline';
-        // saveButton.style.display = 'inline';
-        // saveButton.style.position = 'relative';
-        // editInput.style.position = 'relative';
-
         // Focus on the input field
-        // editInput.focus();
+        editInput.focus();
+
+        // Place the cursor at the end of the text
+        const length = editInput.value.length;
+        editInput.setSelectionRange(length, length);
     }
     </script>
 }
 
 @if (isMyBio)
 {
-    var hasBio = string.IsNullOrEmpty(author!.Bio);
+    var hasBio = !string.IsNullOrEmpty(author!.Bio);
     <div style="display: flex; gap: 20px; align-items: center;">
         <p id="authorBio" style="margin: 0;">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
-        <form class="bio-form" method="post" asp-page-handler="UpdateBio" style="gap: 20px; flex-grow: 1; align-items: center;">
-            <textarea type="text" name="newBio" id="editInput" style="flex-grow: 1; height: 60px;" asp-for="Bio"></textarea>
+        <form class="bio-form" method="post" asp-page-handler="UpdateBio" style="display: none; gap: 20px; flex-grow: 1; align-items: center;">
+            <textarea type="text" name="newBio" id="editInput" style="flex-grow: 1; height: 60px;" asp-for="BioText.Bio"></textarea>
             <button id="saveButton" type="submit" style="display: flex; gap: 10px; align-items: center; border-radius: 1000px; padding: 4px 16px;" type="button" onclick="enableEditing()">
                 <p style="margin: 0;">Save</p>
                 <div><img src="/images/saveButton.svg" style="width: 25px; fill: red;" alt="save" /></div>
             </button>
-            <span asp-validation-for="Bio" class="text-danger"></span>
+            <span asp-validation-for="BioText.Bio" class="text-danger"></span>
         </form>
         <button id="editButton" style="display: flex; gap: 10px; align-items: center; border-radius: 1000px; padding: 4px 16px;" type="button" onclick="enableEditing()">
             <p style="margin: 0;">Edit</p>
