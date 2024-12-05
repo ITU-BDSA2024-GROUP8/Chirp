@@ -87,4 +87,17 @@ public class BaseCheepFormPage : PageModel
             Follows[targetAuthorId] = isFollowing;
         }
     }
+    
+    public async Task<ActionResult> OnPostUpdateBio(string newBio)
+    {
+        Console.WriteLine("I AM HEEEEEEEEEEEEEEERRRREEEEE");
+        Console.WriteLine(newBio);
+        if (User.Identity?.IsAuthenticated != true) return Page();
+        
+        var currentAuthor = await _userManager.GetUserAsync(User);
+
+        await _service.UpdateBio(currentAuthor!, newBio);
+        
+        return RedirectToPage();
+    }
 }
