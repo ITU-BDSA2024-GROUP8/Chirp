@@ -4,8 +4,8 @@ namespace Chirp.Web.Pages.Models;
 
 public class BioModel
 {
-    [Required (ErrorMessage = "Bio can be over 200 characters")]
-    [StringLength(301)]
+    [StringLength(300)]
+    public string? Bio { get; set; }
     public required string? RouteName { get; set; }
     public required bool IsMyBio { get; set; }
 }

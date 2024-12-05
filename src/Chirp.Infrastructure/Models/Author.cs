@@ -10,7 +10,8 @@ public class Author : IdentityUser
 
     [Required]
     public required string Name { get; set; }
-
+    
+    [StringLength(300)]
     public string? Bio { get; set; }
     
     [Required]
