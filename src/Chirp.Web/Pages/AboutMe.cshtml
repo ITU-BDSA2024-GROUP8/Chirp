@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    Model.SeparateContainers = true;
+
 }
 
 <div>
@@ -27,7 +29,7 @@
             }
         </div>
         
-         <div>
+           <div style="display: flex; gap: 20px;">
             <partial name="_FollowedByCardPartial" model="Model" />
         </div>
 
@@ -36,7 +38,7 @@
             <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                 @foreach (var achievement in Model.Achievements)
                 {
-                        <div class="achievement-container" style="max-width: 45%;">
+                        <div class="achievement-card" style="max-width: 45%;">
                             <img style="width: 110px;" src="@(achievement.ImagePath)" alt="Achievement Badge" />
                             <div>
                                 <h4 class="achievement-heading">@(achievement.Title)</h4>

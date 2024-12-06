@@ -1,13 +1,15 @@
 ﻿@model Chirp.Web.Pages.Base.BaseCheepFormPage
-<div class="followers-card">
-    <h3 class="card-heading">
-        <a class="button" href="#popup1">
-            Followers: @Model.FollowedList.Count
-        </a>
-    </h3>
-    <ul class="followers-ul">
-        <li>
-            @if (Model.FollowedList != null && Model.FollowedList.Any())
+
+@if (Model.SeparateContainers)
+{
+    <div class="followers-card">
+        <h3 class="card-heading">
+            <a class="button" href="#popup1">
+                Followers: @Model.FollowedList.Count
+            </a>
+        </h3>
+        <ul class="followers-ul">
+            @if (Model.FollowedList != null && Model.FollowedList.Count > 0)
             {
                 @foreach (var follower in Model.FollowedList.Take(3))
                 {
@@ -26,14 +28,16 @@
             {
                 <p>No users are following this user.</p>
             }
-        </li>
-        <li>
-            <h3 class="card-heading">
-                <a class="button" href="#popup2">
-                    Following: @Model.FollowingList.Count
-                </a>
-            </h3>
-            @if (Model.FollowingList != null && Model.FollowingList.Any())
+        </ul>
+    </div>
+    <div class="followers-card">
+        <h3 class="card-heading">
+            <a class="button" href="#popup2">
+                Following: @Model.FollowingList.Count
+            </a>
+        </h3>
+        <ul class="followers-ul">
+            @if (Model.FollowingList != null && Model.FollowingList.Count > 0)
             {
                 @foreach (var following in Model.FollowingList.Take(3))
                 {
@@ -52,9 +56,67 @@
             {
                 <p>You are not following anyone yet.</p>
             }
-        </li>
-    </ul>
-</div>
+        </ul>
+    </div>
+}
+else
+{
+    <div class="followers-card">
+        <h3 class="card-heading">
+            <a class="button" href="#popup1">
+                Followers: @Model.FollowedList.Count
+            </a>
+        </h3>
+        <ul class="followers-ul">
+            @if (Model.FollowedList != null && Model.FollowedList.Count > 0)
+            {
+                @foreach (var follower in Model.FollowedList.Take(3))
+                {
+                    <li>
+                        <a href="/@follower" style="color: black; text-decoration: none;">@follower</a>
+                    </li>
+                }
+                @if (Model.FollowedList.Count > 3)
+                {
+                    <li>
+                        <a class="button" href="#popup1">See all followers</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <p>No users are following this user.</p>
+            }
+        </ul>
+        <h3 class="card-heading">
+            <a class="button" href="#popup2">
+                Following: @Model.FollowingList.Count
+            </a>
+        </h3>
+        <ul class="followers-ul">
+            @if (Model.FollowingList != null && Model.FollowingList.Count > 0)
+            {
+                @foreach (var following in Model.FollowingList.Take(3))
+                {
+                    <li>
+                        <a href="/@following" style="color: black; text-decoration: none;">@following</a>
+                    </li>
+                }
+                @if (Model.FollowingList.Count > 3)
+                {
+                    <li>
+                        <a class="button" href="#popup2">See all following</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <p>You are not following anyone yet.</p>
+            }
+        </ul>
+    </div>
+}
+
 <div id="popup1" class="overlay">
     <div class="popup">
         <h2>All Followers</h2>
