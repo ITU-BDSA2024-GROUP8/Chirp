@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [ Debug, Release ]
 
     runs-on: ubuntu-latest
 
@@ -18,31 +18,31 @@ jobs:
       Solution_Name: Chirp.sln
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
-                         
+    
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    # Install the .NET Core SDK
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.x
-
-    # Restore the application
-    - name: Restore the application
-      run: dotnet restore $Solution_Name
-
-    # Execute all unit tests in the test project
-    - name: Execute unit tests
-      run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
-
-    # Build the application
-    - name: Build the application
-      run: dotnet build $Solution_Name --configuration ${{ matrix.configuration }}
-
-    # Publish the application
-    - name: Publish the application
-      run: dotnet publish $Solution_Name --configuration ${{ matrix.configuration }} -o ./publish
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      # Install the .NET Core SDK
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      
+      # Restore the application
+      - name: Restore the application
+        run: dotnet restore $Solution_Name
+      
+      # Execute all unit tests in the test project
+      - name: Execute unit tests
+        run: dotnet test $Solution_Name --configuration ${{ matrix.configuration }}
+      
+      # Build the application
+      - name: Build the application
+        run: dotnet build $Solution_Name --configuration ${{ matrix.configuration }}
+      
+      # Publish the application
+      - name: Publish the application
+        run: dotnet publish $Solution_Name --configuration ${{ matrix.configuration }} -o ./publish

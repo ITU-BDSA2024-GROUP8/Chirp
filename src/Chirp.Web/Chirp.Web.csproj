@@ -3,25 +3,25 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>8691b883-e8d3-47e4-be2a-cac856f24fc0</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>8691b883-e8d3-47e4-be2a-cac856f24fc0</UserSecretsId>
+    </PropertyGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
-        <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
+        <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj"/>
+        <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj"/>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="8.0.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        <PrivateAssets>all</PrivateAssets>
-      </PackageReference>
-      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6" />
+        <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.6"/>
     </ItemGroup>
 </Project>
