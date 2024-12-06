@@ -51,8 +51,11 @@ public class UserTimelineModel : BaseCheepFormPage
     public async Task<ActionResult> OnPostUpdateBio(string? newBio)
     {
         if (User.Identity?.IsAuthenticated != true) return Page();
-        ModelState.Remove("Message");
-        if (!ModelState.IsValid) return Page();
+
+        if (newBio?.Length > 300)
+        {
+            return Page();
+        }
         
         var currentAuthor = await _userManager.GetUserAsync(User);
 

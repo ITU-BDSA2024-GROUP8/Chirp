@@ -29,8 +29,7 @@ public class BaseCheepFormPage : PageModel
 
     public async Task<ActionResult> OnPost()
     {
-        ModelState.Remove("Bio");
-        if (!ModelState.IsValid)
+        if (FormData == null || FormData.Message.Length > 300 || FormData.Message == null)
         {
             return Page();
         }

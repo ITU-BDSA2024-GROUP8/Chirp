@@ -5,33 +5,6 @@
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
     var author = await cheepService.GetAuthorByName(routeName);
-
-    <style>
-        .link-style-button-edit {
-            background-image: url("images/editButton.svg");
-            padding: 0.7em;
-        }
-
-        .link-style-button-save {
-            background-image: url("images/saveButton.svg");
-            padding: 1em;
-        }
-
-        .link-style-button-edit, .link-style-button-save {
-            border: none;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            cursor: pointer;
-            background-color: transparent;
-            margin: 0;
-        }
-        
-        .formWrapper {
-            display: flex;
-            justify-items: center;
-        }
-    </style>
     
     <script>
     function enableEditing() {
