@@ -80,11 +80,48 @@ input[type="submit"] {
     margin: 0;
 }
 
+.div-bio-style {
+    display: flex; 
+    gap: 20px; 
+    align-items: center;
+}
+
+.p-bio {
+    margin: 0;
+}
+
+.bio-form {
+    display: none; 
+    gap: 20px; 
+    flex-grow: 1; 
+    align-items: center;
+}
+
 .formWrapper {
     display: flex;
     justify-items: center;
 }
 
+.edit-bio-text {
+    flex-grow: 1; 
+    height: 60px;
+}
+
+.bio-button {
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+    border-radius: 1000px; 
+    padding: 4px 16px;
+}
+
+.save-bio-button-image {
+    width: 25px; 
+}
+
+.edit-bio-button-image {
+    width: 25px;
+}
 
 div.page {
   background: var(--main);

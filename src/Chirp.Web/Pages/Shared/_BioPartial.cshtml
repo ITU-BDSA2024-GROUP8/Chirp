@@ -5,46 +5,24 @@
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
     var author = await cheepService.GetAuthorByName(routeName);
-    
-    <script>
-    function enableEditing() {
-        const bioP = document.getElementById('authorBio');
-        const editButton = document.getElementById('editButton');
-        const editInput = document.getElementById('editInput');
-        const saveButton = document.getElementById('saveButton');
-        const form = document.getElementsByClassName('bio-form')[0];
-
-        // Hide the text and the edit button
-        bioP.style.display = 'none';
-        form.style.display = 'flex';
-        editButton.style.display = 'none';
-
-        // Focus on the input field
-        editInput.focus();
-
-        // Place the cursor at the end of the text
-        const length = editInput.value.length;
-        editInput.setSelectionRange(length, length);
-    }
-    </script>
 }
 
 @if (isMyBio)
 {
     var hasBio = !string.IsNullOrEmpty(author!.Bio);
-    <div style="display: flex; gap: 20px; align-items: center;">
-        <p id="authorBio" style="margin: 0;">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
-        <form class="bio-form" method="post" asp-page-handler="UpdateBio" style="display: none; gap: 20px; flex-grow: 1; align-items: center;">
-            <textarea type="text" name="newBio" id="editInput" style="flex-grow: 1; height: 60px;" asp-for="BioText.Bio"></textarea>
-            <button id="saveButton" type="submit" style="display: flex; gap: 10px; align-items: center; border-radius: 1000px; padding: 4px 16px;" type="button" onclick="enableEditing()">
-                <p style="margin: 0;">Save</p>
-                <div><img src="/images/saveButton.svg" style="width: 25px; fill: red;" alt="save" /></div>
+    <div class="div-bio-style">
+        <p id="authorBio" class="p-bio">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
+        <form class="bio-form" method="post" asp-page-handler="UpdateBio">
+            <textarea type="text" name="newBio" class="edit-bio-text" id="editInput" asp-for="BioText.Bio"></textarea>
+            <button id="saveButton" class="bio-button" type="submit" type="button" onclick="enableEditing()">
+                <p style="margin: 0; word-break: break-word;">Save</p>
+                <div><img src="/images/saveButton.svg" class="save-bio-button-image" alt="save" /></div>
             </button>
             <span asp-validation-for="BioText.Bio" class="text-danger"></span>
         </form>
-        <button id="editButton" style="display: flex; gap: 10px; align-items: center; border-radius: 1000px; padding: 4px 16px;" type="button" onclick="enableEditing()">
-            <p style="margin: 0;">Edit</p>
-            <div><img src="/images/editButton.svg" style="width: 25px;" alt="edit" /></div>
+        <button id="editButton" class="bio-button" type="button" onclick="enableEditing()">
+            <p class="p-bio">Edit</p>
+            <div><img src="/images/editButton.svg" class="edit-bio-button-image" alt="edit" /></div>
         </button>
     </div>
 }

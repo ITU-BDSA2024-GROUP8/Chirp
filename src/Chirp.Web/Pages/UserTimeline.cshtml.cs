@@ -50,8 +50,10 @@ public class UserTimelineModel : BaseCheepFormPage
     
     public async Task<ActionResult> OnPostUpdateBio(string? newBio)
     {
+        newBio = newBio?.Trim();
+        
         if (User.Identity?.IsAuthenticated != true) return Page();
-
+        
         if (newBio?.Length > 300)
         {
             return Page();
