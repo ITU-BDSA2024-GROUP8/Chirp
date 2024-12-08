@@ -10,11 +10,11 @@ using Xunit;
 
 namespace Chirp.Tests
 {
-    public class IntegrationTest : IClassFixture<TestFixture<Program>>, IAsyncLifetime
+    public class End2End : IClassFixture<TestFixture<Program>>, IAsyncLifetime
     {
         private readonly TestFixture<Program> _fixture;
 
-        public IntegrationTest(TestFixture<Program> fixture)
+        public End2End(TestFixture<Program> fixture)
         {
             _fixture = fixture;
         }
@@ -78,7 +78,7 @@ namespace Chirp.Tests
             {
                 throw new InvalidOperationException("BaseAddress is null.");
             }
-            
+
             // Close the browser
             await browser.CloseAsync();
         }

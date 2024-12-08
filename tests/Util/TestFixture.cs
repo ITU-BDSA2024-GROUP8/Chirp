@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace uiIntegrationTest
+namespace Chirp.Tests
 {
     public class TestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
