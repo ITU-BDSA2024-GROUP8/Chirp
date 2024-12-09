@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Playwright;
 using Xunit;
 
-namespace uiIntegrationTest
+
+namespace Chirp.Tests
 {
     public class IntegrationTest : IClassFixture<TestFixture<Program>>, IAsyncLifetime
     {
