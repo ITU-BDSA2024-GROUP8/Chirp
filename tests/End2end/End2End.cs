@@ -31,10 +31,9 @@ namespace Chirp.Tests
 
 
         [Theory]
-        [InlineData("adho@itu.dk", "M32Want_Access")]
-        public async Task Test_LoginUserStandart(string email, string password)
+        [InlineData("end2end@example.com", "End2end1234!", "End2EndUser")]
+        public async Task Test_FullUserJourney(string email, string password, string username)
         {
-
             // Use the client from the fixture
             var client = _fixture.Client;
 
@@ -42,37 +41,68 @@ namespace Chirp.Tests
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true // Set to false if you want to see the browser UI
+                Headless = false // Set to false if you want to see the browser UI
             });
 
             var context = await browser.NewContextAsync();
             var page = await context.NewPageAsync();
 
-
             // Navigate to the login page
             if (client.BaseAddress != null)
             {
-                var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
-                await page.GotoAsync(loginUrl.ToString());
+            
+              var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
+                await page.GotoAsync(registerUrl.ToString());
 
-                // Fill in the login form
+                // Fill in the registration form
+                await page.FillAsync("input[name='Input.Name']", username);
                 await page.FillAsync("input[name='Input.Email']", email);
                 await page.FillAsync("input[name='Input.Password']", password);
+                await page.FillAsync("input[name='Input.ConfirmPassword']", password);
 
-                // Submit the login form
-                await page.ClickAsync("button[type='submit']");
+                // Submit the registration form
+                await page.ClickAsync("button[type='submit'][id='registerSubmit']");
 
                 // Wait for navigation to complete
                 await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-                // Navigate to the login page again to check for redirection
-                await page.GotoAsync(loginUrl.ToString());
-                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
                 // Verify that the user is redirected to the home page
-                // which means the user is logged in since you can't access the login page when logged in
                 var currentUrl = page.Url;
                 Assert.Equal(client.BaseAddress.ToString(), currentUrl);
+
+
+                // Submit a new cheep
+                var cheepMessage = "Hello, world!";
+                await page.FillAsync("input[name='Message']", cheepMessage);
+                await page.ClickAsync("input[type='submit']");
+
+                // Wait for the cheep to appear
+                await page.WaitForSelectorAsync($"text={cheepMessage}");
+
+                // Verify the cheep is displayed
+                var cheepText = await page.InnerTextAsync($"text={cheepMessage}");
+                Assert.Contains(cheepMessage, cheepText);
+
+                // Check for achievements
+                var myTimeLine = new Uri(client.BaseAddress, "/"+username);
+                await page.GotoAsync(myTimeLine.ToString());
+                var achievements = await page.InnerTextAsync(".achievement-heading");
+                Assert.Contains("Novice Cheepster", achievements);
+
+                // Delete the account
+                await page.GotoAsync(new Uri(client.BaseAddress, "/AboutMe").ToString());
+                await page.ClickAsync("button[type='submit'][name='forgetMeBTN']");
+                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+                // Verify the account is deleted
+                var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+                await page.GotoAsync(loginUrl.ToString());
+                await page.FillAsync("input[name='Input.Email']", email);
+                await page.FillAsync("input[name='Input.Password']", password);
+                await page.ClickAsync("button[type='submit']");
+                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+                var errorMessage = await page.InnerTextAsync(".validation-summary-errors");
+                Assert.Contains("Invalid login attempt.", errorMessage);
             }
             else
             {
@@ -82,7 +112,5 @@ namespace Chirp.Tests
             // Close the browser
             await browser.CloseAsync();
         }
-
-
     }
 }
