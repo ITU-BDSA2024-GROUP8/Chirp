@@ -41,7 +41,7 @@ namespace Chirp.Tests
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = false // Set to false if you want to see the browser UI
+                Headless = true // Set to false if you want to see the browser UI
             });
 
             var context = await browser.NewContextAsync();
