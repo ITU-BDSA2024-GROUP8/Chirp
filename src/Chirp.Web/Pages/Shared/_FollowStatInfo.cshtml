@@ -17,7 +17,7 @@
         @if (Model.Connections.Count > 3)
         {
             <li>
-                <a class="button" href="#@Model.PopupId">See all followers</a>
+                <a class="button" href="#@Model.PopupId">@(Model.IsFollowedInfo ? "See all followers" : "See all following")</a>
             </li>
         }
     }
