@@ -2,7 +2,6 @@
     const bioP = document.getElementById('authorBio');
     const editButton = document.getElementById('editButton');
     const editInput = document.getElementById('editInput');
-    const saveButton = document.getElementById('saveButton');
     const form = document.getElementsByClassName('bio-form')[0];
 
     // Hide the text and the edit button
