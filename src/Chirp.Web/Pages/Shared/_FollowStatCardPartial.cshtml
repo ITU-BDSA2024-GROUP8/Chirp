@@ -1,151 +1,26 @@
-﻿@model Chirp.Web.Pages.Base.BaseCheepFormPage
+﻿@using Chirp.Web.Pages.Models
+@model Chirp.Web.Pages.Base.BaseCheepFormPage
 
-@if (Model.SeparateContainers)
+@{
+    var isAboutMePage = ViewData["page"] as string == "about-me";
+}
+
+<partial name="_PopupPartial" model='new PopupModel { PopupId = "popup1", Connections = Model.FollowedList }' />
+<partial name="_PopupPartial" model='new PopupModel { PopupId = "popup2", Connections = Model.FollowingList }' />
+
+@if (isAboutMePage)
 {
     <div class="followers-card">
-        <h3 class="card-heading">
-            <a class="button" href="#popup1">
-                Followers: @Model.FollowedList.Count
-            </a>
-        </h3>
-        <ul class="followers-ul">
-            @if (Model.FollowedList != null && Model.FollowedList.Count > 0)
-            {
-                @foreach (var follower in Model.FollowedList.Take(3))
-                {
-                    <li>
-                        <a href="/@follower" style="color: black; text-decoration: none;">@follower</a>
-                    </li>
-                }
-                @if (Model.FollowedList.Count > 3)
-                {
-                    <li>
-                        <a class="button" href="#popup1">See all followers</a>
-                    </li>
-                }
-            }
-            else
-            {
-                <p>No users are following this user.</p>
-            }
-        </ul>
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup1", IsFollowedInfo = true, Connections = Model.FollowedList }' />
     </div>
     <div class="followers-card">
-        <h3 class="card-heading">
-            <a class="button" href="#popup2">
-                Following: @Model.FollowingList.Count
-            </a>
-        </h3>
-        <ul class="followers-ul">
-            @if (Model.FollowingList != null && Model.FollowingList.Count > 0)
-            {
-                @foreach (var following in Model.FollowingList.Take(3))
-                {
-                    <li>
-                        <a href="/@following" style="color: black; text-decoration: none;">@following</a>
-                    </li>
-                }
-                @if (Model.FollowingList.Count > 3)
-                {
-                    <li>
-                        <a class="button" href="#popup2">See all following</a>
-                    </li>
-                }
-            }
-            else
-            {
-                <p>You are not following anyone yet.</p>
-            }
-        </ul>
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup2", IsFollowedInfo = false, Connections = Model.FollowingList }' />
     </div>
 }
 else
 {
     <div class="followers-card">
-        <h3 class="card-heading">
-            <a class="button" href="#popup1">
-                Followers: @Model.FollowedList.Count
-            </a>
-        </h3>
-        <ul class="followers-ul">
-            @if (Model.FollowedList != null && Model.FollowedList.Count > 0)
-            {
-                @foreach (var follower in Model.FollowedList.Take(3))
-                {
-                    <li>
-                        <a href="/@follower" style="color: black; text-decoration: none;">@follower</a>
-                    </li>
-                }
-                @if (Model.FollowedList.Count > 3)
-                {
-                    <li>
-                        <a class="button" href="#popup1">See all followers</a>
-                    </li>
-                }
-            }
-            else
-            {
-                <p>No users are following this user.</p>
-            }
-        </ul>
-        <h3 class="card-heading">
-            <a class="button" href="#popup2">
-                Following: @Model.FollowingList.Count
-            </a>
-        </h3>
-        <ul class="followers-ul">
-            @if (Model.FollowingList != null && Model.FollowingList.Count > 0)
-            {
-                @foreach (var following in Model.FollowingList.Take(3))
-                {
-                    <li>
-                        <a href="/@following" style="color: black; text-decoration: none;">@following</a>
-                    </li>
-                }
-                @if (Model.FollowingList.Count > 3)
-                {
-                    <li>
-                        <a class="button" href="#popup2">See all following</a>
-                    </li>
-                }
-            }
-            else
-            {
-                <p>You are not following anyone yet.</p>
-            }
-        </ul>
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup1", IsFollowedInfo = true, Connections = Model.FollowedList }' />
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup2", IsFollowedInfo = false, Connections = Model.FollowingList }' />
     </div>
 }
-
-<div id="popup1" class="overlay">
-    <div class="popup">
-        <h2>All Followers</h2>
-        <a class="close" href="#">&times;</a>
-        <div class="content">
-            <ul>
-                @foreach (var follower in Model.FollowedList)
-                {
-                    <li>
-                        <a href="/@follower" style="color: black;">@follower</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-</div>
-<div id="popup2" class="overlay">
-    <div class="popup">
-        <h2>All Following</h2>
-        <a class="close" href="#">&times;</a>
-        <div class="content">
-            <ul>
-                @foreach (var following in Model.FollowingList)
-                {
-                    <li style="color: black;">
-                        <a href="/@following" style="color: black;">@following</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-</div>

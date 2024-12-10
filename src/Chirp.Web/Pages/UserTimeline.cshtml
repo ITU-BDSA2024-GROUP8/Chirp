@@ -7,9 +7,9 @@
 
 @{
     ViewData["Title"] = "Chirp!";
+    ViewData["page"] = "user-timeline";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author") as string;
-    Model.SeparateContainers = false;
 }
 
 <div>

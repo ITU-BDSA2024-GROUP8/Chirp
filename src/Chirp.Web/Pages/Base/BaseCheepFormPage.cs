@@ -19,8 +19,6 @@ public class BaseCheepFormPage : PageModel
     public required List<string> FollowedList { get; set; }
     protected readonly ICheepService _service;
     protected readonly UserManager<Author> _userManager;
-    
-    public bool SeparateContainers { get; set; } = false;
 
     public BaseCheepFormPage(ICheepService service, UserManager<Author> userManager)
     {
