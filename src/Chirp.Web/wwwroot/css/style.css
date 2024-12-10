@@ -44,7 +44,7 @@ input[type="password"] {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    color: var(side-color);
+    color: var(--side-color);
 }
 
 input[type="submit"] {
@@ -58,26 +58,6 @@ input[type="submit"] {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   color: var(--main);
-}
-
-.link-style-button-edit {
-    background-image: url("images/editButton.svg");
-    padding: 0.7em;
-}
-
-.link-style-button-save {
-    background-image: url("images/saveButton.svg");
-    padding: 1em;
-}
-
-.link-style-button-edit, .link-style-button-save {
-    border: none;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    cursor: pointer;
-    background-color: transparent;
-    margin: 0;
 }
 
 .div-bio-style {
@@ -95,11 +75,6 @@ input[type="submit"] {
     gap: 20px; 
     flex-grow: 1; 
     align-items: center;
-}
-
-.formWrapper {
-    display: flex;
-    justify-items: center;
 }
 
 .edit-bio-text {
