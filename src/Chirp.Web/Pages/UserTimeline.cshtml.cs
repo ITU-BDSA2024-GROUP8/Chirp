@@ -1,4 +1,4 @@
-﻿using Chirp.Core.DTOs;
+﻿using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
 using Microsoft.AspNetCore.Identity;
@@ -8,8 +8,8 @@ namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : BaseCheepFormPage
 {
-    public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
-        : base(service, userManager) {}
+    public UserTimelineModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager)
+        : base(cheepService, authorService, userManager) {}
 
     public async Task<ActionResult> OnGet(string author)
     {
@@ -20,13 +20,13 @@ public class UserTimelineModel : BaseCheepFormPage
             var currentAuthor = await _userManager.GetUserAsync(User);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
-                (Cheeps, CheepCount) = await _service.GetCheepsFromUserTimeline(PageNumber, author);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimeline(PageNumber, author);
             } else {
-                (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, author);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, author);
             }
             await PopulateFollows();
         } else {
-            (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, author);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, author);
         }
 
         return Page();

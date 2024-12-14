@@ -11,6 +11,7 @@ namespace Chirp.Web.Pages;
 public class AboutMeModel : PageModel
 {
     protected readonly ICheepService _cheepService;
+    protected readonly IAuthorService _authorService;
     protected readonly IAchievementService _achievementService;
     protected readonly UserManager<Author> _userManager;
     public required int PageNumber { get; set; }
@@ -22,9 +23,10 @@ public class AboutMeModel : PageModel
     public required string Email { get; set; }
     
 
-    public AboutMeModel(ICheepService cheepService, IAchievementService achievementService, UserManager<Author> userManager)
+    public AboutMeModel(ICheepService cheepService, IAuthorService authorService, IAchievementService achievementService, UserManager<Author> userManager)
     {
         _cheepService = cheepService;
+        _authorService = authorService;
         _achievementService = achievementService;
         _userManager = userManager;
         Cheeps = new List<CheepDTO>();
@@ -42,7 +44,7 @@ public class AboutMeModel : PageModel
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
             (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
-            Follows = await _cheepService.GetFollowing(currentAuthor.Id);
+            Follows = await _authorService.GetFollowing(currentAuthor.Id);
             Achievements = await _achievementService.GetAuthorAchievements(currentAuthor.Id);
         }
         return Page();
@@ -56,7 +58,7 @@ public class AboutMeModel : PageModel
         var currentAuthor = await _userManager.GetUserAsync(User);
 
         await _cheepService.DeleteCheepsByAuthor(currentAuthor!.Id);
-        await _cheepService.DeleteFollowersAndFollowing(currentAuthor.Id);
+        await _authorService.DeleteFollowersAndFollowing(currentAuthor.Id);
         await _achievementService.DeleteAuthorAchievements(currentAuthor.Id);
         await _userManager.DeleteAsync(currentAuthor);
 
