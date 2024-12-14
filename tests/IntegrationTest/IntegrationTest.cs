@@ -1,3 +1,5 @@
+using Chirp.Infrastructure.Chirp.Services;
+
 namespace IntegrationTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
