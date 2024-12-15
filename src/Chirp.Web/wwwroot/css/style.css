@@ -435,7 +435,7 @@ ul.nav li a:hover {
     color: #d80606;
 }
 
-.popup .content {
-    max-height: 30%;
-    overflow: auto;
+.popup {
+    max-height: 400px; 
+    overflow-y: auto;  
 }
