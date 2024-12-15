@@ -3,11 +3,13 @@
     const editButton = document.getElementById('editButton');
     const editInput = document.getElementById('editInput');
     const form = document.getElementsByClassName('bio-form')[0];
-
+    const cancelButton = document.getElementById('cancel-button');
+    
     // Hide the text and the edit button
     bioP.style.display = 'none';
-    form.style.display = 'flex';
     editButton.style.display = 'none';
+    form.style.display = 'flex';
+    cancelButton.style.display = 'flex';
 
     // Focus on the input field
     editInput.focus();

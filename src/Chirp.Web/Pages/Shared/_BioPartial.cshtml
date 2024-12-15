@@ -5,18 +5,22 @@
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
     var author = await cheepService.GetAuthorByName(routeName);
+    var hasBio = !string.IsNullOrEmpty(author!.Bio);
 }
 
 @if (isMyBio)
 {
-    var hasBio = !string.IsNullOrEmpty(author!.Bio);
     <div class="div-bio-style">
         <p id="authorBio" class="p-bio">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
         <form class="bio-form" method="post" asp-page-handler="UpdateBio">
             <textarea type="text" name="newBio" class="edit-bio-text" id="editInput" asp-for="BioText.Bio"></textarea>
             <button id="saveButton" class="bio-button" type="submit" type="button" onclick="enableEditing()">
-                <p style="margin: 0; word-break: break-word;">Save</p>
+                <p class="p-bio-edit">Save</p>
                 <div><img src="/images/saveButton.svg" class="save-bio-button-image" alt="save" /></div>
+            </button>
+            <button id="cancel-button" class="bio-button" type="button" onclick="unableEditingButton('@author.Bio')">
+                <p class="p-bio">Cancel</p>
+                <div><img src="/images/cancelButton.svg" class="cancel-button-image" alt="cancel"/></div>
             </button>
             <span asp-validation-for="BioText.Bio" class="text-danger"></span>
         </form>
@@ -28,14 +32,5 @@
 }
 else
 {
-    if (string.IsNullOrEmpty(author!.Bio))
-    {
-        <a>@(author.Name) has no bio yet...</a>
-    }
-    else
-    {
-        <div>
-            <em>@author.Bio</em>
-        </div>
-    }
+    <p id="authorBio" class="p-bio">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
 }
