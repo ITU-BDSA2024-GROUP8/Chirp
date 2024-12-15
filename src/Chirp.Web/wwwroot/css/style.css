@@ -6,13 +6,14 @@
   --link-color: #26776F;
   --link-hover-color: #333;
   --side-color: #571010;
-  --side-color2: #3b0707;
+  --side-color2: #c;
   --side-color3: #cc6e6e;
   --side-color4: #7e2c2c;
   --side-color5: #f3b9b9;
   --button-color: #cc6e6e;
   --button-color2: #7e2c2c;
   --shadow-color: #8d8c8c;
+  --bio-btn-cancel: 59, 7, 7;
 }
 
 
@@ -79,6 +80,11 @@ input[type="submit"] {
 
 #cancel-button {
     display: none;
+    background-color: rgba(var(--bio-btn-cancel), 0.75);
+}
+
+#cancel-button:hover {
+    background-color: rgba(var(--bio-btn-cancel), 0.85);
 }
 
 .formWrapper {
