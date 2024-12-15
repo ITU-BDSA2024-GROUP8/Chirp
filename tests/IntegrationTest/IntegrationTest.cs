@@ -147,6 +147,13 @@ public class IntegrationTest : IAsyncLifetime
     [InlineData("TestUser1", "TestUser2")]
     public async Task Test_FollowAndUnfollowAuthor(string followerName, string targetName)
     {
+        Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
+        Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/First-following-badge.png" };
+        Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/First-follower-badge.png" };
+   
+        context.Achievements.AddRange(ach1, ach2, ach3, ach4);
+        await context.SaveChangesAsync();
 
         // Create the repositories
         var achievementRepository = new AchievementRepository(context);
@@ -174,6 +181,13 @@ public class IntegrationTest : IAsyncLifetime
     [InlineData("TestUser1")]
     public async Task Test_GetCheepsFromUserTimeline(string authorName)
     {
+        Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
+        Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/First-following-badge.png" };
+        Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/First-follower-badge.png" };
+   
+        context.Achievements.AddRange(ach1, ach2, ach3, ach4);
+        await context.SaveChangesAsync();
 
         // Create the repositories
         var achievementRepository = new AchievementRepository(context);
