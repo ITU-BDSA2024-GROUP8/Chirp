@@ -1,12 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.Net.Http;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace Chirp.Tests
 {
