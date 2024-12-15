@@ -13,7 +13,8 @@
   --button-color: #cc6e6e;
   --button-color2: #7e2c2c;
   --shadow-color: #8d8c8c;
-  --bio-btn-cancel: 59, 7, 7;
+  --bio-btn-cancel: #3b0707bf;
+  --bio-btn-cancel-hover: #3b0707d9;
 }
 
 
@@ -80,11 +81,11 @@ input[type="submit"] {
 
 #cancel-button {
     display: none;
-    background-color: rgba(var(--bio-btn-cancel), 0.75);
+    background-color: var(--bio-btn-cancel);
 }
 
 #cancel-button:hover {
-    background-color: rgba(var(--bio-btn-cancel), 0.85);
+    background-color: var(--bio-btn-cancel-hover);
 }
 
 .formWrapper {
@@ -95,6 +96,7 @@ input[type="submit"] {
 .edit-bio-text {
     flex-grow: 1; 
     height: 60px;
+    resize: none;
 }
 
 .p-bio-edit {
