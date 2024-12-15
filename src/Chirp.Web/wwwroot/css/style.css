@@ -418,6 +418,8 @@ ul.nav li a:hover {
     width: 30%;
     position: relative;
     transition: all 5s ease-in-out;
+    max-height: 400px; 
+    overflow-y: auto;  
 }
 
 .popup .close {
@@ -433,9 +435,4 @@ ul.nav li a:hover {
 
 .popup .close:hover {
     color: #d80606;
-}
-
-.popup {
-    max-height: 400px; 
-    overflow-y: auto;  
 }
