@@ -44,7 +44,7 @@ input[type="password"] {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    color: var(side-color);
+    color: var(--side-color);
 }
 
 input[type="submit"] {
