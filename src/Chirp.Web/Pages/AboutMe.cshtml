@@ -2,6 +2,7 @@
 @model Chirp.Web.Pages.AboutMeModel
 @{
     ViewData["Title"] = "Chirp!";
+    ViewData["page"] = "about-me";
     Layout = "Shared/_Layout";
 }
 
@@ -14,26 +15,7 @@
             <p><strong>Name:</strong> @Model.Name</p>
             <p><strong>Email:</strong> @Model.Email</p>
         </div>
-
-        <div>
-            <h3>People I Follow</h3>
-            @if (Model.Follows != null && Model.Follows.Any())
-            {
-                <ul>
-                    @foreach (var follow in Model.Follows)
-                    {
-                        <li>
-                            <a href="/@follow">@follow</a>
-                        </li>
-                    }
-                </ul>
-            }
-            else
-            {
-                <p>You are not following anyone yet.</p>
-            }
-        </div>
-
+    
         <div>
             <h3>My Cheeps</h3>
             @if (Model.Cheeps.Any())
@@ -42,22 +24,29 @@
             }
             else
             {
-                <em>There are no cheeps so far.</em>
+                <p><em>There are no cheeps so far.</em></p>
             }
         </div>
         
+        <div>
+            <h3>Followers and Following</h3>
+            <div style="display: flex; gap: 20px;">
+                <partial name="_FollowStatCardPartial" model="Model"/>
+            </div>
+        </div>
+
         <div>
             <h3>My Achievements</h3>
             <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                 @foreach (var achievement in Model.Achievements)
                 {
-                        <div class="achievement-container" style="max-width: 45%;">
-                            <img style="width: 110px;" src="@(achievement.ImagePath)" alt="Achievement Badge" />
-                            <div>
-                                <h4 class="achievement-heading">@(achievement.Title)</h4>
-                                <p class="achievement-p">@achievement.Description</p>
-                            </div>
+                    <div class="achievement-card" style="width: 300px; flex: none;">
+                        <img style="width: 110px;" src="@(achievement.ImagePath)" alt="Achievement Badge" />
+                        <div style="margin-top: 10px;">
+                            <h4 class="achievement-heading">@(achievement.Title)</h4>
+                            <p class="achievement-p">@achievement.Description</p>
                         </div>
+                    </div>
                 }
             </div>
         </div>

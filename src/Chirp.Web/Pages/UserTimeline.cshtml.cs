@@ -1,4 +1,4 @@
-﻿using Chirp.Infrastructure.Chirp.Services;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +18,7 @@ public class UserTimelineModel : BaseCheepFormPage
 
         if(User.Identity!.IsAuthenticated){
             var currentAuthor = await _userManager.GetUserAsync(User);
+            await LoadFollowersAndFollowing(currentAuthor.Id);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, author);

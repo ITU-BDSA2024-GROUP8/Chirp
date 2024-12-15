@@ -1,0 +1,26 @@
+﻿@using Chirp.Web.Pages.Models
+@model Chirp.Web.Pages.Base.BaseCheepFormPage
+
+@{
+    var isAboutMePage = ViewData["page"] as string == "about-me";
+}
+
+<partial name="_PopupPartial" model='new PopupModel { PopupId = "popup1", Connections = Model.FollowedList }' />
+<partial name="_PopupPartial" model='new PopupModel { PopupId = "popup2", Connections = Model.FollowingList }' />
+
+@if (isAboutMePage)
+{
+    <div class="followers-card">
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup1", IsFollowedInfo = true, Connections = Model.FollowedList }' />
+    </div>
+    <div class="followers-card">
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup2", IsFollowedInfo = false, Connections = Model.FollowingList }' />
+    </div>
+}
+else
+{
+    <div class="followers-card">
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup1", IsFollowedInfo = true, Connections = Model.FollowedList }' />
+        <partial name="_FollowStatInfo" model='new FollowStatInfoModel { PopupId = "popup2", IsFollowedInfo = false, Connections = Model.FollowingList }' />
+    </div>
+}

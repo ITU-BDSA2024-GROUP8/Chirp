@@ -1,0 +1,20 @@
+﻿@model Chirp.Web.Pages.Models.FollowStatInfoModel;
+
+<h3 class="card-heading">
+    <a class="button" href="#@Model.PopupId">
+        @(Model.IsFollowedInfo ? "Followers: " : "Following: ") @Model.Connections.Count
+    </a>
+</h3>
+<ul class="followers-ul">
+
+        @if (Model.Connections.Count > 0)
+        {
+            <li>
+                <a class="button" href="#@Model.PopupId">@(Model.IsFollowedInfo ? "See all followers" : "See all following")</a>
+            </li>
+        }
+    else
+    {
+        <p>@(Model.IsFollowedInfo ? "No users are following you." : "You are not following anyone yet.")</p>
+    }
+</ul>

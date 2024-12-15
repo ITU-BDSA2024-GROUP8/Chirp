@@ -31,7 +31,6 @@ a:hover {
   color: var(--link-hover-color);
 }
 
-
 input[type="email"],
 input[type="text"],
 input[type="tel"],
@@ -44,7 +43,7 @@ input[type="password"] {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    color: var(side-color);
+    color: var(--side-color);
 }
 
 input[type="submit"] {
@@ -94,6 +93,7 @@ div.page > h1 {
 .darkBtn button:hover {
   background-color: var(--button-color2);
 }
+
 div.page h1 img {
   height: 1em;
 }
@@ -326,58 +326,59 @@ ul.nav li a:hover {
 }
 
 .link-style-button {
-  all:unset;
+  all: unset;
   color: var(--link-color);
   cursor: pointer;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .link-style-button:hover {
-  all:unset;
+  all: unset;
   color: var(--link-hover-color);
   cursor: pointer;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .card-heading {
-    margin: 0; 
-    color: #7E2C2C;
+    margin: 0;
+    color: var(--link-color);
 }
 
 .followers-card {
-    width: 30%; 
-    background-color: #F0FAF9; 
-    color: #26776F; 
-    border-radius: 5px; 
-    padding: 10px; 
+    width: 30%;
+    background-color: #F0FAF9;
+    color: #26776F;
+    border-radius: 5px;
+    padding: 10px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
 }
 
 .followers-ul {
-    list-style-type: none; 
-    padding: 0; 
+    list-style-type: none;
+    padding: 0;
     font-weight: bold;
 }
 
 .followers-ul li {
     margin-bottom: 8px;
 }
+
 .achievement-card {
-    flex: 1; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    background-color: #F0FAF9; 
-    color: #000000; 
-    border-radius: 5px; 
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #F0FAF9;
+    color: #000000;
+    border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .25);
 }
 
 .achievement-container {
-    display: flex; 
-    align-items: center; 
-    gap: 20px; 
+    display: flex;
+    align-items: center;
+    gap: 20px;
     max-width: 80%;
 }
 
@@ -387,7 +388,51 @@ ul.nav li a:hover {
 }
 
 .achievement-p {
-    margin: 0; 
-    font-size: 14px; 
+    margin: 0;
+    font-size: 14px;
     font-style: italic;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 30%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    max-height: 400px; 
+    overflow-y: auto;  
+}
+
+.popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+
+.popup .close:hover {
+    color: #d80606;
 }

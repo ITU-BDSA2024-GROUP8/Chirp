@@ -46,6 +46,8 @@ public class AboutMeModel : PageModel
             (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, Name);
             Follows = await _authorService.GetFollowingAsync(currentAuthor.Id);
             Achievements = await _achievementService.GetAuthorAchievementsAsync(currentAuthor.Id);
+            await LoadFollowersAndFollowing(currentAuthor.Id);
+
         }
         return Page();
     }
