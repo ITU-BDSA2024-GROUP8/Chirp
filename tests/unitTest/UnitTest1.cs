@@ -2,38 +2,70 @@ namespace unitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Xunit;
 using Util;
-
-public class UnitTest1
+using System.Threading.Tasks;
+using System;
+using Chirp.Infrastructure.Models;
+public class UnitTest1 : IAsyncLifetime
 {
-    private readonly IAchievementRepository _achievementRepository;
-    private readonly IAuthorRepository _authorRepository;
-    private readonly ICheepRepository _cheepRepository;
-    private readonly ChirpDBContext _context;
+    public static DateTime CurrentTime = DateTime.Now;
+    public ChirpDBContext context { get; private set; }
+    private IAchievementRepository _achievementRepository;
+    private IAuthorRepository _authorRepository;
+    private ICheepRepository _cheepRepository;
 
-    public UnitTest1()
+
+    public async Task InitializeAsync()
     {
-        _context = Util.CreateInMemoryDatabase(1).Result;
-        _achievementRepository = new AchievementRepository(_context);
-        _authorRepository = new AuthorRepository(_context, _achievementRepository);
-        _cheepRepository = new CheepRepository(_context, _authorRepository, _achievementRepository);
+        // Use a new context with more data for this test
+        context = await Util.CreateInMemoryDatabase();
+        _achievementRepository = new AchievementRepository(context);
+        _authorRepository = new AuthorRepository(context, _achievementRepository);
+        _cheepRepository = new CheepRepository(context, _authorRepository, _achievementRepository);
     }
 
-    [Theory]
-    [InlineData("TestUser1")]
-    public async Task Test_FindAuthorByName(string authorName)
+    public async Task DisposeAsync()
     {
-        var authorByName = await _authorRepository.GetAuthorByNameAsync(authorName);
-        Assert.Equal(authorName, authorByName?.Name);
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
-    [Theory]
-    [InlineData("test1@example.dk")]
-    public async Task Test_FindAuthorByEmail(string email)
+
+    [Fact]
+    public async Task Test_FindAuthorByName()
     {
-        var authorByEmail = await _authorRepository.GetAuthorByEmailAsync(email);
-        Assert.Equal(email, authorByEmail?.Email);
+        Author author1 = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(author1);
+        await context.SaveChangesAsync();
+
+        var authorByName = await _authorRepository.GetAuthorByNameAsync(author1.Name);
+        Assert.Equal(author1, authorByName);
+    }
+
+    [Fact]
+    public async Task Test_FindAuthorByEmail()
+    {
+        Author author1 = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(author1);
+        await context.SaveChangesAsync();
+
+        var authorByEmail = await _authorRepository.GetAuthorByEmailAsync(author1.Email);
+        Assert.Equal(author1, authorByEmail);
     }
 
     [Fact]
@@ -65,8 +97,33 @@ public class UnitTest1
     [Fact]
     public async Task Test_CheepsForACertainPage()
     {
-        // Use a new context with more data for this test
-        await using var context = await Util.CreateInMemoryDatabase(2);
+        
+        var a1 = new Author()
+        {
+            Name = "Roger Histand",
+            Email = "Roger+Histand@hotmail.com",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+
+        context.Authors.AddRange(a1);
+
+        for (int i = 0; i < 40; i++)
+        {
+            var cheep = new Cheep
+            {
+                Text = "" + i,
+                AuthorId = a1.Id,
+                TimeStamp = CurrentTime,
+                Author = a1
+            };
+
+            context.Cheeps.AddRange(cheep);
+        }
+        await context.SaveChangesAsync();
+
+
         var achievementRepo = new AchievementRepository(context);
         var authorRepo = new AuthorRepository(context, achievementRepo);
         var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
@@ -81,8 +138,31 @@ public class UnitTest1
     [Fact]
     public async Task Test_CheepsForACertainPageByAuthor()
     {
-        // Use a new context with more data for this test
-        await using var context = await Util.CreateInMemoryDatabase(2);
+          var a1 = new Author()
+        {
+            Name = "Roger Histand",
+            Email = "Roger+Histand@hotmail.com",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+
+        context.Authors.AddRange(a1);
+
+        for (int i = 0; i < 40; i++)
+        {
+            var cheep = new Cheep
+            {
+                Text = "" + i,
+                AuthorId = a1.Id,
+                TimeStamp = CurrentTime,
+                Author = a1
+            };
+
+            context.Cheeps.AddRange(cheep);
+        }
+        await context.SaveChangesAsync();
+
         var achievementRepo = new AchievementRepository(context);
         var authorRepo = new AuthorRepository(context, achievementRepo);
         var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
@@ -96,23 +176,43 @@ public class UnitTest1
         {
             Assert.Equal(cheep.AuthorName, author.Name);
         }
+
     }
 
     [Fact]
     public async Task Test_FollowAndUnfollowAuthor()
     {
+        Author follower = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+         Author following = new Author
+        {
+            Name = "TestUser2",
+            Email = "test2@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(follower, following);
+        await context.SaveChangesAsync();
         // Create two authors
-        var author1 = await _authorRepository.NewAuthorAsync("follower", "follower@test.com");
-        var author2 = await _authorRepository.NewAuthorAsync("following", "following@test.com");
+
+        //var follower = await _authorRepository.NewAuthorAsync("follower", "follower@test.com");
+       // var following = await _authorRepository.NewAuthorAsync("following", "following@test.com");
 
         // Test follow
-        await _authorRepository.FollowAuthorAsync(author1.Id, author2.Id);
-        var isFollowing = await _authorRepository.IsFollowingAsync(author1.Id, author2.Id);
+        await _authorRepository.FollowAuthorAsync(follower.Id, following.Id);
+        var isFollowing = await _authorRepository.IsFollowingAsync(following.Id, following.Id);
         Assert.True(isFollowing);
 
         // Test unfollow
-        await _authorRepository.UnfollowAuthorAsync(author1.Id, author2.Id);
-        isFollowing = await _authorRepository.IsFollowingAsync(author1.Id, author2.Id);
+        await _authorRepository.UnfollowAuthorAsync(following.Id, following.Id);
+        isFollowing = await _authorRepository.IsFollowingAsync(following.Id, following.Id);
         Assert.False(isFollowing);
     }
 
