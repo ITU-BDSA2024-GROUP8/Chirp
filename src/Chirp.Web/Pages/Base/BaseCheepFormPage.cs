@@ -40,7 +40,7 @@ public class BaseCheepFormPage : PageModel
 
         if (author == null) return Page();
         
-        await _cheepService.PostCheep(new Cheep
+        await _cheepService.PostCheepAsync(new Cheep
         {
             AuthorId = author.Id,
             Text = FormData!.Message,
@@ -58,7 +58,7 @@ public class BaseCheepFormPage : PageModel
 
         if (targetAuthorId == currentAuthor!.Id) return Page();
 
-        await _authorService.FollowAuthor(currentAuthor!.Id, targetAuthorId);
+        await _authorService.FollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -71,7 +71,7 @@ public class BaseCheepFormPage : PageModel
         
         if (targetAuthorId == currentAuthor!.Id) return Page();
 
-        await _authorService.UnfollowAuthor(currentAuthor!.Id, targetAuthorId);
+        await _authorService.UnfollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -86,7 +86,7 @@ public class BaseCheepFormPage : PageModel
             if(Follows.ContainsKey(targetAuthorId)){
                 continue;
             }
-            var isFollowing = await _authorService.IsFollowing(currentAuthorId, targetAuthorId);
+            var isFollowing = await _authorService.IsFollowingAsync(currentAuthorId, targetAuthorId);
             Follows[targetAuthorId] = isFollowing;
         }
     }

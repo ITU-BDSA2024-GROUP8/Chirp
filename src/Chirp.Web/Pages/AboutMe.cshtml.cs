@@ -43,9 +43,9 @@ public class AboutMeModel : PageModel
             var currentAuthor = await _userManager.GetUserAsync(User);
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
-            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, Name);
-            Follows = await _authorService.GetFollowing(currentAuthor.Id);
-            Achievements = await _achievementService.GetAuthorAchievements(currentAuthor.Id);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, Name);
+            Follows = await _authorService.GetFollowingAsync(currentAuthor.Id);
+            Achievements = await _achievementService.GetAuthorAchievementsAsync(currentAuthor.Id);
         }
         return Page();
     }
@@ -57,9 +57,9 @@ public class AboutMeModel : PageModel
 
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _cheepService.DeleteCheepsByAuthor(currentAuthor!.Id);
-        await _authorService.DeleteFollowersAndFollowing(currentAuthor.Id);
-        await _achievementService.DeleteAuthorAchievements(currentAuthor.Id);
+        await _cheepService.DeleteCheepsByAuthorAsync(currentAuthor!.Id);
+        await _authorService.DeleteFollowersAndFollowingAsync(currentAuthor.Id);
+        await _achievementService.DeleteAuthorAchievementsAsync(currentAuthor.Id);
         await _userManager.DeleteAsync(currentAuthor);
 
         await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);

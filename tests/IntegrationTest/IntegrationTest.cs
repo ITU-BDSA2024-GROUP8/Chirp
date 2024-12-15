@@ -23,8 +23,8 @@ public class IntegrationTest
         // Create the service
         ICheepService cheepService = new CheepService(cheepRepository, authorRepository);
         
-        var (cheeps, _) = await cheepService.GetCheeps(1);
-        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthor(1, author);
+        var (cheeps, _) = await cheepService.GetCheepsAsync(1);
+        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthorAsync(1, author);
 
         // Assert we have two and only two cheeps
         Assert.Equal(2, cheeps.Count);
