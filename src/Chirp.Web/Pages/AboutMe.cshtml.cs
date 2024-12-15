@@ -57,10 +57,7 @@ public class AboutMeModel : PageModel
 
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _cheepService.DeleteCheepsByAuthorAsync(currentAuthor!.Id);
-        await _authorService.DeleteFollowersAndFollowingAsync(currentAuthor.Id);
-        await _achievementService.DeleteAuthorAchievementsAsync(currentAuthor.Id);
-        await _userManager.DeleteAsync(currentAuthor);
+        await _userManager.DeleteAsync(currentAuthor!);
 
         await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
         return RedirectToPage("/Public");

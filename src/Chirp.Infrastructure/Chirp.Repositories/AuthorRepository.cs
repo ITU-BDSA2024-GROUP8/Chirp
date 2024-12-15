@@ -14,8 +14,6 @@ public interface IAuthorRepository
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task<string?> UpdateBioAsync(Author author, string? newBio);
-    public Task DeleteCheepsByAuthorAsync(string authorId);
-    public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
 public class AuthorRepository : IAuthorRepository
 {
@@ -107,7 +105,7 @@ public class AuthorRepository : IAuthorRepository
         
         return await query.ToListAsync();
     }
-
+    
     public async Task<string?> UpdateBioAsync(Author author, string? newBio)
     {
         author.Bio = newBio;
@@ -117,21 +115,5 @@ public class AuthorRepository : IAuthorRepository
         await _dbContext.SaveChangesAsync();
 
         return newBio;
-    }
-    
-    public async Task DeleteCheepsByAuthorAsync(string authorId)
-    {
-        var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
-        _dbContext.Cheeps.RemoveRange(cheeps);
-
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task DeleteFollowersAndFollowingAsync(string authorId)
-    {
-        var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
-        _dbContext.AuthorFollowers.RemoveRange(followers);
-
-        await _dbContext.SaveChangesAsync();
     }
 }
