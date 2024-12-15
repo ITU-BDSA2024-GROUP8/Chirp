@@ -10,7 +10,6 @@ public interface ICheepService
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string author);
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string author);
     public Task PostCheepAsync(Cheep cheep);
-    public Task DeleteCheepsByAuthorAsync(string authorId);
 }
 
 public class CheepService : ICheepService
@@ -42,9 +41,5 @@ public class CheepService : ICheepService
     public async Task PostCheepAsync(Cheep cheep)
     {
         await _cheepRepository.PostCheepAsync(cheep);
-    }
-
-    public async Task DeleteCheepsByAuthorAsync(string authorId){
-        await _authorRepository.DeleteCheepsByAuthorAsync(authorId);
     }
 }
