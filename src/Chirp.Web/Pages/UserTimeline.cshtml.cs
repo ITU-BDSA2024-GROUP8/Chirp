@@ -20,13 +20,13 @@ public class UserTimelineModel : BaseCheepFormPage
             var currentAuthor = await _userManager.GetUserAsync(User);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
-                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimeline(PageNumber, author);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, author);
             } else {
-                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, author);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, author);
             }
             await PopulateFollows();
         } else {
-            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthor(PageNumber, author);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, author);
         }
 
         return Page();

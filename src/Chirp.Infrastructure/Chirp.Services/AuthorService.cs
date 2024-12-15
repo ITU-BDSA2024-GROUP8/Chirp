@@ -6,11 +6,11 @@ namespace Chirp.Infrastructure.Chirp.Services;
 
 public interface IAuthorService
 {
-    public Task FollowAuthor(string currentAuthorName, string targetAuthorName);
-    public Task UnfollowAuthor(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId);
-    public Task<List<string>> GetFollowing(string authorId);
-    public Task DeleteFollowersAndFollowing(string authorId);
+    public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
+    public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<List<string>> GetFollowingAsync(string authorId);
+    public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
 
 public class AuthorService : IAuthorService
@@ -22,26 +22,26 @@ public class AuthorService : IAuthorService
         _authorRepository = authorRepository;
     }
     
-    public async Task FollowAuthor(string currentAuthorId, string targetAuthorId)
+    public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
         await _authorRepository.FollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
     
-    public async Task UnfollowAuthor(string currentAuthorId, string targetAuthorId)
+    public async Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId)
     {
         await _authorRepository.UnfollowAuthorAsync(currentAuthorId, targetAuthorId);
     }
 
-    public async Task<bool> IsFollowing(string currentAuthorId, string targetAuthorId)
+    public async Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId)
     {
         return await _authorRepository.IsFollowingAsync(currentAuthorId, targetAuthorId);
     }
     
-    public async Task<List<string>> GetFollowing(string authorId){
+    public async Task<List<string>> GetFollowingAsync(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
     }
     
-    public async Task DeleteFollowersAndFollowing(string authorId){
+    public async Task DeleteFollowersAndFollowingAsync(string authorId){
         await _authorRepository.DeleteFollowersAndFollowingAsync(authorId);
     }
 }

@@ -16,7 +16,7 @@ public class PublicModel : BaseCheepFormPage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-        (Cheeps, CheepCount) = await _cheepService.GetCheeps(PageNumber);
+        (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
 
         if(User.Identity!.IsAuthenticated){
             await PopulateFollows();

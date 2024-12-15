@@ -4,7 +4,7 @@
 
 @{
     var author = Model;
-    var achievement = await Service.GetAuthorNewestAchievement(author.Id);
+    var achievement = await Service.GetAuthorNewestAchievementAsync(author.Id);
 }
     
 <div class="achievement-card">

@@ -131,7 +131,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    await _achievementService.AddNewAuthorAchievement(user.Id, 1);
+                    await _achievementService.AddNewAuthorAchievementAsync(user.Id, 1);
                     
                     _logger.LogInformation("User created a new account with password.");
 

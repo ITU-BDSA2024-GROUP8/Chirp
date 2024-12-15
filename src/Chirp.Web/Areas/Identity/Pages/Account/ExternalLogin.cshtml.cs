@@ -152,7 +152,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             
             if (createResult.Succeeded)
             {
-                await _achievementService.AddNewAuthorAchievement(user.Id, 1);
+                await _achievementService.AddNewAuthorAchievementAsync(user.Id, 1);
                 
                 createResult = await _userManager.AddLoginAsync(user, info);
                 if (createResult.Succeeded)
