@@ -1,6 +1,6 @@
 ﻿function enableEditing() {
-    const bioP = document.getElementById('authorBio');
-    const editButton = document.getElementById('editButton');
+    const bioP = document.getElementById('author-bio');
+    const editButton = document.getElementById('edit-button');
     const editInput = document.getElementById('editInput');
     const form = document.getElementsByClassName('bio-form')[0];
     const cancelButton = document.getElementById('cancel-button');
@@ -20,8 +20,8 @@
 }
 
 function disableEditing(bio){
-    const bioP = document.getElementById('authorBio');
-    const editButton = document.getElementById('editButton');
+    const bioP = document.getElementById('author-bio');
+    const editButton = document.getElementById('edit-button');
     const form = document.getElementsByClassName('bio-form')[0];
     const cancelButton = document.getElementById('cancel-button');
     const editInput = document.getElementById('editInput');

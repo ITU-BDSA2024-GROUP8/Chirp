@@ -99,6 +99,10 @@ input[type="submit"] {
     resize: none;
 }
 
+#author-bio {
+    word-break: break-word;
+}
+
 .p-bio-edit {
     margin: 0; 
     word-break: break-word;

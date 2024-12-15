@@ -8,5 +8,5 @@ public class BioModel
     public required string? RouteName { get; set; }
     [Required]
     public required bool IsMyBio { get; set; }
-    public BioTextModel? BioText { get; set; }
+    public BioTextModel BioText { get; set; } = new BioTextModel();
 }
