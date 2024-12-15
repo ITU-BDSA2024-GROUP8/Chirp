@@ -10,7 +10,6 @@ public interface IAuthorService
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task DeleteFollowersAndFollowingAsync(string authorId);
 }
 
 public class AuthorService : IAuthorService
@@ -39,9 +38,5 @@ public class AuthorService : IAuthorService
     
     public async Task<List<string>> GetFollowingAsync(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
-    }
-    
-    public async Task DeleteFollowersAndFollowingAsync(string authorId){
-        await _authorRepository.DeleteFollowersAndFollowingAsync(authorId);
     }
 }
