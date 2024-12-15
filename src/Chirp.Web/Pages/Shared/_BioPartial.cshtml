@@ -1,10 +1,11 @@
-﻿@model Chirp.Web.Pages.Models.BioModel;
-@inject ICheepService cheepService;
+﻿@using Chirp.Infrastructure.Chirp.Services
+@model Chirp.Web.Pages.Models.BioModel;
+@inject IAuthorService AuthorService;
 
 @{
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
-    var author = await cheepService.GetAuthorByName(routeName);
+    var author = await AuthorService.GetAuthorByNameAsync(routeName);
     var hasBio = !string.IsNullOrEmpty(author!.Bio);
 }
 

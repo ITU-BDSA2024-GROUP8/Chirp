@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
@@ -16,12 +16,14 @@ public class BaseCheepFormPage : PageModel
     public required int PageNumber { get; set; }
     public required int CheepCount { get; set; }
     public Dictionary<string, bool> Follows { get; set; }
-    protected readonly ICheepService _service;
+    protected readonly ICheepService _cheepService;
+    protected readonly IAuthorService _authorService;
     protected readonly UserManager<Author> _userManager;
 
-    public BaseCheepFormPage(ICheepService service, UserManager<Author> userManager)
+    public BaseCheepFormPage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager)
     {
-        _service = service;
+        _cheepService = cheepService;
+        _authorService = authorService;
         _userManager = userManager;
         PageNumber = 1;
         Follows = new Dictionary<string, bool>();
@@ -38,7 +40,7 @@ public class BaseCheepFormPage : PageModel
 
         if (author == null) return Page();
         
-        await _service.PostCheep(new Cheep
+        await _cheepService.PostCheepAsync(new Cheep
         {
             AuthorId = author.Id,
             Text = FormData!.Message,
@@ -56,7 +58,7 @@ public class BaseCheepFormPage : PageModel
 
         if (targetAuthorId == currentAuthor!.Id) return Page();
 
-        await _service.FollowAuthor(currentAuthor!.Id, targetAuthorId);
+        await _authorService.FollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -69,7 +71,7 @@ public class BaseCheepFormPage : PageModel
         
         if (targetAuthorId == currentAuthor!.Id) return Page();
 
-        await _service.UnfollowAuthor(currentAuthor!.Id, targetAuthorId);
+        await _authorService.UnfollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -84,7 +86,7 @@ public class BaseCheepFormPage : PageModel
             if(Follows.ContainsKey(targetAuthorId)){
                 continue;
             }
-            var isFollowing = await _service.IsFollowing(currentAuthorId, targetAuthorId);
+            var isFollowing = await _authorService.IsFollowingAsync(currentAuthorId, targetAuthorId);
             Follows[targetAuthorId] = isFollowing;
         }
     }

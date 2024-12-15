@@ -1,3 +1,5 @@
+using Chirp.Infrastructure.Chirp.Services;
+
 namespace IntegrationTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
@@ -25,8 +27,8 @@ public class IntegrationTest
 
         Assert.NotNull(author);
         
-        var (cheeps, _) = await cheepService.GetCheeps(1);
-        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthor(1, author.Id);
+        var (cheeps, _) = await cheepService.GetCheepsAsync(1);
+        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthorAsync(1, author.Id);
 
         // Assert we have two and only two cheeps
         Assert.Equal(2, cheeps.Count);

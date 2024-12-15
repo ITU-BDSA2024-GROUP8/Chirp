@@ -1,4 +1,4 @@
-﻿using Chirp.Core.DTOs;
+﻿using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
 using Chirp.Web.Pages.Models;
@@ -12,8 +12,8 @@ public class UserTimelineModel : BaseCheepFormPage
     [BindProperty]
     public BioText BioText { get; set; }
 
-    public UserTimelineModel(ICheepService service, UserManager<Author> userManager)
-        : base(service, userManager)
+    public UserTimelineModel(ICheepService service, IAuthorService authorService, UserManager<Author> userManager)
+        : base(service, authorService, userManager)
     {
         BioText = new BioText();
     }
@@ -22,9 +22,9 @@ public class UserTimelineModel : BaseCheepFormPage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-        (Cheeps, CheepCount) = await _service.GetCheeps(PageNumber);
+        (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
 
-        var authorRequest = await _service.GetAuthorByName(author);
+        var authorRequest = await _authorService.GetAuthorByNameAsync(author);
 
         if (authorRequest == null){
             return Page();
@@ -36,13 +36,13 @@ public class UserTimelineModel : BaseCheepFormPage
             var currentAuthor = await _userManager.GetUserAsync(User);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
-                (Cheeps, CheepCount) = await _service.GetCheepsFromUserTimeline(PageNumber, authorRequest.Id);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, authorRequest.Id);
             } else {
-                (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, authorRequest.Id);
+                (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, authorRequest.Id);
             }
             await PopulateFollows();
         } else {
-            (Cheeps, CheepCount) = await _service.GetCheepsFromAuthor(PageNumber, authorRequest.Id);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, authorRequest.Id);
         }
 
         return Page();
@@ -61,7 +61,7 @@ public class UserTimelineModel : BaseCheepFormPage
         
         var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _service.UpdateBio(currentAuthor!, newBio);
+        await _authorService.UpdateBioAsync(currentAuthor!, newBio);
         
         return RedirectToPage();
     }
