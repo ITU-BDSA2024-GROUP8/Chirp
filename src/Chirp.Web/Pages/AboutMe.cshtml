@@ -1,8 +1,15 @@
 @page
+@using Chirp.Infrastructure.Chirp.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.AboutMeModel
+@inject IAuthorService AuthorService;
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    var author = await AuthorService.GetAuthorByNameAsync(Model.Name);
+    var hasBio = !string.IsNullOrEmpty(author!.Bio);
+    
 }
 
 <div>
@@ -32,6 +39,11 @@
             {
                 <p>You are not following anyone yet.</p>
             }
+        </div>
+        
+        <div>
+            <h3>My Bio</h3>
+            <p>@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
         </div>
 
         <div>

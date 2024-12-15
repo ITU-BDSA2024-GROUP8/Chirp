@@ -5,8 +5,9 @@
 @{
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
-    var author = await AuthorService.GetAuthorByNameAsync(routeName);
+    var author = await AuthorService.GetAuthorByNameAsync(routeName!);
     var hasBio = !string.IsNullOrEmpty(author!.Bio);
+    var bioText = Model.BioText?.Bio;
 }
 
 @if (isMyBio)
@@ -14,8 +15,8 @@
     <div class="div-bio-style">
         <p id="authorBio" class="p-bio">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
         <form class="bio-form" method="post" asp-page-handler="UpdateBio">
-            <textarea type="text" name="newBio" class="edit-bio-text" id="editInput" asp-for="BioText.Bio"></textarea>
-            <button id="saveButton" class="bio-button" type="submit" type="button" onclick="enableEditing()">
+            <textarea type="text" name="newBio" class="edit-bio-text" id="editInput" asp-for="@bioText"></textarea>
+            <button id="saveButton" class="bio-button" type="submit" onclick="enableEditing()">
                 <p class="p-bio-edit">Save</p>
                 <div><img src="/images/saveButton.svg" class="save-bio-button-image" alt="save" /></div>
             </button>
@@ -23,7 +24,7 @@
                 <p class="p-bio">Cancel</p>
                 <div><img src="/images/cancelButton.svg" class="cancel-button-image" alt="cancel"/></div>
             </button>
-            <span asp-validation-for="BioText.Bio" class="text-danger"></span>
+            <span asp-validation-for="@bioText" class="text-danger"></span>
         </form>
         <button id="editButton" class="bio-button" type="button" onclick="enableEditing()">
             <p class="p-bio">Edit</p>
