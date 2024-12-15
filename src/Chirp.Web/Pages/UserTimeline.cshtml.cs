@@ -10,12 +10,12 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : BaseCheepFormPage
 {
     [BindProperty]
-    public BioText BioText { get; set; }
+    public BioTextModel BioText { get; set; }
 
     public UserTimelineModel(ICheepService service, IAuthorService authorService, UserManager<Author> userManager)
         : base(service, authorService, userManager)
     {
-        BioText = new BioText();
+        BioText = new BioTextModel();
     }
 
     public async Task<ActionResult> OnGet(string author)

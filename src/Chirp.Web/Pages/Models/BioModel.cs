@@ -8,11 +8,5 @@ public class BioModel
     public required string? RouteName { get; set; }
     [Required]
     public required bool IsMyBio { get; set; }
-    public BioText? BioText { get; set; }
-}
-
-public class BioText
-{
-    [StringLength(300)]
-    public string? Bio { get; set; }
+    public BioTextModel? BioText { get; set; }
 }
