@@ -1,21 +1,18 @@
+using Chirp.Tests;
+using Util;
+
 namespace apiTest;
 
 using Microsoft.AspNetCore.Mvc.Testing;
-public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
+public class TestAPI
 {
-    private readonly WebApplicationFactory<Program> _fixture;
-    private readonly HttpClient _client;
-    
-    public TestAPI(WebApplicationFactory<Program> fixture)
-    {
-        _fixture = fixture;
-        _client = _fixture.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
-    }
-    
     [Fact]
     public async void CanSeePublicTimeline()
     {
-        var response = await _client.GetAsync("/");
+        var fixture = new TestFixture<Program>();
+        var client = fixture.CreateClient();
+        
+        var response = await client.GetAsync("/");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
     
@@ -28,7 +25,10 @@ public class TestAPI : IClassFixture<WebApplicationFactory<Program>>
     [InlineData("Adrian")]
     public async void CanSeePrivateTimeline(string author)
     {
-        var response = await _client.GetAsync($"/{author}");
+        var fixture = new IntegrationTestFixture<Program>();
+        var client = fixture.CreateClient();
+        
+        var response = await client.GetAsync($"/{author}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
     

@@ -5,6 +5,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
       <ProjectReference Include="..\..\src\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
       <PackageReference Include="coverlet.collector" Version="6.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
