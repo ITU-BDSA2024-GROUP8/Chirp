@@ -42,7 +42,7 @@ namespace Chirp.Tests
             using var playwright = await Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true // Set to false if you want to see the browser UI
+                Headless = false // Set to false if you want to see the browser UI
             });
 
             var context = await browser.NewContextAsync();
@@ -83,6 +83,7 @@ namespace Chirp.Tests
                 // Check for achievements
                 var myTimeLine = new Uri(client.BaseAddress, "/"+username);
                 await page.GotoAsync(myTimeLine.ToString());
+                await page.Locator(".achievement-heading:has-text('Novice Cheepster')").WaitForAsync();
                 var achievements = await page.InnerTextAsync(".achievement-heading");
                 Assert.Contains("Novice Cheepster", achievements);
 
