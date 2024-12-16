@@ -39,6 +39,8 @@ namespace Chirp.Tests
             {
                 Headless = true // Set to false if you want to see the browser UI
             });
+             context = await browser.NewContextAsync();
+            page = await context.NewPageAsync();
         }
 
         [OneTimeTearDown]
@@ -49,84 +51,78 @@ namespace Chirp.Tests
             {
                 await browser.CloseAsync();
             }
-        }
 
-        [SetUp]
-        public async Task SetUp()
+        }
+      
+        [Test, Order(1)]
+        public async Task Test_register()
         {
-            context = await browser.NewContextAsync();
-            page = await context.NewPageAsync();
+            // Navigate to the registration page
+            var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
+            await page.GotoAsync(registerUrl.ToString());
+
+            // Fill in the registration form
+            await page.FillAsync("input[name='Input.Name']", username);
+            await page.FillAsync("input[name='Input.Email']", email);
+            await page.FillAsync("input[name='Input.Password']", password);
+            await page.FillAsync("input[name='Input.ConfirmPassword']", password);
+
+            // Submit the registration form
+            await page.ClickAsync("button[type='submit'][id='registerSubmit']");
+
+            // Wait for navigation to complete
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            // Verify that the user is redirected to the home page
+            var currentUrl = page.Url;
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
         }
 
+        [Test, Order(2)]
+        public async Task Test_cheep()
+        {
+            // Submit a new cheep
+            var cheepMessage = "Hello, world!";
+            await page.FillAsync("input[name='Message']", cheepMessage);
+            await page.ClickAsync("input[type='submit']");
 
+            // Wait for the cheep to appear
+            await page.WaitForSelectorAsync($"text={cheepMessage}");
 
-        [Test]
-        public async Task Test_FullUserJourney()
+            // Verify the cheep is displayed
+            var cheepText = await page.InnerTextAsync($"text={cheepMessage}");
+            NUnit.Framework.Assert.That(cheepText, Does.Contain(cheepMessage));
+        }
+
+        [Test , Order(3)]
+        public async Task Test_achievements()
+        {
+            // Check for achievements
+            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            await page.GotoAsync(myTimeLine.ToString());
+            var achievements = await page.InnerTextAsync(".achievement-heading");
+            NUnit.Framework.Assert.That(achievements, Does.Contain("Novice Cheepster"));
+        }
+
+        [Test , Order(4)]
+        public async Task Test_delete_account()
         {
 
+            // Delete the account
+            await page.GotoAsync(new Uri(client.BaseAddress, "/AboutMe").ToString());
+            await page.ClickAsync("button[type='submit'][name='forgetMeBTN']");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-            // Navigate to the login page
-            if (client.BaseAddress != null)
-            {
-
-                var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
-                await page.GotoAsync(registerUrl.ToString());
-
-                // Fill in the registration form
-                await page.FillAsync("input[name='Input.Name']", username);
-                await page.FillAsync("input[name='Input.Email']", email);
-                await page.FillAsync("input[name='Input.Password']", password);
-                await page.FillAsync("input[name='Input.ConfirmPassword']", password);
-
-                // Submit the registration form
-                await page.ClickAsync("button[type='submit'][id='registerSubmit']");
-
-                // Wait for navigation to complete
-                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
-                // Verify that the user is redirected to the home page
-                var currentUrl = page.Url;
-                NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
-
-
-                // Submit a new cheep
-                var cheepMessage = "Hello, world!";
-                await page.FillAsync("input[name='Message']", cheepMessage);
-                await page.ClickAsync("input[type='submit']");
-
-                // Wait for the cheep to appear
-                await page.WaitForSelectorAsync($"text={cheepMessage}");
-
-                // Verify the cheep is displayed
-                var cheepText = await page.InnerTextAsync($"text={cheepMessage}");
-                NUnit.Framework.Assert.That(cheepText, Does.Contain(cheepMessage));
-
-                // Check for achievements
-                var myTimeLine = new Uri(client.BaseAddress, "/" + username);
-                await page.GotoAsync(myTimeLine.ToString());
-                var achievements = await page.InnerTextAsync(".achievement-heading");
-                NUnit.Framework.Assert.That(achievements, Does.Contain("Novice Cheepster"));
-
-
-                // Delete the account
-                await page.GotoAsync(new Uri(client.BaseAddress, "/AboutMe").ToString());
-                await page.ClickAsync("button[type='submit'][name='forgetMeBTN']");
-                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-
-                // Verify the account is deleted
-                var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
-                await page.GotoAsync(loginUrl.ToString());
-                await page.FillAsync("input[name='Input.Email']", email);
-                await page.FillAsync("input[name='Input.Password']", password);
-                await page.ClickAsync("button[type='submit']");
-                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-                var errorMessage = await page.InnerTextAsync(".validation-summary-errors");
-                NUnit.Framework.Assert.That(errorMessage, Does.Contain("Invalid login attempt."));
-            }
-            else
-            {
-                throw new InvalidOperationException("BaseAddress is null.");
-            }
+            // Verify the account is deleted
+            var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+            await page.GotoAsync(loginUrl.ToString());
+            await page.FillAsync("input[name='Input.Email']", email);
+            await page.FillAsync("input[name='Input.Password']", password);
+            await page.ClickAsync("button[type='submit']");
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            var errorMessage = await page.InnerTextAsync(".validation-summary-errors");
+            NUnit.Framework.Assert.That(errorMessage, Does.Contain("Invalid login attempt."));
         }
+
     }
 }
