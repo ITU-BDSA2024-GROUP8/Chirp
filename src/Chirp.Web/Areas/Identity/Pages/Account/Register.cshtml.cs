@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Chirp.Infrastructure.Chirp.Repositories;
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {
@@ -32,6 +33,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         protected readonly IAchievementService _achievementService;
+        protected readonly IAuthorService _authorService;
 
         public RegisterModel(
             UserManager<Author> userManager,
@@ -39,7 +41,9 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             SignInManager<Author> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAchievementService achievementService)
+            IAchievementService achievementService,
+            IAuthorService authorService)
+
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,6 +52,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _achievementService = achievementService;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -121,8 +126,24 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var existingUserByUsername = await _authorService.GetAuthorByNameAsync(Input.Name);
+                var existingUserByEmail = await _userManager.FindByEmailAsync(Input.Email);
+
+                if (existingUserByUsername != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Username already exists. Please choose another one.");
+                    return Page();
+                }
+
+                if (existingUserByEmail != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Email already exists. Please choose another one.");
+                    return Page();
+                }
+
                 var user = CreateUser();
 
+                
                 user.Name = Input.Name;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
