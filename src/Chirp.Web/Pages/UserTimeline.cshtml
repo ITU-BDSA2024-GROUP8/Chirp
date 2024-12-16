@@ -1,5 +1,6 @@
 ﻿@page "/{author}"
 @using Chirp.Infrastructure.Models
+@using Chirp.Web.Pages.Models
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Author> UserManager
 
@@ -24,7 +25,7 @@
         if (routeName == author!.Name)
         {
             <div style="display: flex; gap: 20px;">
-                <partial name="_FollowStatCardPartial" model="Model" />
+                <partial name="_FollowStatCardPartial" model="new FollowStatCardModel { Author = author }" />
                 <partial name="_AchievementCardPartial" model="author" />
             </div>   
         }
@@ -41,5 +42,5 @@
 </div>
 
 @section Scripts {
-    <partial name="Shared/_ValidationScriptsPartial" />
+    <partial name="Shared/_ValidationScriptsPartial"/>
 }

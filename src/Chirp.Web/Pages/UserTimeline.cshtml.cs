@@ -18,7 +18,6 @@ public class UserTimelineModel : BaseCheepFormPage
 
         if(User.Identity!.IsAuthenticated){
             var currentAuthor = await _userManager.GetUserAsync(User);
-            await LoadFollowersAndFollowing(currentAuthor.Id);
             var currentAuthorName = currentAuthor!.Name;
             if(currentAuthorName == author){
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, author);

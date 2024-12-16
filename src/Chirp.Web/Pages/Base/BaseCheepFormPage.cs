@@ -18,9 +18,6 @@ public class BaseCheepFormPage : PageModel
     public Dictionary<string, bool> Follows { get; set; }
     protected readonly ICheepService _cheepService;
     protected readonly IAuthorService _authorService;
-    public required List<string> FollowingList { get; set; }
-    public required List<string> FollowedList { get; set; }
-    protected readonly ICheepService _service;
     protected readonly UserManager<Author> _userManager;
 
     public BaseCheepFormPage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager)
@@ -30,8 +27,6 @@ public class BaseCheepFormPage : PageModel
         _userManager = userManager;
         PageNumber = 1;
         Follows = new Dictionary<string, bool>();
-        FollowingList = new List<string>();
-        FollowedList = new List<string>();
     }
 
     public async Task<ActionResult> OnPost()
@@ -94,11 +89,5 @@ public class BaseCheepFormPage : PageModel
             var isFollowing = await _authorService.IsFollowingAsync(currentAuthorId, targetAuthorId);
             Follows[targetAuthorId] = isFollowing;
         }
-    }
-
-    protected async Task LoadFollowersAndFollowing(string authorId)
-    {
-        FollowingList = await _service.GetFollowing(authorId);
-        FollowedList = await _service.GetFollowers(authorId);
     }
 }
