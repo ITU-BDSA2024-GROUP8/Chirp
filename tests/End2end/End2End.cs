@@ -13,16 +13,16 @@ namespace Chirp.Tests
     [TestFixture]
     public class End2End
     {
-        private TestFixture<Program> _fixture;
+        private TestFixture<Program> _fixture = null!;
         private string email = "end2end@example.com";
         private string password = "End2end1234!";
         private string username = "End2EndUser";
-        private HttpClient client;
+        private HttpClient client = null!;
 
-        private IPlaywright? playwright;
-        private IBrowser? browser;
-        private IBrowserContext? context;
-        private IPage? page;
+        private IPlaywright playwright = null!;
+        private IBrowser browser = null!;
+        private IBrowserContext context = null!;
+        private IPage page = null!;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
@@ -37,7 +37,7 @@ namespace Chirp.Tests
             playwright = await Playwright.CreateAsync();
             browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = false // Set to false if you want to see the browser UI
+                Headless = true // Set to false if you want to see the browser UI
             });
         }
 
@@ -63,8 +63,6 @@ namespace Chirp.Tests
         [Test]
         public async Task Test_FullUserJourney()
         {
-
-
             // Navigate to the login page
             if (client.BaseAddress != null)
             {
