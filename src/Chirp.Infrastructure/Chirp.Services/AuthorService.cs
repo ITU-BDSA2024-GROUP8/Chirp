@@ -6,10 +6,13 @@ namespace Chirp.Infrastructure.Chirp.Services;
 
 public interface IAuthorService
 {
+    public Task<Author?> GetAuthorByNameAsync(string name);
+    public Task<Author?> GetAuthorByEmailAsync(string email);
     public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
+    public Task<string?> UpdateBioAsync(Author author, string? newBio);
 }
 
 public class AuthorService : IAuthorService
@@ -19,6 +22,16 @@ public class AuthorService : IAuthorService
     public AuthorService(IAuthorRepository authorRepository)
     {
         _authorRepository = authorRepository;
+    }
+    
+    public async Task<Author?> GetAuthorByNameAsync(string name)
+    {
+        return await _authorRepository.GetAuthorByNameAsync(name);
+    }
+    
+    public async Task<Author?> GetAuthorByEmailAsync(string email)
+    {
+        return await _authorRepository.GetAuthorByEmailAsync(email);
     }
     
     public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
@@ -38,5 +51,10 @@ public class AuthorService : IAuthorService
     
     public async Task<List<string>> GetFollowingAsync(string authorId){
         return await _authorRepository.GetFollowingAsync(authorId);
+    }
+    
+    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
+    {
+        return await _authorRepository.UpdateBioAsync(author, newBio);
     }
 }

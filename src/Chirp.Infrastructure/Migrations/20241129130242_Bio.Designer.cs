@@ -3,44 +3,22 @@ using System;
 using Chirp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Chirp.Razor.Migrations
+namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpDBContext))]
-    partial class ChirpDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241129130242_Bio")]
+    partial class Bio
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
-
-            modelBuilder.Entity("Chirp.Infrastructure.Models.Achievement", b =>
-                {
-                    b.Property<int>("AchievementId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("AchievementId");
-
-                    b.ToTable("Achievement");
-                });
 
             modelBuilder.Entity("Chirp.Infrastructure.Models.Author", b =>
                 {
@@ -51,6 +29,7 @@ namespace Chirp.Razor.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Bio")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -111,26 +90,6 @@ namespace Chirp.Razor.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Chirp.Infrastructure.Models.AuthorAchievement", b =>
-                {
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("AchievementId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("AchievedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
-                        .HasDefaultValueSql("datetime('now')");
-
-                    b.HasKey("AuthorId", "AchievementId");
-
-                    b.HasIndex("AchievementId");
-
-                    b.ToTable("AuthorAchievements");
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Models.AuthorFollower", b =>
@@ -305,25 +264,6 @@ namespace Chirp.Razor.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Models.AuthorAchievement", b =>
-                {
-                    b.HasOne("Chirp.Infrastructure.Models.Achievement", "Achievement")
-                        .WithMany("AuthorAchievements")
-                        .HasForeignKey("AchievementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Chirp.Infrastructure.Models.Author", "Author")
-                        .WithMany("AuthorAchievements")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Achievement");
-
-                    b.Navigation("Author");
-                });
-
             modelBuilder.Entity("Chirp.Infrastructure.Models.AuthorFollower", b =>
                 {
                     b.HasOne("Chirp.Infrastructure.Models.Author", "Follower")
@@ -405,15 +345,8 @@ namespace Chirp.Razor.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Chirp.Infrastructure.Models.Achievement", b =>
-                {
-                    b.Navigation("AuthorAchievements");
-                });
-
             modelBuilder.Entity("Chirp.Infrastructure.Models.Author", b =>
                 {
-                    b.Navigation("AuthorAchievements");
-
                     b.Navigation("Cheeps");
 
                     b.Navigation("Followers");

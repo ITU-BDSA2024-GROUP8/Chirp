@@ -1,4 +1,4 @@
-﻿using Chirp.Core.DTOs;
+using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Models;
@@ -31,7 +31,7 @@ public class BaseCheepFormPage : PageModel
 
     public async Task<ActionResult> OnPost()
     {
-        if (!ModelState.IsValid)
+        if (FormData == null || FormData.Message.Length > 300 || FormData.Message == null)
         {
             return Page();
         }

@@ -13,6 +13,8 @@ body.dark-mode {
     --button-color: #26776F;
     --button-color2: #1a4641;
     --shadow-color: #444444;
+    --bio-btn-cancel: #bcd1cebf;
+    --bio-btn-cancel-hover: #bcd1ced9;
     color: white;
 }
 

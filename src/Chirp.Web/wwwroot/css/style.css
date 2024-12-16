@@ -13,6 +13,8 @@
   --button-color: #cc6e6e;
   --button-color2: #7e2c2c;
   --shadow-color: #8d8c8c;
+  --bio-btn-cancel: #3b0707bf;
+  --bio-btn-cancel-hover: #3b0707d9;
 }
 
 
@@ -44,7 +46,7 @@ input[type="password"] {
     border-radius: 2px;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
-    color: var(side-color);
+    color: var(--side-color);
 }
 
 input[type="submit"] {
@@ -58,6 +60,73 @@ input[type="submit"] {
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   color: var(--main);
+}
+
+.div-bio-style {
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+}
+
+.p-bio {
+    margin: 0;
+}
+
+.bio-form {
+    display: none; 
+    gap: 20px; 
+    flex-grow: 1; 
+    align-items: center;
+}
+
+#cancel-button {
+    display: none;
+    background-color: var(--bio-btn-cancel);
+}
+
+#cancel-button:hover {
+    background-color: var(--bio-btn-cancel-hover);
+}
+
+.formWrapper {
+    display: flex;
+    justify-items: center;
+}
+
+.edit-bio-text {
+    flex-grow: 1; 
+    height: 60px;
+    resize: none;
+}
+
+#author-bio {
+    word-break: break-word;
+}
+
+.p-bio-edit {
+    margin: 0; 
+    word-break: break-word;
+}
+
+.bio-button {
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+    border-radius: 1000px; 
+    padding: 4px 16px;
+}
+
+.save-bio-button-image {
+    width: 25px; 
+}
+
+.edit-bio-button-image {
+    width: 25px;
+}
+
+.cancel-button-image {
+    padding: 0.1em;
+    width: 25px;
 }
 
 div.page {

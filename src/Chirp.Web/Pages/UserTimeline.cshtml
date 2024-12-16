@@ -1,5 +1,6 @@
 ﻿@page "/{author}"
 @using Chirp.Infrastructure.Models
+@using Chirp.Web.Pages.Models
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<Author> UserManager
 
@@ -8,25 +9,48 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    
     var routeName = HttpContext.GetRouteValue("author") as string;
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
 
-    <partial name="_CheepFormPartial" model="Model.FormData" />
-    
     @if (User.Identity!.IsAuthenticated)
     {
         var author = await UserManager.GetUserAsync(User);
-
+    
         if (routeName == author!.Name)
         {
+            <partial name="_BioPartial" model='new BioModel { 
+                 RouteName = routeName, 
+                 IsMyBio = true,
+                 BioText = Model.BioText
+            }' />
+    
+            <partial name="_CheepFormPartial" model="Model.FormData" />
+    
             <div style="display: flex; gap: 20px;">
                 <partial name="_FollowedByCardPartial"/>
                 <partial name="_AchievementCardPartial" model="author" />
-            </div>   
+            </div>
         }
+        else
+        {
+            <partial name="_BioPartial" model='new BioModel { 
+                 RouteName = routeName, 
+                 IsMyBio = false,
+                 BioText = Model.BioText
+            }' />
+        }
+    }
+    else
+    {
+        <partial name="_BioPartial" model='new BioModel { 
+             RouteName = routeName, 
+             IsMyBio = false,
+             BioText = Model.BioText
+        }' />
     }
 
     @if (Model.Cheeps.Any())
@@ -41,4 +65,5 @@
 
 @section Scripts {
     <partial name="Shared/_ValidationScriptsPartial" />
+    <script src="/js/bioScript.js"></script>
 }
