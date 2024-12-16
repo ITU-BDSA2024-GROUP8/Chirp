@@ -53,7 +53,11 @@ public class ChirpDBContext : IdentityDbContext<Author>
             .HasDefaultValueSql("datetime('now')");
             
         modelBuilder.Entity<Author>()
-            .HasIndex(a => a.UserName)
-            .IsUnique();
+                .HasIndex(a => a.UserName)
+                .IsUnique();
+                
+            modelBuilder.Entity<Author>()
+                .HasIndex(a => a.Email)
+                .IsUnique();
     }
 }
