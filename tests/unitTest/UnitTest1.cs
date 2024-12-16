@@ -15,7 +15,7 @@ public class UnitTest1
 
 
     [Fact]
-    public async Task Test_FindAuthorByName()
+    public async Task GetAuthorByNameAsync_SingleAuthor_ReturnsAuthor()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -45,14 +45,13 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_FindAuthorByEmail()
+    public async Task GetAuthorByEmailAsync_SingleAuthor_ReturnsAuthor()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
         IAchievementRepository achievementRepository = new AchievementRepository(context);
         IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
-
-
+        
         Author author1 = new Author
         {
             Name = "TestUser1",
@@ -70,14 +69,13 @@ public class UnitTest1
         //assert
         Assert.Equal(author1, authorByEmail);
 
-
         //cleanup
         await context.Database.EnsureDeletedAsync();
         await context.DisposeAsync();
     }
 
     [Fact]
-    public async Task Test_CreateNewAuthor()
+    public async Task NewAuthorAsync_EmptyDatabase_CreatesNewAuthor()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -85,11 +83,13 @@ public class UnitTest1
         IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
 
         //act
-        var author = await authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
+        await authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
+        var authorInDb = context.Authors.First();
 
         //assert
-        Assert.Equal("testAuthor@email.com", author.Email);
-        Assert.Equal("testAuthor", author.Name);
+        Assert.NotNull(authorInDb);
+        Assert.Equal("testAuthor@email.com", authorInDb.Email);
+        Assert.Equal("testAuthor", authorInDb.Name);
         
         //cleanup
         await context.Database.EnsureDeletedAsync();
@@ -97,7 +97,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_CreateNewCheep()
+    public async Task PostCheepAsync_SingleAuthor_CreatesCheepForAuthor()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -140,7 +140,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_CheepsForACertainPage()
+    public async Task GetCheepsAsync_40Cheeps_Returns32CheepsOnPage1And8CheepsOnPage2()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -188,7 +188,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_CheepsForACertainPageByAuthor()
+    public async Task GetCheepsFromAuthorAsync_AuthorWith40Cheeps_ReturnsCheepsFromAuthor()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -205,7 +205,7 @@ public class UnitTest1
             Following = new List<AuthorFollower>()
         };
 
-        context.Authors.AddRange(a1);
+        context.Authors.Add(a1);
 
         for (int i = 0; i < 40; i++)
         {
@@ -235,7 +235,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_FollowAuthor()
+    public async Task FollowAuthorAsync_2Authors_ShouldAddAuthorFollowerRecord()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -282,7 +282,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_UnfollowAuthor()
+    public async Task UnfollowAuthorAsync_AuthorFollowingAuthor_ShouldRemoveAuthorFollowerRecord()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -327,7 +327,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_UserTimeline()
+    public async Task GetCheepsFromUserTimelineAsync_AuthorFollowingAuthorBothWithCheep_Returns2Cheeps()
     {
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
@@ -395,7 +395,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public async Task Test_GetFollowingAsync_ReturnsFollowedAuthorName()
+    public async Task GetFollowingAsync_OneAuthorFollowAnother_ReturnsFollowedAuthorName()
     {
         //arrange
         var context = await Util.CreateInMemoryDatabase();
@@ -440,7 +440,7 @@ public class UnitTest1
     }
     
     [Fact]
-    public async Task Test_GetFollowersAsync_ReturnsFollowerName()
+    public async Task GetFollowersAsync_OneAuthorFollowAnother_ReturnsFollowerName()
     {
         //arrange
         var context = await Util.CreateInMemoryDatabase();
@@ -487,7 +487,7 @@ public class UnitTest1
     [Theory]
     [InlineData("My new Bio", "My new Bio")]
     [InlineData(null, null)]
-    public async Task Test_UpdateBioAsync_ReturnsNewBio(string? bioText, string? expected)
+    public async Task UpdateBioAsync_TextAndNullBio_ShouldUpdateAuthorBio(string? bioText, string? expected)
     {
         //arrange
         var context = await Util.CreateInMemoryDatabase();
