@@ -90,6 +90,10 @@ public class UnitTest1
         //assert
         Assert.Equal("testAuthor@email.com", author.Email);
         Assert.Equal("testAuthor", author.Name);
+        
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
@@ -216,7 +220,6 @@ public class UnitTest1
             Assert.Equal(cheep.AuthorName, a1.Name);
         }
 
-
         //cleanup
         await context.Database.EnsureDeletedAsync();
         await context.DisposeAsync();
@@ -312,8 +315,6 @@ public class UnitTest1
 
         //act
         await authorRepository.UnfollowAuthorAsync(followed.Id, following.Id);
-
-
         var isFollowing = await context.AuthorFollowers
                .AnyAsync(af => af.FollowerId == followed.Id && af.FollowingId == following.Id);
 
@@ -342,7 +343,7 @@ public class UnitTest1
 
         context.Achievements.AddRange(ach1, ach2, ach3, ach4);
 
-    Author followed = new Author
+        Author followed = new Author
         {
             Name = "TestUser1",
             Email = "test1@example.dk",
@@ -359,24 +360,22 @@ public class UnitTest1
             Following = new List<AuthorFollower>()
         };
         context.Authors.AddRange(followed, following);
-     context.Cheeps.AddRange(
-              new Cheep
-              {
-                  Text = "Hello World!",
-                  AuthorId = followed.Id,
-                  TimeStamp = CurrentTime,
-                  Author = followed
-              },
-              new Cheep
-              {
-                  Text = "Another Cheep, hell yeah",
-                  AuthorId = following.Id,
-                  TimeStamp = CurrentTime,
-                  Author = following
-              }
-          );
-
-
+        context.Cheeps.AddRange(
+            new Cheep
+            {
+                Text = "Hello World!",
+                AuthorId = followed.Id,
+                TimeStamp = CurrentTime,
+                Author = followed
+            },
+            new Cheep
+            {
+                Text = "Another Cheep, hell yeah",
+                AuthorId = following.Id,
+                TimeStamp = CurrentTime,
+                Author = following
+            }
+        );
 
         context.AuthorFollowers.Add(new AuthorFollower { FollowerId = followed.Id, FollowingId = following.Id });
 
