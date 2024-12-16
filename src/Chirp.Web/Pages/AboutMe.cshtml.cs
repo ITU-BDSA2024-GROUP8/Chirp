@@ -43,7 +43,7 @@ public class AboutMeModel : PageModel
             var currentAuthor = await _userManager.GetUserAsync(User);
             Name = currentAuthor!.Name;
             Email = currentAuthor.Email!;
-            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, Name);
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, currentAuthor.Id);
             Follows = await _authorService.GetFollowingAsync(currentAuthor.Id);
             Achievements = await _achievementService.GetAuthorAchievementsAsync(currentAuthor.Id);
         }

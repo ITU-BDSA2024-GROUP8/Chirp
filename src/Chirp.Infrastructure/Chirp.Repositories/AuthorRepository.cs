@@ -8,12 +8,13 @@ public interface IAuthorRepository
 {
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
-    public  Task<Author> NewAuthorAsync(string authorName, string authorEmail);
-    public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
+    public Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task<List<string>> GetFollowedAsync(string authorId);
+    public Task<string?> UpdateBioAsync(Author author, string? newBio);
 }
 public class AuthorRepository : IAuthorRepository
 {
@@ -114,5 +115,16 @@ public class AuthorRepository : IAuthorRepository
             select a.Follower.Name);
         
         return await query.ToListAsync();
+    }
+    
+    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
+    {
+        author.Bio = newBio;
+        
+        _dbContext.Authors.Update(author);
+        
+        await _dbContext.SaveChangesAsync();
+
+        return newBio;
     }
 }

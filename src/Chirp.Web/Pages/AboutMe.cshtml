@@ -1,24 +1,33 @@
 @page
 @using Chirp.Web.Pages.Models
+@using Chirp.Infrastructure.Chirp.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.AboutMeModel
+@inject IAuthorService AuthorService;
+
 @{
     ViewData["Title"] = "Chirp!";
     ViewData["page"] = "about-me";
     Layout = "Shared/_Layout";
+    var author = await AuthorService.GetAuthorByNameAsync(Model.Name);
+    var hasBio = !string.IsNullOrEmpty(author!.Bio);
 }
 
 <div>
     <h2>About Me</h2>
 
     @if (User.Identity!.IsAuthenticated){
-        var author = await UserManager.GetUserAsync(User);
-        
         <div>
             <h3>Profile Information</h3>
             <p><strong>Name:</strong> @Model.Name</p>
             <p><strong>Email:</strong> @Model.Email</p>
         </div>
     
+        <div>
+            <h3>My Bio</h3>
+            <p id="author-bio">@(hasBio ? author!.Bio : $"You have no bio yet...")</p>
+        </div>
+        
         <div>
             <h3>My Cheeps</h3>
             @if (Model.Cheeps.Any())

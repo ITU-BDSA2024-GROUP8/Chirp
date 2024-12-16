@@ -7,8 +7,8 @@ namespace Chirp.Infrastructure.Chirp.Services;
 public interface ICheepService
 {
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string author);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string author);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId);
+    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId);
     public Task PostCheepAsync(Cheep cheep);
 }
 
@@ -22,20 +22,20 @@ public class CheepService : ICheepService
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
     }
-
+    
     public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page)
     {
         return await _cheepRepository.GetCheepsAsync(page);
     }
 
-    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId)
     {
-        return await _cheepRepository.GetCheepsFromAuthorAsync(page, author);
+        return await _cheepRepository.GetCheepsFromAuthorAsync(page, authorId);
     }
 
-    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string author)
+    public async Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId)
     {
-        return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, author);
+        return await _cheepRepository.GetCheepsFromUserTimelineAsync(page, authorId);
     }
 
     public async Task PostCheepAsync(Cheep cheep)

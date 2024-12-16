@@ -51,14 +51,14 @@ public class UnitTest1
         var author = await _authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
 
         // Check that author has no cheeps initially
-        var (cheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        var (cheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Id);
         Assert.Empty(cheepsFromAuthor);
 
         // Create a new cheep
         await _cheepRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
 
         // Verify the cheep was created
-        var (newCheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
+        var (newCheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Id);
         Assert.Single(newCheepsFromAuthor);
     }
 
@@ -90,7 +90,7 @@ public class UnitTest1
         var author = await authorRepo.GetAuthorByNameAsync("Roger Histand");
         Assert.NotNull(author);
 
-        var (cheepsOnPage, _) = await cheepRepo.GetCheepsFromAuthorAsync(1, author.Name);
+        var (cheepsOnPage, _) = await cheepRepo.GetCheepsFromAuthorAsync(1, author.Id);
 
         foreach (var cheep in cheepsOnPage)
         {
@@ -131,7 +131,7 @@ public class UnitTest1
         await _authorRepository.FollowAuthorAsync(mainAuthor.Id, followedAuthor.Id);
 
         // Get timeline
-        var (timeline, _) = await _cheepRepository.GetCheepsFromUserTimelineAsync(1, mainAuthor.Name);
+        var (timeline, _) = await _cheepRepository.GetCheepsFromUserTimelineAsync(1, mainAuthor.Id);
 
         // Should see both cheeps
         Assert.Equal(2, timeline.Count);
