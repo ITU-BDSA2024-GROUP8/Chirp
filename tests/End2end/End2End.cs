@@ -1,28 +1,21 @@
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.Logging;
 using Microsoft.Playwright;
 using NUnit.Framework;
-using System.Net.Http;
 
 namespace Chirp.Tests
 {
     [TestFixture]
     public class End2End
     {
-        private TestFixture<Program> _fixture;
+        private TestFixture<Program> _fixture = null!;
         private string email = "end2end@example.com";
         private string password = "End2end1234!";
         private string username = "End2EndUser";
-        private HttpClient client;
+        private HttpClient client = null!;
 
-        private IPlaywright? playwright;
-        private IBrowser? browser;
-        private IBrowserContext? context;
-        private IPage? page;
+        private IPlaywright playwright = null!;
+        private IBrowser browser = null!;
+        private IBrowserContext context = null!;
+        private IPage page = null!;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
@@ -37,9 +30,9 @@ namespace Chirp.Tests
             playwright = await Playwright.CreateAsync();
             browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true // Set to false if you want to see the browser UI
+                Headless = false // Set to false if you want to see the browser UI
             });
-             context = await browser.NewContextAsync();
+            context = await browser.NewContextAsync();
             page = await context.NewPageAsync();
         }
 
@@ -94,20 +87,20 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(cheepText, Does.Contain(cheepMessage));
         }
 
-        [Test , Order(3)]
+        [Test, Order(3)]
         public async Task Test_achievements()
         {
             // Check for achievements
             var myTimeLine = new Uri(client.BaseAddress, "/" + username);
             await page.GotoAsync(myTimeLine.ToString());
             var achievements = await page.InnerTextAsync(".achievement-heading");
+            await page.WaitForSelectorAsync($"text={achievements}");
             NUnit.Framework.Assert.That(achievements, Does.Contain("Novice Cheepster"));
         }
 
-        [Test , Order(4)]
+        [Test, Order(4)]
         public async Task Test_delete_account()
         {
-
             // Delete the account
             await page.GotoAsync(new Uri(client.BaseAddress, "/AboutMe").ToString());
             await page.ClickAsync("button[type='submit'][name='forgetMeBTN']");

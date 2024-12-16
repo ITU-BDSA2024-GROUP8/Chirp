@@ -22,8 +22,6 @@ namespace Chirp.Tests
         public async Task EnsureServerIsReady()
         {
 
-
-
             // Set the environment variable
             Environment.SetEnvironmentVariable("CHIRPDBPATH", testingDbFilePath);
 
