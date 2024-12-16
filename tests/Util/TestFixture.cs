@@ -8,7 +8,7 @@ namespace Chirp.Tests
         public Uri BaseAddress { get; }
         public HttpClient Client { get; }
         public Process? serverProcess;
-
+        private string testingDbFilePath;
         public TestFixture()
         {
             BaseAddress = new Uri("http://localhost:5273");
@@ -16,11 +16,17 @@ namespace Chirp.Tests
             {
                 BaseAddress = BaseAddress
             });
+            testingDbFilePath = Path.Combine(Path.GetTempPath(), "CheepTest.db");
         }
 
         public async Task EnsureServerIsReady()
         {
-        
+
+
+
+            // Set the environment variable
+            Environment.SetEnvironmentVariable("CHIRPDBPATH", testingDbFilePath);
+
             serverProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -36,19 +42,19 @@ namespace Chirp.Tests
 
             var tcs = new TaskCompletionSource<bool>();
 
-  serverProcess.OutputDataReceived += (sender, args) =>
-            {
-                if (args.Data != null)
-                {
-                    Console.WriteLine(args.Data);
-                    //checks if the server is ready
-                    if (args.Data.Contains("Application started and listening on port 5273"))
-                    {
-                        tcs.SetResult(true);
-                    }
-                }
-            };
-        
+            serverProcess.OutputDataReceived += (sender, args) =>
+                      {
+                          if (args.Data != null)
+                          {
+                              Console.WriteLine(args.Data);
+                              //checks if the server is ready
+                              if (args.Data.Contains("Application started and listening on port 5273"))
+                              {
+                                  tcs.SetResult(true);
+                              }
+                          }
+                      };
+
 
             serverProcess.ErrorDataReceived += (sender, args) => Console.WriteLine(args.Data);
 
@@ -66,11 +72,30 @@ namespace Chirp.Tests
                 serverProcess.Kill(true); //force kill the process
                 serverProcess.WaitForExit(5000); //give it 5 seconds to gracefully exit
                 serverProcess.Dispose();
-                
-            }
-            
 
-           
+            }
+
+            string walFilePath = testingDbFilePath + "-wal";
+            string shmFilePath = testingDbFilePath + "-shm";
+
+            // Check if the database file exists and delete it
+            if (File.Exists(testingDbFilePath))
+            {
+                File.Delete(testingDbFilePath);
+            }
+            // Check if the WAL file exists and delete it
+            if (File.Exists(walFilePath))
+            {
+                File.Delete(walFilePath);
+            }
+            // Check if the SHM file exists and delete it
+            if (File.Exists(shmFilePath))
+            {
+                File.Delete(shmFilePath);
+            }
+
+
+
         }
     }
 }
