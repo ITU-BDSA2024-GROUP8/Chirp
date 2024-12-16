@@ -21,9 +21,6 @@ namespace Chirp.Tests
 
         public async Task EnsureServerIsReady()
         {
-
-
-
             // Set the environment variable
             Environment.SetEnvironmentVariable("CHIRPDBPATH", testingDbFilePath);
 
@@ -93,9 +90,6 @@ namespace Chirp.Tests
             {
                 File.Delete(shmFilePath);
             }
-
-
-
         }
     }
 }
