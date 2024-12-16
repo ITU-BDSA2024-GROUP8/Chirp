@@ -517,4 +517,107 @@ public class UnitTest1
         await context.Database.EnsureDeletedAsync();
         await context.DisposeAsync();
     }
+    
+    
+    [Fact]
+    public async Task AddNewAuthorAchievementAsync_SingleAchievementAndAuthor_AddsAuthorAchievementRecord()
+    {
+        //arrange
+        var context = await Util.CreateInMemoryDatabase();
+        var achievementRepository = new AchievementRepository(context);
+        
+        var achievement = new Achievement() { AchievementId = 1, Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        context.Achievements.Add(achievement);
+        
+        var author = new Author()
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        
+        context.Authors.Add(author);
+        
+        await context.SaveChangesAsync();
+        
+        //act
+        await achievementRepository.AddNewAuthorAchievementAsync(author.Id, achievement.AchievementId);
+        var authorAchievement = context.AuthorAchievements.First();
+
+        //assert
+        Assert.NotNull(authorAchievement);
+        Assert.Equal(authorAchievement.AuthorId, author.Id);
+        Assert.Equal(authorAchievement.AchievementId, achievement.AchievementId);
+    }
+    
+    [Fact]
+    public async Task GetAuthorNewestAchievementAsync_AuthorWith2Achievements_ReturnsNewestAuthorAchievement()
+    {
+        //arrange
+        var context = await Util.CreateInMemoryDatabase();
+        var achievementRepository = new AchievementRepository(context);
+        
+        var achievement1 = new Achievement() { AchievementId = 1, Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        var achievement2 = new Achievement() { AchievementId = 2, Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
+        context.Achievements.AddRange(achievement1, achievement2);
+        
+        var author = new Author()
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.Add(author);
+        
+        var authorAchievement1 = new AuthorAchievement() { AuthorId = author.Id, AchievementId = achievement1.AchievementId, AchievedAt = DateTime.Parse("2024-05-01 15:00:00")};
+        var authorAchievement2 = new AuthorAchievement() { AuthorId = author.Id, AchievementId = achievement2.AchievementId, AchievedAt = DateTime.Parse("2024-05-02 15:00:00") };
+        context.AuthorAchievements.AddRange(authorAchievement1, authorAchievement2);
+        
+        await context.SaveChangesAsync();
+        
+        //act
+        var achievement = await achievementRepository.GetAuthorNewestAchievementAsync(author.Id);
+
+        //assert
+        Assert.NotNull(achievement);
+        Assert.Equal(2, achievement.AchievementId);
+    }
+    
+    [Fact]
+    public async Task GetAuthorAchievementsAsync_AuthorWith2Achievements_ReturnsListOfAchievements()
+    {
+        //arrange
+        var context = await Util.CreateInMemoryDatabase();
+        var achievementRepository = new AchievementRepository(context);
+        
+        var achievement1 = new Achievement() { AchievementId = 1, Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        var achievement2 = new Achievement() { AchievementId = 2, Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
+        context.Achievements.AddRange(achievement1, achievement2);
+        
+        var author = new Author()
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.Add(author);
+        
+        var authorAchievement1 = new AuthorAchievement() { AuthorId = author.Id, AchievementId = achievement1.AchievementId, AchievedAt = DateTime.Parse("2024-05-01 15:00:00")};
+        var authorAchievement2 = new AuthorAchievement() { AuthorId = author.Id, AchievementId = achievement2.AchievementId, AchievedAt = DateTime.Parse("2024-05-02 15:00:00") };
+        context.AuthorAchievements.AddRange(authorAchievement1, authorAchievement2);
+        
+        await context.SaveChangesAsync();
+        
+        //act
+        var achievements = await achievementRepository.GetAuthorAchievementsAsync(author.Id);
+
+        //assert
+        Assert.Equal(2, achievements.Count);
+    }
 }
