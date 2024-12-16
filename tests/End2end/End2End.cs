@@ -23,13 +23,13 @@ namespace Chirp.Tests
         {
             await _fixture.EnsureServerIsReady();
         }
+        
         public Task DisposeAsync()
         {
             _fixture.StopServer();
             return Task.CompletedTask;
             
         }
-
 
         [Theory]
         [InlineData("end2end@example.com", "End2end1234!", "End2EndUser")]
@@ -51,8 +51,7 @@ namespace Chirp.Tests
             // Navigate to the login page
             if (client.BaseAddress != null)
             {
-            
-              var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
+                var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
                 await page.GotoAsync(registerUrl.ToString());
 
                 // Fill in the registration form
@@ -71,19 +70,16 @@ namespace Chirp.Tests
                 var currentUrl = page.Url;
                 Assert.Equal(client.BaseAddress.ToString(), currentUrl);
 
-
                 // Submit a new cheep
                 var cheepMessage = "Hello, world!";
                 await page.FillAsync("input[name='Message']", cheepMessage);
                 await page.ClickAsync("input[type='submit']");
-
-                // Wait for the cheep to appear
-                await page.WaitForSelectorAsync($"text={cheepMessage}");
+                await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
                 // Verify the cheep is displayed
                 var cheepText = await page.InnerTextAsync($"text={cheepMessage}");
                 Assert.Contains(cheepMessage, cheepText);
-
+                
                 // Check for achievements
                 var myTimeLine = new Uri(client.BaseAddress, "/"+username);
                 await page.GotoAsync(myTimeLine.ToString());

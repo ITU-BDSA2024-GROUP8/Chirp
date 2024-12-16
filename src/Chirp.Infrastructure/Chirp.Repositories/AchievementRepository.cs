@@ -9,7 +9,6 @@ public interface IAchievementRepository
     public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);
     public Task<Achievement?> GetAuthorNewestAchievementAsync(string authorId);
     public Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId);
-    public Task DeleteAuthorAchievementsAsync(string authorId);
 }
 
 public class AchievementRepository : IAchievementRepository
@@ -53,13 +52,5 @@ public class AchievementRepository : IAchievementRepository
             select ach.Achievement);
 
         return await query.ToListAsync();
-    }
-    
-    public async Task DeleteAuthorAchievementsAsync(string authorId)
-    {
-        var achievements = _dbContext.AuthorAchievements.Where(a => a.AuthorId == authorId);
-        _dbContext.AuthorAchievements.RemoveRange(achievements);
-
-        await _dbContext.SaveChangesAsync();
     }
 }

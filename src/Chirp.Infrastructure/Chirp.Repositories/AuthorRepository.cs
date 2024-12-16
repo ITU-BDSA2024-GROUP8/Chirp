@@ -8,13 +8,13 @@ public interface IAuthorRepository
 {
     public Task<Author?> GetAuthorByNameAsync(string name);
     public Task<Author?> GetAuthorByEmailAsync(string email);
-    public  Task<Author> NewAuthorAsync(string authorName, string authorEmail);
-    public  Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public  Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
+    public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
+    public Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
+    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task DeleteCheepsByAuthorAsync(string authorId);
-    public Task DeleteFollowersAndFollowingAsync(string authorId);
+    public Task<List<string>> GetFollowersAsync(string authorId);
+    public Task<string?> UpdateBioAsync(Author author, string? newBio);
 }
 public class AuthorRepository : IAuthorRepository
 {
@@ -107,19 +107,24 @@ public class AuthorRepository : IAuthorRepository
         return await query.ToListAsync();
     }
     
-    public async Task DeleteCheepsByAuthorAsync(string authorId)
+    public async Task<List<string>> GetFollowersAsync(string authorId)
     {
-        var cheeps = _dbContext.Cheeps.Where(c => c.AuthorId == authorId);
-        _dbContext.Cheeps.RemoveRange(cheeps);
-
-        await _dbContext.SaveChangesAsync();
+        var query = (
+            from a in _dbContext.AuthorFollowers
+            where a.FollowingId == authorId
+            select a.Follower.Name);
+        
+        return await query.ToListAsync();
     }
-
-    public async Task DeleteFollowersAndFollowingAsync(string authorId)
+    
+    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
     {
-        var followers = _dbContext.AuthorFollowers.Where(af => af.FollowerId == authorId || af.FollowingId == authorId);
-        _dbContext.AuthorFollowers.RemoveRange(followers);
-
+        author.Bio = newBio;
+        
+        _dbContext.Authors.Update(author);
+        
         await _dbContext.SaveChangesAsync();
+
+        return newBio;
     }
 }

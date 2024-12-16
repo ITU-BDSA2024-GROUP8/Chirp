@@ -381,10 +381,9 @@ public class UnitTest1
 
         await context.SaveChangesAsync();
 
-
-
+        
         //act
-        var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, followed.Name);
+        var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, followed.Id);
 
 
         //assert
