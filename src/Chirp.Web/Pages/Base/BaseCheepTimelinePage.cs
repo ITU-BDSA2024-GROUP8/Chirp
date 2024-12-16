@@ -1,31 +1,22 @@
-using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages.Base;
 
-public class BaseCheepFormPage : PageModel
+public class BaseCheepTimelinePage : BaseCheepDisplayPage
 {
     [BindProperty]
     public CheepFormModel? FormData { get; set; }
-    public required List<CheepDTO> Cheeps { get; set; }
-    public required int PageNumber { get; set; }
-    public required int CheepCount { get; set; }
     public Dictionary<string, bool> Follows { get; set; }
-    protected readonly ICheepService _cheepService;
     protected readonly IAuthorService _authorService;
-    protected readonly UserManager<Author> _userManager;
+    
 
-    public BaseCheepFormPage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager)
+    public BaseCheepTimelinePage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, userManager)
     {
-        _cheepService = cheepService;
         _authorService = authorService;
-        _userManager = userManager;
-        PageNumber = 1;
         Follows = new Dictionary<string, bool>();
     }
 
