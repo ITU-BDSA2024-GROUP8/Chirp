@@ -1,4 +1,4 @@
-﻿using Chirp.Infrastructure.Chirp.Services;
+using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
 using Chirp.Web.Pages.Models;

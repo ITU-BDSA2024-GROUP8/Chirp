@@ -1,13 +1,12 @@
 ﻿@page "/{author}"
-@using Chirp.Infrastructure.Models
 @using Chirp.Web.Pages.Models
-@using Microsoft.AspNetCore.Identity
 @inject UserManager<Author> UserManager
 
 @model Chirp.Web.Pages.UserTimelineModel
-    
+
 @{
     ViewData["Title"] = "Chirp!";
+    ViewData["page"] = "user-timeline";
     Layout = "Shared/_Layout";
     
     var routeName = HttpContext.GetRouteValue("author") as string;
@@ -31,7 +30,7 @@
             <partial name="_CheepFormPartial" model="Model.FormData" />
     
             <div style="display: flex; gap: 20px;">
-                <partial name="_FollowedByCardPartial"/>
+                <partial name="_FollowStatCardPartial" model="new FollowStatCardModel { Author = author }" />
                 <partial name="_AchievementCardPartial" model="author" />
             </div>
         }
