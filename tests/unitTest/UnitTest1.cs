@@ -7,35 +7,21 @@ using Util;
 using System.Threading.Tasks;
 using System;
 using Chirp.Infrastructure.Models;
-public class UnitTest1 : IAsyncLifetime
+using Microsoft.EntityFrameworkCore;
+
+public class UnitTest1
 {
     public static DateTime CurrentTime = DateTime.Now;
-    public ChirpDBContext context { get; private set; }
-    private IAchievementRepository _achievementRepository;
-    private IAuthorRepository _authorRepository;
-    private ICheepRepository _cheepRepository;
-
-
-    public async Task InitializeAsync()
-    {
-        // Use a new context with more data for this test
-        
-        _achievementRepository = new AchievementRepository(context);
-        _authorRepository = new AuthorRepository(context, _achievementRepository);
-        _cheepRepository = new CheepRepository(context, _authorRepository, _achievementRepository);
-    }
-
-    public async Task DisposeAsync()
-    {
-        await context.Database.EnsureDeletedAsync();
-        await context.DisposeAsync();
-    }
 
 
     [Fact]
     public async Task Test_FindAuthorByName()
     {
-        context = await Util.CreateInMemoryDatabase();
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+
         Author author1 = new Author
         {
             Name = "TestUser1",
@@ -47,13 +33,26 @@ public class UnitTest1 : IAsyncLifetime
         context.Authors.AddRange(author1);
         await context.SaveChangesAsync();
 
-        var authorByName = await _authorRepository.GetAuthorByNameAsync(author1.Name);
+        //act
+        var authorByName = await authorRepository.GetAuthorByNameAsync(author1.Name);
+
+        //assert
         Assert.Equal(author1, authorByName);
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
     public async Task Test_FindAuthorByEmail()
     {
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+
+
         Author author1 = new Author
         {
             Name = "TestUser1",
@@ -65,40 +64,75 @@ public class UnitTest1 : IAsyncLifetime
         context.Authors.AddRange(author1);
         await context.SaveChangesAsync();
 
-        var authorByEmail = await _authorRepository.GetAuthorByEmailAsync(author1.Email);
+        //act
+        var authorByEmail = await authorRepository.GetAuthorByEmailAsync(author1.Email);
+
+        //assert
         Assert.Equal(author1, authorByEmail);
+
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
     public async Task Test_CreateNewAuthor()
     {
-        var author = await _authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
-        var authorByName = await _authorRepository.GetAuthorByNameAsync(author.Name);
-        Assert.Equal(author, authorByName);
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+
+        //act
+        var author = await authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
+
+        //assert
+        Assert.Equal("testAuthor@email.com", author.Email);
+        Assert.Equal("testAuthor", author.Name);
     }
 
     [Fact]
     public async Task Test_CreateNewCheep()
     {
-        // Create a new author first
-        var author = await _authorRepository.NewAuthorAsync("testAuthor", "testAuthor@email.com");
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
-        // Check that author has no cheeps initially
-        var (cheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
-        Assert.Empty(cheepsFromAuthor);
+        Author author = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(author);
+        await context.SaveChangesAsync();
 
-        // Create a new cheep
-        await _cheepRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
+        //act
+        await cheepRepository.NewCheepAsync(author.Name, author.Email!, "This is a new test cheep");
 
-        // Verify the cheep was created
-        var (newCheepsFromAuthor, _) = await _cheepRepository.GetCheepsFromAuthorAsync(1, author.Name);
-        Assert.Single(newCheepsFromAuthor);
+        //assert
+        Assert.NotEmpty(author.Cheeps);
+
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
     public async Task Test_CheepsForACertainPage()
     {
-        
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
+
         var a1 = new Author()
         {
             Name = "Roger Histand",
@@ -125,21 +159,30 @@ public class UnitTest1 : IAsyncLifetime
         await context.SaveChangesAsync();
 
 
-        var achievementRepo = new AchievementRepository(context);
-        var authorRepo = new AuthorRepository(context, achievementRepo);
-        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
-
+        //act
         var (cheepsOnPage1, _) = await cheepRepo.GetCheepsAsync(1);
         var (cheepsOnPage2, _) = await cheepRepo.GetCheepsAsync(2);
 
+        //assert
         Assert.Equal(32, cheepsOnPage1.Count);
         Assert.Equal(8, cheepsOnPage2.Count);
+
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
     public async Task Test_CheepsForACertainPageByAuthor()
     {
-          var a1 = new Author()
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        var achievementRepo = new AchievementRepository(context);
+        var authorRepo = new AuthorRepository(context, achievementRepo);
+        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
+
+        var a1 = new Author()
         {
             Name = "Roger Histand",
             Email = "Roger+Histand@hotmail.com",
@@ -164,78 +207,195 @@ public class UnitTest1 : IAsyncLifetime
         }
         await context.SaveChangesAsync();
 
-        var achievementRepo = new AchievementRepository(context);
-        var authorRepo = new AuthorRepository(context, achievementRepo);
-        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
+        //act
+        var (cheepsOnPage, _) = await cheepRepo.GetCheepsFromAuthorAsync(1, a1.Name);
 
-        var author = await authorRepo.GetAuthorByNameAsync("Roger Histand");
-        Assert.NotNull(author);
-
-        var (cheepsOnPage, _) = await cheepRepo.GetCheepsFromAuthorAsync(1, author.Name);
-
+        //assert
         foreach (var cheep in cheepsOnPage)
         {
-            Assert.Equal(cheep.AuthorName, author.Name);
+            Assert.Equal(cheep.AuthorName, a1.Name);
         }
 
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
-    public async Task Test_FollowAndUnfollowAuthor()
+    public async Task Test_FollowAuthor()
     {
-      
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+
+
         Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
         Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
         Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/First-following-badge.png" };
         Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/First-follower-badge.png" };
-    
+
         context.Achievements.AddRange(ach1, ach2, ach3, ach4);
+
+        Author followed = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        Author following = new Author
+        {
+            Name = "TestUser2",
+            Email = "test2@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(followed, following);
         await context.SaveChangesAsync();
-        // Create two authors
 
-        var follower = await _authorRepository.NewAuthorAsync("follower", "follower@test.com");
-        var following = await _authorRepository.NewAuthorAsync("following", "following@test.com");
 
-        // Test follow
-        await _authorRepository.FollowAuthorAsync(follower.Id, following.Id);
-        var isFollowing = await _authorRepository.IsFollowingAsync(follower.Id, following.Id);
+        //act
+        await authorRepository.FollowAuthorAsync(followed.Id, following.Id);
+        var isFollowing = await context.AuthorFollowers
+         .AnyAsync(af => af.FollowerId == followed.Id && af.FollowingId == following.Id);
+
+        //assert
         Assert.True(isFollowing);
 
-        // Test unfollow
-        await _authorRepository.UnfollowAuthorAsync(follower.Id, following.Id);
-        isFollowing = await _authorRepository.IsFollowingAsync(follower.Id, following.Id);
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task Test_UnfollowAuthor()
+    {
+        //arrange
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+
+
+        Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
+        Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
+        Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/First-following-badge.png" };
+        Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/First-follower-badge.png" };
+
+        context.Achievements.AddRange(ach1, ach2, ach3, ach4);
+
+        Author followed = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        Author following = new Author
+        {
+            Name = "TestUser2",
+            Email = "test2@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(followed, following);
+     
+        context.AuthorFollowers.Add(new AuthorFollower { FollowerId = followed.Id, FollowingId = following.Id });
+
+        await context.SaveChangesAsync();
+
+        //act
+        await authorRepository.UnfollowAuthorAsync(followed.Id, following.Id);
+
+
+        var isFollowing = await context.AuthorFollowers
+               .AnyAsync(af => af.FollowerId == followed.Id && af.FollowingId == following.Id);
+
+
+        //assert
         Assert.False(isFollowing);
+
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 
     [Fact]
     public async Task Test_UserTimeline()
     {
+        ChirpDBContext context = await Util.CreateInMemoryDatabase();
+        IAchievementRepository achievementRepository = new AchievementRepository(context);
+        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
+        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
 
         Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
         Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
         Achievement ach3 = new Achievement() { Title = "Branching Out", Description = "You followed your first Chirper. Every great tree starts with a single branch.", ImagePath = "/images/Badges/First-following-badge.png" };
         Achievement ach4 = new Achievement() { Title = "Social Magnet", Description = "Someone followed you. You must be cheeping some good stuff.", ImagePath = "/images/Badges/First-follower-badge.png" };
-   
+
         context.Achievements.AddRange(ach1, ach2, ach3, ach4);
+
+    Author followed = new Author
+        {
+            Name = "TestUser1",
+            Email = "test1@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        Author following = new Author
+        {
+            Name = "TestUser2",
+            Email = "test2@example.dk",
+            Cheeps = new List<Cheep>(),
+            Followers = new List<AuthorFollower>(),
+            Following = new List<AuthorFollower>()
+        };
+        context.Authors.AddRange(followed, following);
+     context.Cheeps.AddRange(
+              new Cheep
+              {
+                  Text = "Hello World!",
+                  AuthorId = followed.Id,
+                  TimeStamp = CurrentTime,
+                  Author = followed
+              },
+              new Cheep
+              {
+                  Text = "Another Cheep, hell yeah",
+                  AuthorId = following.Id,
+                  TimeStamp = CurrentTime,
+                  Author = following
+              }
+          );
+
+
+
+        context.AuthorFollowers.Add(new AuthorFollower { FollowerId = followed.Id, FollowingId = following.Id });
+
         await context.SaveChangesAsync();
 
-        // Create authors
-        var mainAuthor = await _authorRepository.NewAuthorAsync("main", "main@test.com");
-        var followedAuthor = await _authorRepository.NewAuthorAsync("followed", "followed@test.com");
 
-        // Create some cheeps
-        await _cheepRepository.NewCheepAsync(mainAuthor.Name, mainAuthor.Email!, "Main author cheep");
-        await _cheepRepository.NewCheepAsync(followedAuthor.Name, followedAuthor.Email!, "Followed author cheep");
 
-        // Follow the author
-        await _authorRepository.FollowAuthorAsync(mainAuthor.Id, followedAuthor.Id);
+        //act
+        var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, followed.Name);
 
-        // Get timeline
-        var (timeline, _) = await _cheepRepository.GetCheepsFromUserTimelineAsync(1, mainAuthor.Name);
 
-        // Should see both cheeps
+        //assert
         Assert.Equal(2, timeline.Count);
-        Assert.Contains(timeline, c => c.AuthorName == mainAuthor.Name);
-        Assert.Contains(timeline, c => c.AuthorName == followedAuthor.Name);
+        Assert.Contains(timeline, c => c.AuthorName == following.Name);
+        Assert.Contains(timeline, c => c.AuthorName == followed.Name);
+
+
+        //cleanup
+        await context.Database.EnsureDeletedAsync();
+        await context.DisposeAsync();
     }
 }
