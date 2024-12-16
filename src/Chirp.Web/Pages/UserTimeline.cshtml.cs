@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel : BaseCheepFormPage
+public class UserTimelineModel : BaseCheepTimelinePage
 {
     [BindProperty]
     public BioTextModel BioText { get; set; }

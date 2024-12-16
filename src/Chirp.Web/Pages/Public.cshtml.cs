@@ -1,5 +1,4 @@
-﻿using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Chirp.Services;
+﻿using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Models;
 using Chirp.Web.Pages.Base;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel : BaseCheepFormPage
+public class PublicModel : BaseCheepTimelinePage
 {
     public PublicModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) 
         : base(cheepService, authorService, userManager) {}
