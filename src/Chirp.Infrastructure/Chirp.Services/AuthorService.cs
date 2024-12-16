@@ -55,7 +55,7 @@ public class AuthorService : IAuthorService
     }
     
     public async Task<List<string>> GetFollowersAsync(string authorId){
-        return await _authorRepository.GetFollowedAsync(authorId);
+        return await _authorRepository.GetFollowersAsync(authorId);
     }
     
     public async Task<string?> UpdateBioAsync(Author author, string? newBio)
