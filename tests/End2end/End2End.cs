@@ -30,7 +30,7 @@ namespace Chirp.Tests
             playwright = await Playwright.CreateAsync();
             browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = false // Set to false if you want to see the browser UI
+                Headless = true // Set to false if you want to see the browser UI
             });
             context = await browser.NewContextAsync();
             page = await context.NewPageAsync();
@@ -46,7 +46,7 @@ namespace Chirp.Tests
             }
 
         }
-      
+
         [Test, Order(1)]
         public async Task Test_register()
         {
@@ -99,6 +99,94 @@ namespace Chirp.Tests
         }
 
         [Test, Order(4)]
+        public async Task Test_logout()
+        {
+            // Navigate to the logout page
+            var index = new Uri(client.BaseAddress, "");
+            await page.GotoAsync(index.ToString());
+
+            // Click the logout button
+            await page.ClickAsync("button[type='submit']");
+
+            // Wait for navigation to complete
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            // Verify that the user is redirected to the login page
+            var currentUrl = page.Url;
+             NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress, "/Identity/Account/Logout").ToString()));
+
+        }
+
+        [Test, Order(5)]
+        public async Task Test_login()
+        {
+            // Navigate to the logout page
+            var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+            await page.GotoAsync(loginUrl.ToString());
+
+            // Fill in the login form
+            await page.FillAsync("input[name='Input.Email']", email);
+            await page.FillAsync("input[name='Input.Password']", password);
+            // Click the logout button
+            await page.ClickAsync("button[type='submit'][id='login-submit']");
+
+
+            // Wait for navigation to complete
+            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+            // Verify that the user is redirected to the home page
+            var currentUrl = page.Url;
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
+        }
+
+        [Test, Order(6)]
+        public async Task Test_update_bio()
+        {
+            // Navigate to the user timeline page
+            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            await page.GotoAsync(myTimeLine.ToString());
+
+            // Click the edit button
+            await page.ClickAsync("#edit-button");
+
+            // Fill in the new bio
+            var newBio = "This is my bio.";
+            await page.FillAsync("#editInput", newBio);
+
+            // Save the new bio
+            await page.ClickAsync("#save-button");
+
+            // Wait for the bio to be updated
+            await page.WaitForSelectorAsync($"text={newBio}");
+
+            // Verify the bio is updated
+            var bioText = await page.InnerTextAsync("#author-bio");
+            NUnit.Framework.Assert.That(bioText, Does.Contain(newBio));
+        }
+
+        [Test, Order(7)]
+        public async Task Test_cancel_bio_update()
+        {
+            // Navigate to the user timeline page
+            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            await page.GotoAsync(myTimeLine.ToString());
+
+            // Click the edit button
+            await page.ClickAsync("#edit-button");
+
+            // Fill in the new bio
+            var newBio = "This is my new bio.";
+            await page.FillAsync("#editInput", newBio);
+
+            // Cancel the bio update
+            await page.ClickAsync("#cancel-button");
+
+            // Verify the bio is not updated
+            var bioText = await page.InnerTextAsync("#author-bio");
+            NUnit.Framework.Assert.That(bioText, Does.Not.Contain(newBio));
+        }
+
+        [Test, Order(8)]
         public async Task Test_delete_account()
         {
             // Delete the account
