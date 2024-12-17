@@ -10,7 +10,8 @@ on:
   workflow_dispatch: # Allow manual dispatch
 
 jobs:
-
+ notify:
+    needs: Build Workflow
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
