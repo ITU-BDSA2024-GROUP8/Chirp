@@ -1,5 +1,4 @@
-name: Release Workflow
-
+name: Build, Test, and Release Chirp Executable
 
 on:
   push:
@@ -14,6 +13,7 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
+    
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
