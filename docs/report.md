@@ -67,8 +67,10 @@ We have created three GitHub Actions workflows that carries out there different 
 Three UML activity diagrams can be seen below for each of our github action workflows respectively:
 
 ![GithubAction1 diagram](images/GithubAction1.svg)
+
 ![GithubAction2 diagram](images/GithubAction2.svg)
- <img src="images/GithubAction3.svg" width="50%">
+
+![GithubAction3 diagram](images/GithubAction3.svg)
 
 ### Teamwork
 As shown in the project board screenshot below, the following tasks are unresolved:
@@ -91,22 +93,28 @@ The process is illustrated in the UML sequence diagram below:
 
 ### How to make _Chirp!_ work locally
 **Prerequisites:**
+
 - Install [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 **Clone the Repository:**
+
 Open a terminal and run:
+
 ```sh
 git clone https://github.com/ITU-BDSA2024-GROUP8/Chirp.git
 cd <repository-folder>
 ```
 
 **Install Dependencies:**
+
 Run:
+
 ```sh
 dotnet restore
 ```
 
 **(Optional) Enable OAuth:**
+
 Follow GitHubs guide on [Creating an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) to obtain a Client-Secret and -Id. Once these are acquired, run:
 
 ```sh
@@ -116,14 +124,18 @@ dotnet user-secrets set "Authentication_GitHub_ClientId" "123-Your-ClientId-123"
 ```
 
 **Run the Application:**
+
 Start the server:
+
 ```sh
 cd src/Chirp.Web
 dotnet run
 ```
 
 **Access the application:**
+
 Open your browser and nagivate to:
+
 ```sh
 http://localhost:5273/
 ```
