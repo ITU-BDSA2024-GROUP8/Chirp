@@ -8,9 +8,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-on-azure:
     runs-on: ubuntu-latest
-    needs: Build, Test, and Release Workflow
+    needs: build-and-release
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}

@@ -13,8 +13,7 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
-    needs: Build Workflow
-    
+    needs: build
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
