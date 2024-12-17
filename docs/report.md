@@ -17,7 +17,7 @@ _Chirp!_ revolves around five key entities:
 
 A UML class diagram of the domain model, can be seen below.
 
-
+![Domain model diagram](images/domainModel.svg)
 
 > Note: `IndentityUser` has been simplified in the diagram.
 
