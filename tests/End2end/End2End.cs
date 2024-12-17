@@ -78,6 +78,9 @@ namespace Chirp.Tests
         [Test, Order(2)]
         public async Task Test_cheep()
         {
+            // Add delay so register and first cheep achievement is not recieved at the same time 
+            Thread.Sleep(3000);
+            
             // Submit a new cheep
             var cheepMessage = "Hello, world!";
             await page.FillAsync("input[name='Message']", cheepMessage);
@@ -90,9 +93,19 @@ namespace Chirp.Tests
             var cheepText = await page.InnerTextAsync($"text={cheepMessage}");
             NUnit.Framework.Assert.That(cheepText, Does.Contain(cheepMessage));
         }
-        
 
         [Test, Order(3)]
+        public async Task Test_achievements()
+        {
+            // Check for achievements
+            var myTimeLine = new Uri(client.BaseAddress!, "/" + username);
+            await page.GotoAsync(myTimeLine.ToString());
+            var achievements = await page.InnerTextAsync("h4:has-text('Novice Cheepster')");
+            await page.WaitForSelectorAsync("h4:has-text('Novice Cheepster')");
+            NUnit.Framework.Assert.That(achievements, Does.Contain("Novice Cheepster"));
+        }
+
+        [Test, Order(4)]
         public async Task Test_logout()
         {
             // Navigate to the logout page
@@ -111,7 +124,7 @@ namespace Chirp.Tests
 
         }
 
-        [Test, Order(4)]
+        [Test, Order(5)]
         public async Task Test_login()
         {
             // Navigate to the logout page
@@ -133,7 +146,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
         }
 
-        [Test, Order(5)]
+        [Test, Order(6)]
         public async Task Test_update_bio()
         {
             // Navigate to the user timeline page
@@ -158,7 +171,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(bioText, Does.Contain(newBio));
         }
 
-        [Test, Order(6)]
+        [Test, Order(7)]
         public async Task Test_cancel_bio_update()
         {
             // Navigate to the user timeline page
@@ -181,7 +194,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(bioText, Does.Not.Contain(newBio));
         }
 
-        [Test, Order(7)]
+        [Test, Order(8)]
         public async Task Test_follow_author()
         {
             // Navigate to the user timeline page of the author to follow
@@ -206,7 +219,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Following: 1"));
         }
 
-        [Test, Order(8)]
+        [Test, Order(9)]
         public async Task Test_unfollow_author()
         {
             // Navigate to the user timeline page of the author to unfollow
@@ -231,7 +244,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Following: 0"));
         }
 
-        [Test, Order(9)]
+        [Test, Order(10)]
         public async Task Test_logout_register_new_user()
         {
             // Navigate to the logout page
@@ -269,7 +282,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
         }
 
-        [Test, Order(10)]
+        [Test, Order(11)]
         public async Task Test_follow_author_after_register() {
 
             //Navigate to the user timeline page of the author to follow
@@ -288,7 +301,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followButtonText, Is.EqualTo("[Unfollow]"));
         }
 
-        [Test, Order(11)]
+        [Test, Order(12)]
         public async Task Test_see_other_user_cheeps_once_forllowed()
         {
             // Navigate to the user timeline 
@@ -304,7 +317,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(cheepText2, Does.Contain(username2));
         }
 
-        [Test, Order(12)]
+        [Test, Order(13)]
         public async Task Test_logout_after_register_previous_tests() {
             // Navigate to the logout page
             var index = new Uri(client.BaseAddress!, "");
@@ -322,7 +335,7 @@ namespace Chirp.Tests
         }
     
 
-        [Test, Order(13)]
+        [Test, Order(14)]
         public async Task login_followed_user()
         {
             // Navigate to the login page
@@ -344,8 +357,9 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Followers: 1"));
         }
 
-        
-        [Test, Order(14)]
+
+
+        [Test, Order(15)]
         public async Task Test_delete_account()
         {
             // Delete the account
