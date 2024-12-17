@@ -37,7 +37,7 @@ jobs:
         
       # Build the solution
       - name: Build the solution
-        run: dotnet build Chirp.sln --configuration Release --no-restore
+        run: dotnet build Chirp.sln --configuration Release
 
       - name: Build & Install
         run: dotnet build
