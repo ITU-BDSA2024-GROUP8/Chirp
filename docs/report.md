@@ -66,8 +66,8 @@ We have created three GitHub Actions workflows that:
 
 Three UML activity diagrams can be seen below for each of our github action workflows respectively:
 
-![GithubAction1 diagram] (images/GithubAction1.svg)
-![GithubAction2 diagram] (images/GithubAction2.svg)
+![GithubAction1 diagram](images/GithubAction1.svg)
+![GithubAction2 diagram](images/GithubAction2.svg)
  <img src="images/GithubAction3.svg" width="50%">
 
 ### Teamwork
