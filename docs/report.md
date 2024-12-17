@@ -59,7 +59,11 @@ We have created three GitHub Actions workflows that:
 - **Release:** Packages the application, creates artifacts, and publishes releases for tagged versions.
 - **Deployment:** Deploys the published application to Azure Web App for production.
 
-Three UML activity diagrams can be seen below for each of our github action workflows respectively.
+Three UML activity diagrams can be seen below for each of our github action workflows respectively:
+
+![GithubAction1 diagram](images/GithubAction1.svg)
+![GithubAction2 diagram](images/GithubAction2.svg)
+![GithubAction3 diagram](images/GithubAction3.svg)
 
 
 ## Process
