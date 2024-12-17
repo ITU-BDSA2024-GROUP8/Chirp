@@ -1,8 +1,8 @@
 name: Build, Test, and Release Workflow
 
 on:
- workflow_run:
-    workflows: ["Build Workflow"]
+workflows:
+      - Build Workflow 
     types:
       - completed
   push:
