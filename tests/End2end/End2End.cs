@@ -143,7 +143,7 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the home page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo($"{client.BaseAddress!.ToString()}{username}"));
         }
 
         [Test, Order(6)]
