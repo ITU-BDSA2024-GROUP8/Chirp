@@ -44,11 +44,11 @@ An **authorized** user can:
 
 We have illustrated, a typical scenario of a non-authorized users journey through our _Chirp!_ application.
 
-
+![User activities nonauthorized diagram](images/userActivitiesNonAuthorized.svg)
 
 Likewise, a typical scenario of an authorized users journey, can be seen below.
 
-
+![User activities authorized diagram](images/userActivitiesAuthorized.svg)
 
 > Note: Certain functionality of our Chirp! application, has been omitted in this Diagram to improve readablity. One such function is the ability to cancel while editing your bio. Additionally, while the diagram may suggest it is possible to post Cheeps on other users' private timelines, this is intentionally not allowed in our application, as users can only post Cheeps to public- or their own timelines.
 
@@ -82,8 +82,7 @@ The development of _Chirp!_ followed an organized process, using the project boa
 
 The process is illustrated in the UML sequence diagram below:
 
-
-
+![Team work diagram](images/teamWork.svg)
 
 ### How to make _Chirp!_ work locally
 **Prerequisites:**
