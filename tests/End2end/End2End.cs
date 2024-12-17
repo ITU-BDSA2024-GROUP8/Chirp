@@ -3,6 +3,12 @@ using NUnit.Framework;
 
 namespace Chirp.Tests
 {
+/// <summary>
+/// End2End class is for testing the full functionality of the Chirp application
+/// It uses Playwright to automate the browser and test the application
+/// It tests the registration, login, logout, cheep, achievements, bio update, follow, unfollow, delete account, and other functionalities  
+/// </summary>
+
     [TestFixture]
     public class End2End
     {

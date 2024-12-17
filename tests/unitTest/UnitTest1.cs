@@ -9,8 +9,13 @@ using System;
 using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
+/// <summary>
+/// UnitTest1 class is for testing the Chirp application
+/// It tests the AuthorRepository, CheepRepository, and AchievementRepository
+/// </summary>
 public class UnitTest1
 {
+    
     public static DateTime CurrentTime = DateTime.Now;
 
 

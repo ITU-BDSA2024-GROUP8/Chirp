@@ -3,6 +3,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Chirp.Tests
 {
+    /// <summary>
+    /// TestFixture class is for creating a test server for our End-to-End tests using playwright
+    /// It starts the program from the Chirp.Web project and sets the environment variable for the database path
+    /// This insures the database is separate from the development database
+    /// When tests are done the server is stopped and the database file is deleted
+    /// </summary>
     public class TestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         public Uri BaseAddress { get; }

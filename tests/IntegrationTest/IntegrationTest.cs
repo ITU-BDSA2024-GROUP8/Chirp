@@ -8,6 +8,10 @@ using Chirp.Infrastructure.Models;
 using Chirp.Infrastructure.Data;
 using Util;
 
+/// <summary>
+/// IntegrationTest class is for testing the integration of the Chirp application
+/// It tests the public timeline, private timeline, bio, cheeps, and default messages
+/// </summary>
 public class IntegrationTest : IClassFixture<IntegrationTestFixture<Program>>
 {
     private readonly HttpClient _client;

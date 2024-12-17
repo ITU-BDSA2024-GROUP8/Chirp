@@ -13,10 +13,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Util;
+/// <summary>
+/// IntegrationTestFixture class is for creating an in-memory database for testing used in integration tests
+/// </summary>
 
 /**
  * With help from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0
  */
+
 public class IntegrationTestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
