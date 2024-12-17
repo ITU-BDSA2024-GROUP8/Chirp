@@ -58,7 +58,7 @@ Likewise, a typical scenario of an authorized users journey, can be seen below.
 
 ## Process
 ### Build, test, release, and deployment
-We have created three GitHub Actions workflows that:
+We have created three GitHub Actions workflows that carries out there different tasks:
 
 - **Build and Test:** Automates building the solution, installing dependencies, and running tests.
 - **Release:** Packages the application, creates artifacts, and publishes releases for tagged versions.
