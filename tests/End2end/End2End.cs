@@ -185,6 +185,7 @@ namespace Chirp.Tests
             // Cancel the bio update
             await page.ClickAsync("#cancel-button");
 
+
             // Verify the bio is not updated
             var bioText = await page.InnerTextAsync("#author-bio");
             NUnit.Framework.Assert.That(bioText, Does.Not.Contain(newBio));
