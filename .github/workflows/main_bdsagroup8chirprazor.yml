@@ -1,6 +1,10 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup8chirprazor
 
 on:
+workflow_run:
+    workflows: ["Build, Test, and Release Workflow"]
+    types:
+      - completed
   push:
     branches: [ "main" ]
   pull_request:
