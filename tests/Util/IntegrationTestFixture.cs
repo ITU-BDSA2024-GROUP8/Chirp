@@ -1,49 +1,56 @@
-﻿using Chirp.Infrastructure.Data;
+﻿using System.Data.Common;
+using Chirp.Infrastructure.Chirp.Repositories;
+using Chirp.Infrastructure.Chirp.Services;
+using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Util;
 
+/**
+ * With help from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0
+ */
 public class IntegrationTestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureTestServices(services =>
+        builder.ConfigureServices(services =>
         {
-            services.RemoveAll(typeof(DbContextOptions<ChirpDBContext>));
-            
-            services.AddDbContext<ChirpDBContext>(options => options.UseSqlite("Filename=:memory:"));
-            services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddEntityFrameworkStores<ChirpDBContext>();
-            
-            var dbContext = CreateDbContext(services);
-            dbContext.Database.EnsureCreated();
-        });
-        
-        // builder.ConfigureServices(services =>
-        // {
-        //     services.RemoveAll(typeof(DbContextOptions<ChirpDBContext>));
-        //     
-        //     services.AddDbContext<ChirpDBContext>(options => options.UseSqlite("Filename=:memory:"));
-        //     services.AddDefaultIdentity<Author>(options => options.SignIn.RequireConfirmedAccount = false)
-        //         .AddEntityFrameworkStores<ChirpDBContext>();
-        //     
-        //     var dbContext = CreateDbContext(services);
-        //     dbContext.Database.EnsureCreated();
-        // });
-    }
+            var dbContextDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbContextOptions<ChirpDBContext>));
 
-    private static ChirpDBContext CreateDbContext(IServiceCollection services)
-    {
-        var serviceProvider = services.BuildServiceProvider();
-        var scope = serviceProvider.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ChirpDBContext>();
-        
-        return dbContext;
+            services.Remove(dbContextDescriptor);
+
+            var dbConnectionDescriptor = services.SingleOrDefault(
+                d => d.ServiceType ==
+                     typeof(DbConnection));
+
+            services.Remove(dbConnectionDescriptor);
+
+            // Create open SqliteConnection so EF won't automatically close it.
+            services.AddSingleton<DbConnection>(container =>
+            {
+                var connection = new SqliteConnection("DataSource=:memory:");
+                connection.Open();
+
+                return connection;
+            });
+
+            services.AddDbContext<ChirpDBContext>((container, options) =>
+            {
+                var connection = container.GetRequiredService<DbConnection>();
+                options.UseSqlite(connection);
+            });
+        });
+
+        builder.UseEnvironment("Development");
     }
 }
