@@ -107,7 +107,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             return new ChallengeResult(provider, properties);
         }
 
-        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null){ 
+        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        { 
             returnUrl = returnUrl ?? Url.Content("~/");
             if (remoteError != null)
             {
@@ -125,6 +126,12 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                var authorEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (authorEmail != null)
+                {
+                    var author = await _authorService.GetAuthorByEmailAsync(authorEmail);
+                    if(author != null) returnUrl = $"/{author.Name}";
+                }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -136,7 +143,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             // Check if email already exists
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var username = info.Principal.FindFirstValue(ClaimTypes.Name);
-            
+        
             if (email == null || username == null)
             {
                 ErrorMessage = "Error loading external login information. Missing email or username.";
@@ -163,10 +170,10 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             var user = CreateUser();
             
             user.Name = username;
-
+        
             await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, email, CancellationToken.None);
-
+        
             var createResult = await _userManager.CreateAsync(user);
             
             if (createResult.Succeeded)

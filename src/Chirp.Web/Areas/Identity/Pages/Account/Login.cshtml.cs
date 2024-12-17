@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Chirp.Infrastructure.Chirp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -22,11 +23,13 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<Author> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IAuthorService _authorService;
 
-        public LoginModel(SignInManager<Author> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<Author> signInManager, ILogger<LoginModel> logger, IAuthorService authorService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -115,6 +118,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var author = await _authorService.GetAuthorByEmailAsync(Input.Email);
+                    if(author != null) returnUrl = $"/{author.Name}";
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
