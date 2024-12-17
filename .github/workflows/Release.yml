@@ -1,7 +1,7 @@
 name: Release Workflow
 
 on:
-workflow_run:
+  workflow_run:
     workflows: ['Build Workflow']
     types: [completed]
     branches:
