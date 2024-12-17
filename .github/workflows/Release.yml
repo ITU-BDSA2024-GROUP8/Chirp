@@ -34,7 +34,8 @@ jobs:
       # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
-        
+      - name: Restore dependencies
+        run: dotnet restore Chirp.sln
       # Build the solution
       - name: Build the solution
         run: dotnet build Chirp.sln --configuration Release --no-restore

@@ -32,6 +32,9 @@ jobs:
         dotnet-version: 8.x
 
     # Restore the application
+    - name: Restore dependencies
+      run: dotnet restore Chirp.sln
+      
     - name: Restore the application
       run: dotnet restore $Solution_Name
 
