@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 /// UnitTest class is for testing the Chirp application.
 /// It tests the AuthorRepository, CheepRepository, and AchievementRepository
 /// </summary>
-public class UnitTest
+public class UnitTests
 {
     
     public static DateTime CurrentTime = DateTime.Now;
