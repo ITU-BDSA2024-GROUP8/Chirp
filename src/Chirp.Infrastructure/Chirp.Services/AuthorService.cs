@@ -3,7 +3,9 @@ using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure.Chirp.Services;
-
+/// <summary>
+/// IAuthorService interface is for defining the methods for the AuthorService
+/// </summary>
 public interface IAuthorService
 {
     public Task<Author?> GetAuthorByNameAsync(string name);

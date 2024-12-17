@@ -3,7 +3,9 @@ using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
-
+/// <summary>
+/// IAchievementRepository is for creating the methods defined the interface IAchievementRepository
+/// </summary>
 public interface IAchievementRepository
 {
     public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);

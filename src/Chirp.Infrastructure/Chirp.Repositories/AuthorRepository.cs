@@ -3,7 +3,9 @@ using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
-
+/// <summary>
+/// IAuthorRepository is for creating the methods defined the interface AuthorRepository
+/// </summary>
 public interface IAuthorRepository
 {
     public Task<Author?> GetAuthorByNameAsync(string name);

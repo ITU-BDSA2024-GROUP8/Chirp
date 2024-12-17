@@ -5,7 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using Chirp.Infrastructure.Chirp.Repositories;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
-
+/// <summary>
+/// ICheepRepository is for creating the methods defined the interface ICheepRepository
+/// </summary>
 public interface ICheepRepository
 {
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);

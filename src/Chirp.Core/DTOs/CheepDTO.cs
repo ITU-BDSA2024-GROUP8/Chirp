@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Core.DTOs;
-
+/// <summary>
+/// CheepDTO class is for creating a new cheep
+/// </summary>
 public class CheepDTO
 {
     [Required]
