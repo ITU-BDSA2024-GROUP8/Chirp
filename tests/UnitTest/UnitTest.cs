@@ -1,4 +1,4 @@
-namespace unitTest;
+namespace UnitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
