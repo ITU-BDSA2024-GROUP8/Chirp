@@ -1,10 +1,11 @@
 name: Build, Test, and Release Workflow
 
 on:
-workflows:
-      - Build Workflow 
-    types:
-      - completed
+  workflow_run:
+    workflows: ['Build Workflow']
+    types: [completed]
+    branches:
+      - 'End2end'
   push:
     tags:
       - 'v*.*.*' # Trigger on tag pushes
