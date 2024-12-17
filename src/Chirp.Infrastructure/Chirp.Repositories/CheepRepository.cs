@@ -11,7 +11,6 @@ public interface ICheepRepository
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId);
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId);
-    public Task NewCheepAsync(string authorName, string authorEmail, string text); //Denne metode skal slettes og tests skal tilrettes
     public Task PostCheepAsync(Cheep cheep);
 }
 
@@ -84,31 +83,6 @@ public class CheepRepository : ICheepRepository
         return (await query.Skip((page*32)-32).Take(32).ToListAsync(), await query.CountAsync());
     }
     
-    //Denne metode skal slettes og tests skal tilrettes
-    public async Task NewCheepAsync(string authorName, string authorEmail, string text)
-    {
-        var author = await _authorRepository.GetAuthorByNameAsync(authorName);
-
-        if (author == null)
-        {
-            author = await _authorRepository.NewAuthorAsync(authorName, authorEmail);
-        }
-
-        var newCheep = new Cheep
-        {
-            AuthorId = author.Id,
-            Text = text,
-            TimeStamp = DateTime.Now
-        };
-
-        _dbContext.Cheeps.Add(newCheep);
-
-        author.Cheeps.Add(newCheep);
-
-        await _dbContext.SaveChangesAsync();
-    }
-    
-
     public async Task PostCheepAsync(Cheep cheep)
     {
         var hasAchievement = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == cheep.AuthorId && a.AchievementId == 2);

@@ -1,179 +1,217 @@
-using Chirp.Infrastructure.Chirp.Services;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTest;
-
-using Chirp.Infrastructure.Chirp.Repositories;
+using System;
+using Xunit;
 using Chirp.Infrastructure.Models;
+using Chirp.Infrastructure.Data;
 using Util;
 
-public class IntegrationTest
+public class IntegrationTest : IClassFixture<IntegrationTestFixture<Program>>
 {
-    [Theory]
-    [InlineData("TestUser1", "Hello World!")]
-    public async Task Test_GetCheepsUsingCheepService(string authorName, string message)
+    private readonly HttpClient _client;
+    private readonly IntegrationTestFixture<Program> _factory;
+
+    public IntegrationTest(IntegrationTestFixture<Program> factory)
     {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repositories
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
-        
-        // Create the service
-        ICheepService cheepService = new CheepService(cheepRepository, authorRepository);
-        
-        var author = await authorRepository.GetAuthorByNameAsync(authorName);
-
-        Assert.NotNull(author);
-        
-        var (cheeps, _) = await cheepService.GetCheepsAsync(1);
-        var (cheepsFromAuthor, _) = await cheepService.GetCheepsFromAuthorAsync(1, author.Id);
-
-        // Assert we have two and only two cheeps
-        Assert.Equal(2, cheeps.Count);
-        // Assert that the data is correct
-        Assert.Equal(message, cheepsFromAuthor.First().Message);
+        _factory = factory;
+        _client = factory.CreateClient(new WebApplicationFactoryClientOptions() { AllowAutoRedirect = true, HandleCookies = true });
     }
-
-    [Theory]
-    [InlineData("TestUser1", "Hello World!")]
-    public async Task Test_GetCheepsUsingCheepRepository(string authorName, string message)
+    
+    [Fact]
+    public async void CanSeePublicTimeline()
     {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repositories
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
-
-        var author = await authorRepository.GetAuthorByNameAsync(authorName);
-
-        Assert.NotNull(author);
-        
-        var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
-        var (cheepsFromAuthor, _) = await cheepRepository.GetCheepsFromAuthorAsync(1, author.Id);
-
-        // Assert we have two and only two cheeps
-        Assert.Equal(2, cheeps.Count);
-        // Assert that the data is correct
-        Assert.Equal(message, cheepsFromAuthor.First().Message);
+        var response = await _client.GetAsync("/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("Chirp!", content);
+        Assert.Contains("Public Timeline", content);   
     }
-
+    
     [Theory]
-    [InlineData("TestUser1", "test1@example.dk")]
-    public async Task Test_GetAuthor(string authorName, string email)
+    [InlineData("Helge")]
+    [InlineData("Adrian")]
+    public async void CanSeePrivateTimeline(string authorName)
     {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repository
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-
-        var authorByName = await authorRepository.GetAuthorByNameAsync(authorName);
-        var authorByEmail = await authorRepository.GetAuthorByEmailAsync(email);
-        
-        // Assert that the data is correct
-        Assert.Equal(authorName, authorByName?.Name);
-        Assert.Equal(email, authorByEmail?.Email);
-    }
-
-    [Theory]
-    [InlineData("TestUser1", "test1@example.dk")]
-    public async Task Test_CreateCheep(string authorName, string email)
-    {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repositories
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
-
-        var (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
-        // Assert we have two and only two cheeps
-        Assert.Equal(2, cheeps.Count);
-
-        // Create a new cheep
-        await cheepRepository.NewCheepAsync(authorName, email, "New Cheep!");
-        (cheeps, _) = await cheepRepository.GetCheepsAsync(1);
-
-        // Assert we have three and only three cheeps
-        Assert.Equal(3, cheeps.Count);
-    }
-
-    [Theory]
-    [InlineData("TestUser1", "TestUser2")]
-    public async Task Test_FollowAndUnfollowAuthor(string followerName, string targetName)
-    {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repositories
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-        
-        // Get authors
-        var follower = await authorRepository.GetAuthorByNameAsync(followerName);
-        var target = await authorRepository.GetAuthorByNameAsync(targetName);
-        
-        Assert.NotNull(follower);
-        Assert.NotNull(target);
-
-        // Test following
-        await authorRepository.FollowAuthorAsync(follower.Id, target.Id);
-        var isFollowing = await authorRepository.IsFollowingAsync(follower.Id, target.Id);
-        Assert.True(isFollowing);
-
-        // Test unfollowing
-        await authorRepository.UnfollowAuthorAsync(follower.Id, target.Id);
-        isFollowing = await authorRepository.IsFollowingAsync(follower.Id, target.Id);
-        Assert.False(isFollowing);
-    }
-
-    [Theory]
-    [InlineData("TestUser1")]
-    public async Task Test_GetCheepsFromUserTimeline(string authorName)
-    {
-        // Initialize the database
-        using var context = await Util.CreateInMemoryDatabase(1);
-        
-        // Create the repositories
-        var achievementRepository = new AchievementRepository(context);
-        var authorRepository = new AuthorRepository(context, achievementRepository);
-        var cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
-        
-        var author = await authorRepository.GetAuthorByNameAsync(authorName);
-
-        Assert.NotNull(author);
-        
-        // Get initial timeline
-        var (timeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, author.Id);
-        var initialCount = timeline.Count;
-
-        // Create a new author and have the test user follow them
-        var newAuthor = await authorRepository.NewAuthorAsync("NewUser", "new@example.com");
-        var follower = await authorRepository.GetAuthorByNameAsync(authorName);
-        Assert.NotNull(follower);
-        
-        await authorRepository.FollowAuthorAsync(follower.Id, newAuthor.Id);
-
-        // Create a new cheep from the followed author
-        var newCheep = new Cheep
+        using (var scope = _factory.Services.CreateScope())
         {
-            AuthorId = newAuthor.Id,
-            Text = "New cheep from followed user",
-            TimeStamp = DateTime.Now
-        };
-        await cheepRepository.PostCheepAsync(newCheep);
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
 
-        // Get updated timeline
-        var (updatedTimeline, _) = await cheepRepository.GetCheepsFromUserTimelineAsync(1, author.Id);
+            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            
+            dbContext.Authors.AddRange(author1, author2);
+            await dbContext.SaveChangesAsync();
+        }
         
-        // Timeline should now include the new cheep
-        Assert.Equal(initialCount + 1, updatedTimeline.Count);
-        Assert.Contains(updatedTimeline, c => c.Message == "New cheep from followed user");
+        var response = await _client.GetAsync($"/{authorName}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("Chirp!", content);
+        Assert.Contains($"{authorName}'s Timeline", content);
+    }
+
+    [Theory]
+    [InlineData("Helge", "Pro golfer")]
+    [InlineData("Adrian", "Je suis...")]
+    public async void CanSeeBio(string authorName, string bio)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Pro golfer" };
+            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Je suis..." };
+            
+            dbContext.Authors.AddRange(author1, author2);
+            await dbContext.SaveChangesAsync();
+        }
+        
+        var response = await _client.GetAsync($"/{authorName}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains(bio, content);
+    }
+    
+    [Fact]
+    public async void CanSeeAuthorCheeps()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            var author = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            
+            var cheep1 = new Cheep
+            {
+                Text = "Hello World!",
+                AuthorId = author.Id,
+                TimeStamp = DateTime.Now
+            };
+            
+            var cheep2 = new Cheep
+            {
+                Text = "My precious Cheep",
+                AuthorId = author.Id,
+                TimeStamp = DateTime.Now
+            };
+            
+            dbContext.Authors.Add(author);
+            dbContext.Cheeps.AddRange(cheep1, cheep2);
+            
+            await dbContext.SaveChangesAsync();
+        }
+        
+        var response = await _client.GetAsync($"/Helge");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("Hello World!", content);
+        Assert.Contains("My precious Cheep", content);
+    }
+    
+    [Fact]
+    public async void CanSeeAllCheeps()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var author3 = new Author() { Name = "Hans", UserName = "hans@itu.dk", Email = "hans@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            
+            var cheep1 = new Cheep
+            {
+                Text = "Hello World!",
+                AuthorId = author1.Id,
+                TimeStamp = DateTime.Now
+            };
+            
+            var cheep2 = new Cheep
+            {
+                Text = "My precious Cheep",
+                AuthorId = author2.Id,
+                TimeStamp = DateTime.Now
+            };
+            
+            var cheep3 = new Cheep
+            {
+                Text = "Testing cheeps",
+                AuthorId = author3.Id,
+                TimeStamp = DateTime.Now
+            };
+            
+            dbContext.Authors.AddRange(author1, author2, author3);
+            dbContext.Cheeps.AddRange(cheep1, cheep2, cheep3);
+            
+            await dbContext.SaveChangesAsync();
+        }
+        
+        var response = await _client.GetAsync($"/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("Hello World!", content);
+        Assert.Contains("My precious Cheep", content);
+        Assert.Contains("Testing cheeps", content);
+    }
+    
+    [Fact]
+    public async void DefaultMessageOnUserTimelineWhenNoCheeps()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+
+            var author = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            
+            dbContext.Authors.Add(author);
+            
+            await dbContext.SaveChangesAsync();
+        }
+        
+        var response = await _client.GetAsync($"/Helge");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("There are no cheeps so far.", content);
+    }
+    
+    [Fact]
+    public async void DefaultMessageOnPublicTimelineWhenNoCheeps()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.EnsureCreatedAsync();
+        }
+        
+        var response = await _client.GetAsync($"/");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains("There are no cheeps so far.", content);
     }
 }
