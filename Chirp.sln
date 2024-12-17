@@ -21,6 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "End2end", "tests\End2end\En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "tests\UnitTest\UnitTest.csproj", "{47752044-2CC1-4F7D-9189-907BFF2DDBA3}"
 EndProject
+
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
