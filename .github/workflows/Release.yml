@@ -1,6 +1,10 @@
 name: Build, Test, and Release Workflow
 
 on:
+ workflow_run:
+    workflows: ["Build Workflow"]
+    types:
+      - completed
   push:
     tags:
       - 'v*.*.*' # Trigger on tag pushes
@@ -13,7 +17,6 @@ jobs:
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
-    needs: build
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
