@@ -3,9 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTest;
 using System;
-using System.Threading.Tasks;
 using Xunit;
-using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Models;
 using Chirp.Infrastructure.Data;
 using Util;
