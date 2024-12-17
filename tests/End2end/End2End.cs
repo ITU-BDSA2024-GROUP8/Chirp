@@ -97,8 +97,8 @@ namespace Chirp.Tests
             // Check for achievements
             var myTimeLine = new Uri(client.BaseAddress, "/" + username);
             await page.GotoAsync(myTimeLine.ToString());
-            var achievements = await page.InnerTextAsync(".achievement-heading:has-text('Novice Cheepster')");
-             await page.WaitForSelectorAsync(".achievement-heading", new PageWaitForSelectorOptions { Timeout = 60000 });
+            var achievements = await page.InnerTextAsync("h4:has-text('Novice Cheepster')");
+            await page.WaitForSelectorAsync("h4:has-text('Novice Cheepster')");
             NUnit.Framework.Assert.That(achievements, Does.Contain("Novice Cheepster"));
         }
 
