@@ -66,9 +66,9 @@ We have created three GitHub Actions workflows that:
 
 Three UML activity diagrams can be seen below for each of our github action workflows respectively:
 
-![GithubAction1 diagram](images/GithubAction1.svg)
-![GithubAction2 diagram](images/GithubAction2.svg)
-![GithubAction3 diagram](images/GithubAction3.svg)
+![GithubAction1 diagram] <img src="images/GithubAction1.svg" width="100%">
+![GithubAction2 diagram] <img src="images/GithubAction2.svg" width="100%">
+![GithubAction3 diagram] <img src="images/GithubAction3.svg" width="100%">
 
 ### Teamwork
 As shown in the project board screenshot below, the following tasks are unresolved:
