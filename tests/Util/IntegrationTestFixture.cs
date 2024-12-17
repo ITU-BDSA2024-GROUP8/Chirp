@@ -27,13 +27,13 @@ public class IntegrationTestFixture<TStartup> : WebApplicationFactory<TStartup> 
                 d => d.ServiceType ==
                      typeof(DbContextOptions<ChirpDBContext>));
 
-            services.Remove(dbContextDescriptor);
+            services.Remove(dbContextDescriptor!);
 
             var dbConnectionDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
                      typeof(DbConnection));
 
-            services.Remove(dbConnectionDescriptor);
+            services.Remove(dbConnectionDescriptor!);
 
             // Create open SqliteConnection so EF won't automatically close it.
             services.AddSingleton<DbConnection>(container =>

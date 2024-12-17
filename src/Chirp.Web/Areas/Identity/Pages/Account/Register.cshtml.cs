@@ -31,7 +31,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Author> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        protected readonly IAchievementService _achievementService;
+        private readonly IAchievementService _achievementService;
+        private readonly IAuthorService _authorService;
 
         public RegisterModel(
             UserManager<Author> userManager,
@@ -39,7 +40,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             SignInManager<Author> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAchievementService achievementService)
+            IAchievementService achievementService,
+            IAuthorService authorService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,6 +50,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _achievementService = achievementService;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -121,9 +124,25 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                // Check for existing user with this email
+                var existingUserByEmail = await _userManager.FindByEmailAsync(Input.Email);
+                if (existingUserByEmail != null)
+                {
+                    ModelState.AddModelError(string.Empty, "An account with this email already exists.");
+                    return Page();
+                }
+
+                // Check for existing user with this username
+                var existingUserByName = await _authorService.GetAuthorByNameAsync(Input.Name);
+                if (existingUserByName != null)
+                {
+                    ModelState.AddModelError(string.Empty, "An account with this username already exists.");
+                    return Page();
+                }
+                
                 var user = CreateUser();
 
-                user.Name = Input.Name;
+                user.Name = Input.Name; 
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -151,7 +170,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
-                    else
+                    else    
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
