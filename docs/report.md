@@ -53,6 +53,11 @@ Likewise, a typical scenario of an authorized users journey, can be seen below.
 > Note: Certain functionality of our Chirp! application, has been omitted in this Diagram to improve readablity. One such function is the ability to cancel while editing your bio. Additionally, while the diagram may suggest it is possible to post Cheeps on other users' private timelines, this is intentionally not allowed in our application, as users can only post Cheeps to public- or their own timelines.
 
 ### Sequence of functionality/calls through _Chirp!_
+
+
+
+## Process
+### Build, test, release, and deployment
 We have created three GitHub Actions workflows that:
 
 - **Build and Test:** Automates building the solution, installing dependencies, and running tests.
@@ -64,10 +69,6 @@ Three UML activity diagrams can be seen below for each of our github action work
 ![GithubAction1 diagram](images/GithubAction1.svg)
 ![GithubAction2 diagram](images/GithubAction2.svg)
 ![GithubAction3 diagram](images/GithubAction3.svg)
-
-
-## Process
-### Build, test, release, and deployment
 
 ### Teamwork
 As shown in the project board screenshot below, the following tasks are unresolved:
