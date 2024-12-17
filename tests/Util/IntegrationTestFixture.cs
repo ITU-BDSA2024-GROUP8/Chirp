@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Util;
+
 /// <summary>
 /// IntegrationTestFixture class is for creating an in-memory database for testing used in integration tests
 /// </summary>
