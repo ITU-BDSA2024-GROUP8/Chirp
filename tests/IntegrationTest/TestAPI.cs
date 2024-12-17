@@ -18,7 +18,7 @@ public class TestAPI : IClassFixture<IntegrationTestFixture<Program>>
     public TestAPI(IntegrationTestFixture<Program> factory)
     {
         _factory = factory;
-        _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = false });
+        _client = factory.CreateClient(new WebApplicationFactoryClientOptions { AllowAutoRedirect = true, HandleCookies = true });
     }
     
     [Fact]
@@ -35,25 +35,49 @@ public class TestAPI : IClassFixture<IntegrationTestFixture<Program>>
     [Theory]
     [InlineData("Helge")]
     [InlineData("Adrian")]
-    public async void CanSeePrivateTimeline(string author)
+    public async void CanSeePrivateTimeline(string authorName)
     {
         using (var scope = _factory.Services.CreateScope())
         {
             var serviceProvider = scope.ServiceProvider;
             var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
 
-            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Pro golfer"};
-            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Je suis..."};
+            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
+            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>() };
             
             dbContext.Authors.AddRange(author1, author2);
             await dbContext.SaveChangesAsync();
         }
         
-        var response = await _client.GetAsync($"/{author}");
+        var response = await _client.GetAsync($"/{authorName}");
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
     
         Assert.Contains("Chirp!", content);
-        Assert.Contains($"{author}'s Timeline", content);
+        Assert.Contains($"{authorName}'s Timeline", content);
+    }
+
+    [Theory]
+    [InlineData("Helge", "Pro golfer")]
+    [InlineData("Adrian", "Je suis...")]
+    public async void CanSeeBio(string authorName, string bio)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            var dbContext = serviceProvider.GetRequiredService<ChirpDBContext>();
+
+            var author1 = new Author() { Name = "Helge", UserName = "ropf@itu.dk", Email = "ropf@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Pro golfer" };
+            var author2 = new Author() { Name = "Adrian", UserName = "adho@itu.dk", Email = "adho@itu.dk", EmailConfirmed = true, Cheeps = new List<Cheep>(), Followers = new List<AuthorFollower>(), Following = new List<AuthorFollower>(), Bio = "Je suis..." };
+            
+            dbContext.Authors.AddRange(author1, author2);
+            await dbContext.SaveChangesAsync();
+        }
+        
+        var response = await _client.GetAsync($"/{authorName}");
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+    
+        Assert.Contains(bio, content);
     }
 }
