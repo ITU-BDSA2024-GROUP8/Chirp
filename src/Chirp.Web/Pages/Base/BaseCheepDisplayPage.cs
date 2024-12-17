@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages.Base;
-
 public class BaseCheepDisplayPage : PageModel
 {
     public required List<CheepDTO> Cheeps { get; set; }

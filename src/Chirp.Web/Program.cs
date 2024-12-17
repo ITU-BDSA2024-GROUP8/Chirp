@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+/// <summary>
+/// Program class is the entry point for the Chirp application
+/// It sets up the services for the application and the database
+/// It also sets up the authentication for the application
+/// </summary>
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add user secrets
@@ -17,6 +23,12 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+/// <summary>
+/// The database path is set to the environment variable CHIRPDBPATH
+/// If the environment variable is not set the database will be created in the temp folder with the name chirp.db
+/// Or it will just use the already set path for the database
+/// This is to make sure the testing database is separate from the production database
+/// </summary>
 string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Data Source={dbPath}"));
@@ -67,7 +79,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
+/// <summary>
+/// This is a custom redirect policy to the /Register and /Login page
+/// If the user is authenticated and tries to go to the /Register or /Login page they will be redirected to the home page
+/// </summary>
 //Custom redirect policy to the /Register and /Login page
 app.Use(async (context, next) =>
 {
@@ -84,6 +99,7 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+
 
 using (var scope = app.Services.CreateScope())
 {

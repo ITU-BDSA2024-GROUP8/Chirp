@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// AboutMeModel class is for displaying the current author's information
+/// This class is inheriting from the BaseCheepDisplayPage class
+/// This class is using the IAchievementService interface
+/// </summary>
 public class AboutMeModel : BaseCheepDisplayPage
 {
     protected readonly IAchievementService _achievementService;
@@ -36,6 +40,10 @@ public class AboutMeModel : BaseCheepDisplayPage
         return Page();
     }
 
+/// <summary>
+/// This method is for deleting the current author and signing out
+/// This method is not the same as the delete method in the build in the API
+/// </summary>
     public async Task<ActionResult> OnPostForgetMe(){
         if(!User.Identity!.IsAuthenticated){
             return Page();

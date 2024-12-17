@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// PublicModel class is for displaying the public cheeps
+/// Maximum of 32 cheeps per page
+/// </summary>
 public class PublicModel : BaseCheepTimelinePage
 {
     public PublicModel(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) 
