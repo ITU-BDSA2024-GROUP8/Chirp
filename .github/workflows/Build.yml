@@ -13,6 +13,7 @@ jobs:
         configuration: [Debug, Release]
 
     runs-on: ubuntu-latest
+ 
 
     env:
       Solution_Name: Chirp.sln
@@ -20,6 +21,8 @@ jobs:
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
                          
     steps:
+    - name: Restore dependencies
+       run: dotnet restore Chirp.sln
     - name: Checkout
       uses: actions/checkout@v4
       with:
