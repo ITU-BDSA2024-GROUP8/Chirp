@@ -10,11 +10,10 @@ on:
   workflow_dispatch: # Allow manual dispatch
 
 jobs:
- notify:
-    needs: Build Workflow / build (Debug) (pull_request)
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
+    needs: Build Workflow
     
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
