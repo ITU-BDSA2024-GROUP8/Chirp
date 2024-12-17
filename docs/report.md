@@ -1,0 +1,138 @@
+# _Chirp!_ Project Report
+#### ITU BDSA 2024 Group `8`
+- Adrian Vincentz Otto <adot@itu.dk>
+- Bror Yang Nan Hansen <broh@itu.dk>
+- Carl Anders Stilvén <csti@itu.dk>
+- Konrad Meno Adolph <koad@itu.dk>
+- Marcus Hillersborg Vange <mhiv@itu.dk>
+
+## Design and Architecture of _Chirp!_
+### Domain model
+_Chirp!_ revolves around five key entities:
+- **Author:** Extends ASP.NET IdentityUser, enabling authentication and user management.
+- **Cheep:** Represents posts with attributes like `Text` and `Timestamp`.
+- **AuthorFollower:** Tracks follower relationships between authors.
+- **Achievement:** Defines milestones with attributes like `Title` and `Description`.
+- **AuthorAchievement:** Links authors to unlocked achivements, with metadata like `AchievedAt`.
+
+A UML class diagram of the domain model, can be seen below.
+
+
+
+> Note: `IndentityUser` has been simplified in the diagram.
+
+### Architecture — In the small
+
+### Architecture of deployed application
+
+### User activities
+A **non-authorized** user can:
+- Register
+- Login
+- View public or private timelines
+- Navigate pages via buttons
+
+An **authorized** user can:
+- Logout
+- View public or private timelines
+- Navigate pages via buttons
+- Post new cheeps
+- Follow or unfollow other authors
+- Edit Bio
+- View About Me page
+- Delete all associated data via Forget Me
+
+We have illustrated, a typical scenario of a non-authorized users journey through our _Chirp!_ application.
+
+
+
+Likewise, a typical scenario of an authorized users journey, can be seen below.
+
+
+
+> Note: Certain functionality of our Chirp! application, has been omitted in this Diagram to improve readablity. One such function is the ability to cancel while editing your bio. Additionally, while the diagram may suggest it is possible to post Cheeps on other users' private timelines, this is intentionally not allowed in our application, as users can only post Cheeps to public- or their own timelines.
+
+### Sequence of functionality/calls through _Chirp!_
+We have created three GitHub Actions workflows that:
+
+- **Build and Test:** Automates building the solution, installing dependencies, and running tests.
+- **Release:** Packages the application, creates artifacts, and publishes releases for tagged versions.
+- **Deployment:** Deploys the published application to Azure Web App for production.
+
+Three UML activity diagrams can be seen below for each of our github action workflows respectively.
+
+
+## Process
+### Build, test, release, and deployment
+
+### Teamwork
+As shown in the project board screenshot below, the following tasks are unresolved:
+- XXXX
+- XXXX
+- XXXX
+
+**INDSÆT BILLEDE HER**
+
+The development of _Chirp!_ followed an organized process, using the project board to keep track of tasks.
+1. **Issue creation:** New issues were created after lectures when new features were introduced, or when bugs were identified. An issue would initially be placed in `Todo`, and would include a clear description of the success criteria. A team member would be appointed responsible for resolving it.
+2. **Development:** Once assigned, the developer created a new branch from the main branch. The issue would be moved to `In Progress`. Progress would regularly be committed and pushed to the new branch.
+3. **Code review:** After implementing a feature, a pull request was created for code review. The developer would notify the reviewer, and the code would be evaluated.
+4. **Testing:** The new feature would be thoroughly tested to ensure its functionality. This included running automated tests, as well as performing manual testing.
+5. **Merge into Main:** Once the feature passed the review and testing phases, it was merged into the main branch. The issue would then be moved to `Done` and the branch would be deleted.
+
+The process is illustrated in the UML sequence diagram below:
+
+
+
+
+### How to make _Chirp!_ work locally
+**Prerequisites:**
+- Install [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
+
+**Clone the Repository:**
+Open a terminal and run:
+```sh
+git clone https://github.com/ITU-BDSA2024-GROUP8/Chirp.git
+cd <repository-folder>
+```
+
+**Install Dependencies:**
+Run:
+```sh
+dotnet restore
+```
+
+**(Optional) Enable OAuth:**
+Follow GitHubs guide on [Creating an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) to obtain a Client-Secret and -Id. Once these are acquired, run:
+
+```sh
+dotnet user-secrets init
+dotnet user-secrets set "Authentication_GitHub_ClientSecret" "12345-Your-ClientSecret-12345"
+dotnet user-secrets set "Authentication_GitHub_ClientId" "123-Your-ClientId-123"
+```
+
+**Run the Application:**
+Start the server:
+```sh
+cd src/Chirp.Web
+dotnet run
+```
+
+**Access the application:**
+Open your browser and nagivate to:
+```sh
+http://localhost:5273/
+```
+
+You should see the _Chirp!_ public timeline and be able to interact with the application.
+Ensure you can register/login, view timelines, post cheeps and follow/unfollow authors.
+
+### How to run test suite locally
+
+
+## Ethics
+### License
+We chose the MIT license for our application because it's simple and easy to use. It allows others to freely use, modify, and share our code as long as they include the original copyright and license notice.
+
+### LLMs, ChatGPT, CoPilot, and others
+We used ChatGPT and GitHub Copilot to help us write code, debug issues, and brainstorm solutions. Their responses were often useful and provided good suggestions that sped up our workflow. However, there were times when the tools offered suggestions that were off the mark or incorrect, which occasionally slowed us down. Despite these issues, using LLMs overall made development faster and more efficient.
