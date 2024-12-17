@@ -11,7 +11,7 @@ on:
 
 jobs:
  notify:
-    needs: Build Workflow
+    needs: Build Workflow / build (Debug) (pull_request)
   build-and-release:
     runs-on: ubuntu-latest
     name: Build, Test, and Release Chirp Executable
