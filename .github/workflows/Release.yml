@@ -2,7 +2,7 @@ name: Build, Test, and Release Workflow
 
 on:
 workflow_run:
-    workflows: ['Build and deploy ASP.Net Core app to Azure Web App - bdsagroup8chirprazor']
+    workflows: ['Build Workflow']
     types: [completed]
     branches:
       - 'End2end'
