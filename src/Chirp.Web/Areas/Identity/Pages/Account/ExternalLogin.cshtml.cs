@@ -32,6 +32,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
         protected readonly IAchievementService _achievementService;
+        private readonly IAuthorService _authorService;
 
         public ExternalLoginModel(
             SignInManager<Author> signInManager,
@@ -39,7 +40,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             IUserStore<Author> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            IAchievementService achievementService)
+            IAchievementService achievementService,
+            IAuthorService authorService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -48,6 +50,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _achievementService = achievementService;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -123,6 +126,12 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                var authorEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (authorEmail != null)
+                {
+                    var author = await _authorService.GetAuthorByEmailAsync(authorEmail);
+                    if(author != null) returnUrl = $"/{author.Name}";
+                }
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
