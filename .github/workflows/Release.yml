@@ -6,7 +6,7 @@ on:
     workflows: ['Build Workflow']
     types: [completed]
     branches:
-      - 'End2end'
+      - 'main'
   push:
     tags:
       - 'v*.*.*' # Trigger on tag pushes

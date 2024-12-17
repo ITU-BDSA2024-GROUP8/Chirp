@@ -5,7 +5,7 @@ on:
     workflows: ['Release Workflow']
     types: [completed]
     branches:
-      - 'End2end'
+      - 'main'
   push:
     branches: [ "main" ]
   pull_request:
