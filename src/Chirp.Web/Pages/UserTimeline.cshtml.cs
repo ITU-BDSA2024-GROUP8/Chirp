@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// UserTimelineModel class is for displaying the user's timeline.
+/// Here the user can see their own cheeps and the cheeps of the authors they follow.
+/// Users can also update their bio and see their achievements.
+/// </summary>
 public class UserTimelineModel : BaseCheepTimelinePage
 {
     [BindProperty]

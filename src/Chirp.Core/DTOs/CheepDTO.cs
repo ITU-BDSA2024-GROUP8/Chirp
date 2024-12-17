@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Chirp.Core.DTOs;
-
+/// <summary>
+/// CheepDTO encapsulates data and minimizes unnecessary data exposure.
+/// </summary>
 public class CheepDTO
 {
     [Required]

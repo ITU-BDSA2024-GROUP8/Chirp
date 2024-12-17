@@ -3,7 +3,9 @@ using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Models;
 
 namespace Chirp.Infrastructure.Chirp.Services;
-
+/// <summary>
+/// ICheepService is for defining the methods for the CheepService
+/// </summary>
 public interface ICheepService
 {
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
@@ -12,6 +14,9 @@ public interface ICheepService
     public Task PostCheepAsync(Cheep cheep);
 }
 
+/// <summary>
+/// CheepService is for buissness logic regarding cheeps.
+/// </summary>
 public class CheepService : ICheepService
 {
     private readonly ICheepRepository _cheepRepository;
