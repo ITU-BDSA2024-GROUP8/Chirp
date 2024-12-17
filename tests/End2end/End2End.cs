@@ -55,7 +55,7 @@ namespace Chirp.Tests
         public async Task Test_register()
         {
             // Navigate to the registration page
-            var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
+            var registerUrl = new Uri(client.BaseAddress!, "/Identity/Account/Register");
             await page.GotoAsync(registerUrl.ToString());
 
             // Fill in the registration form
@@ -72,7 +72,7 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the home page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
         }
 
         [Test, Order(2)]
@@ -95,7 +95,7 @@ namespace Chirp.Tests
         public async Task Test_achievements()
         {
             // Check for achievements
-            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            var myTimeLine = new Uri(client.BaseAddress!, "/" + username);
             await page.GotoAsync(myTimeLine.ToString());
             var achievements = await page.InnerTextAsync("h4:has-text('Novice Cheepster')");
             await page.WaitForSelectorAsync("h4:has-text('Novice Cheepster')");
@@ -106,7 +106,7 @@ namespace Chirp.Tests
         public async Task Test_logout()
         {
             // Navigate to the logout page
-            var index = new Uri(client.BaseAddress, "");
+            var index = new Uri(client.BaseAddress!, "");
             await page.GotoAsync(index.ToString());
 
             // Click the logout button
@@ -117,7 +117,7 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the login page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress, "/Identity/Account/Logout").ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress!, "/Identity/Account/Logout").ToString()));
 
         }
 
@@ -125,7 +125,7 @@ namespace Chirp.Tests
         public async Task Test_login()
         {
             // Navigate to the logout page
-            var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+            var loginUrl = new Uri(client.BaseAddress!, "/Identity/Account/Login");
             await page.GotoAsync(loginUrl.ToString());
 
             // Fill in the login form
@@ -140,14 +140,14 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the home page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
         }
 
         [Test, Order(6)]
         public async Task Test_update_bio()
         {
             // Navigate to the user timeline page
-            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            var myTimeLine = new Uri(client.BaseAddress!, "/" + username);
             await page.GotoAsync(myTimeLine.ToString());
 
             // Click the edit button
@@ -172,7 +172,7 @@ namespace Chirp.Tests
         public async Task Test_cancel_bio_update()
         {
             // Navigate to the user timeline page
-            var myTimeLine = new Uri(client.BaseAddress, "/" + username);
+            var myTimeLine = new Uri(client.BaseAddress!, "/" + username);
             await page.GotoAsync(myTimeLine.ToString());
 
             // Click the edit button
@@ -196,7 +196,7 @@ namespace Chirp.Tests
         {
             // Navigate to the user timeline page of the author to follow
             var authorToFollow = "Jacqualine Gilcoine";
-            var authorTimeline = new Uri(client.BaseAddress, "/" + authorToFollow);
+            var authorTimeline = new Uri(client.BaseAddress!, "/" + authorToFollow);
             await page.GotoAsync(authorTimeline.ToString());
 
             // Click the follow button
@@ -210,7 +210,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followButtonText, Is.EqualTo("[Unfollow]"));
 
             // Verify the author is in the following list
-            var aboutMeUrl = new Uri(client.BaseAddress, "/AboutMe");
+            var aboutMeUrl = new Uri(client.BaseAddress!, "/AboutMe");
             await page.GotoAsync(aboutMeUrl.ToString());
             var followingText = await page.InnerTextAsync("p:has-text('Following: 1')");
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Following: 1"));
@@ -221,7 +221,7 @@ namespace Chirp.Tests
         {
             // Navigate to the user timeline page of the author to unfollow
             var authorToUnfollow = "Jacqualine Gilcoine";
-            var authorTimeline = new Uri(client.BaseAddress, "/" + authorToUnfollow);
+            var authorTimeline = new Uri(client.BaseAddress!, "/" + authorToUnfollow);
             await page.GotoAsync(authorTimeline.ToString());
 
             // Click the unfollow button
@@ -235,7 +235,7 @@ namespace Chirp.Tests
             NUnit.Framework.Assert.That(followButtonText, Is.EqualTo("[Follow]"));
 
             // Verify the author is not in the following list
-            var aboutMeUrl = new Uri(client.BaseAddress, "/AboutMe");
+            var aboutMeUrl = new Uri(client.BaseAddress!, "/AboutMe");
             await page.GotoAsync(aboutMeUrl.ToString());
             var followingText = await page.InnerTextAsync("p:has-text('Following: 0')");
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Following: 0"));
@@ -245,7 +245,7 @@ namespace Chirp.Tests
         public async Task Test_logout_register_new_user()
         {
             // Navigate to the logout page
-            var index = new Uri(client.BaseAddress, "");
+            var index = new Uri(client.BaseAddress!, "");
             await page.GotoAsync(index.ToString());
 
             // Click the logout button
@@ -256,10 +256,10 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the login page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress, "/Identity/Account/Logout").ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress!, "/Identity/Account/Logout").ToString()));
 
             // Navigate to the registration page
-            var registerUrl = new Uri(client.BaseAddress, "/Identity/Account/Register");
+            var registerUrl = new Uri(client.BaseAddress!, "/Identity/Account/Register");
             await page.GotoAsync(registerUrl.ToString());
 
             // Fill in the registration form
@@ -276,7 +276,7 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the home page
             currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress.ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(client.BaseAddress!.ToString()));
         }
 
         [Test, Order(11)]
@@ -284,7 +284,7 @@ namespace Chirp.Tests
 
             //Navigate to the user timeline page of the author to follow
             var authorToFollow = username;
-            var authorTimeline = new Uri(client.BaseAddress, "/" + authorToFollow);
+            var authorTimeline = new Uri(client.BaseAddress!, "/" + authorToFollow);
             await page.GotoAsync(authorTimeline.ToString());
 
             // Click the follow button
@@ -303,7 +303,7 @@ namespace Chirp.Tests
         {
             // Navigate to the user timeline 
             var authorToFollow = username2;
-            var authorTimeline = new Uri(client.BaseAddress, "/" + authorToFollow);
+            var authorTimeline = new Uri(client.BaseAddress!, "/" + authorToFollow);
             await page.GotoAsync(authorTimeline.ToString());
 
 
@@ -317,7 +317,7 @@ namespace Chirp.Tests
         [Test, Order(13)]
         public async Task Test_logout_after_register_previous_tests() {
             // Navigate to the logout page
-            var index = new Uri(client.BaseAddress, "");
+            var index = new Uri(client.BaseAddress!, "");
             await page.GotoAsync(index.ToString());
 
             // Click the logout button
@@ -328,7 +328,7 @@ namespace Chirp.Tests
 
             // Verify that the user is redirected to the login page
             var currentUrl = page.Url;
-            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress, "/Identity/Account/Logout").ToString()));
+            NUnit.Framework.Assert.That(currentUrl, Is.EqualTo(new Uri(client.BaseAddress!, "/Identity/Account/Logout").ToString()));
         }
     
 
@@ -336,7 +336,7 @@ namespace Chirp.Tests
         public async Task login_followed_user()
         {
             // Navigate to the login page
-            var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+            var loginUrl = new Uri(client.BaseAddress!, "/Identity/Account/Login");
             await page.GotoAsync(loginUrl.ToString());
 
             // Fill in the login form
@@ -348,7 +348,7 @@ namespace Chirp.Tests
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             // Verify the author is being followed 
-            var aboutMeUrl = new Uri(client.BaseAddress, "/AboutMe");
+            var aboutMeUrl = new Uri(client.BaseAddress!, "/AboutMe");
             await page.GotoAsync(aboutMeUrl.ToString());
             var followingText = await page.InnerTextAsync("p:has-text('Followers: 1')");
             NUnit.Framework.Assert.That(followingText, Is.EqualTo("Followers: 1"));
@@ -360,12 +360,12 @@ namespace Chirp.Tests
         public async Task Test_delete_account()
         {
             // Delete the account
-            await page.GotoAsync(new Uri(client.BaseAddress, "/AboutMe").ToString());
+            await page.GotoAsync(new Uri(client.BaseAddress!, "/AboutMe").ToString());
             await page.ClickAsync("button[type='submit'][name='forgetMeBTN']");
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             // Verify the account is deleted
-            var loginUrl = new Uri(client.BaseAddress, "/Identity/Account/Login");
+            var loginUrl = new Uri(client.BaseAddress!, "/Identity/Account/Login");
             await page.GotoAsync(loginUrl.ToString());
             await page.FillAsync("input[name='Input.Email']", email);
             await page.FillAsync("input[name='Input.Password']", password);
