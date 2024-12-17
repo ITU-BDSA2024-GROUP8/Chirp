@@ -1,4 +1,4 @@
-name: Build, Test, and Release Workflow
+name: Release Workflow
 
 on:
 workflow_run:
