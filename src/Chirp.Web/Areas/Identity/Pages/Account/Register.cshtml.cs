@@ -31,7 +31,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<Author> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        protected readonly IAchievementService _achievementService;
+        private readonly IAchievementService _achievementService;
+        private readonly IAuthorService _authorService;
 
         public RegisterModel(
             UserManager<Author> userManager,
@@ -39,7 +40,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             SignInManager<Author> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IAchievementService achievementService)
+            IAchievementService achievementService,
+            IAuthorService authorService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,6 +50,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _achievementService = achievementService;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -130,7 +133,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 }
 
                 // Check for existing user with this username
-                var existingUserByName = await _userManager.FindByNameAsync(Input.Name);
+                var existingUserByName = await _authorService.GetAuthorByNameAsync(Input.Name);
                 if (existingUserByName != null)
                 {
                     ModelState.AddModelError(string.Empty, "An account with this username already exists.");
@@ -141,7 +144,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
 
                 user.Name = Input.Name; 
 
-                await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

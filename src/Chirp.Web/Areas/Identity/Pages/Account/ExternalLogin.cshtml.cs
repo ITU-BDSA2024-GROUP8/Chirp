@@ -32,6 +32,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
         protected readonly IAchievementService _achievementService;
+        protected readonly IAuthorService _authorService;
 
         public ExternalLoginModel(
             SignInManager<Author> signInManager,
@@ -39,7 +40,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             IUserStore<Author> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            IAchievementService achievementService)
+            IAchievementService achievementService,
+            IAuthorService authorService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -48,6 +50,7 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _achievementService = achievementService;
+            _authorService = authorService;
         }
 
         /// <summary>
@@ -149,18 +152,19 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
 
             // Check for existing user with this username
-            existingUser = await _userManager.FindByNameAsync(username);
+            existingUser = await _authorService.GetAuthorByNameAsync(username);
             if (existingUser != null)
             {
                 ErrorMessage = "An account with this username already exists.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             
+            // Create user
             var user = CreateUser();
             
             user.Name = username;
 
-            await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
+            await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, email, CancellationToken.None);
 
             var createResult = await _userManager.CreateAsync(user);
@@ -172,6 +176,8 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
                 createResult = await _userManager.AddLoginAsync(user, info);
                 if (createResult.Succeeded)
                 {
+                    await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                    return LocalRedirect(returnUrl);
                     // Rest of the existing code remains the same...
                 }
             }
