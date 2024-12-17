@@ -3,8 +3,10 @@ name: Release Workflow
 
 on:
   workflow_run:
-    workflows: ['Build Workflow']
-    types: - completed
+    workflows: 
+      - Build Workflow'
+    types: 
+      - completed
     branches:
       - End2end
   push:
