@@ -6,7 +6,7 @@ on:
       - 'v*.*.*' # Trigger on tag pushes
   pull_request:
     branches:
-      - main # Trigger on pull requests to main
+      - Dokumentation # Trigger on pull requests to main
   workflow_dispatch: # Allow manual dispatch
 
 jobs:
