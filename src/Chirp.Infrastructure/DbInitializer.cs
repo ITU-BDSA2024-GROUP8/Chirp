@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 /// <summary>
-/// DbInitializer class is for creating the database and seeding it with data
-/// This data is used for testing purposes and to show the functionality of the application to the user
+/// DbInitializer class is for creating the database and seeding it with initial data.
 /// </summary>
 public static class DbInitializer
 {

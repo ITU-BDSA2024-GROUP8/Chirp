@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
-/// Program class is the entry point for the Chirp application
-/// It sets up the services for the application and the database
-/// It also sets up the authentication for the application
+/// Program class is the entry point for the Chirp application.
+/// It sets up the services for the application and sets up the database.
+/// It also sets up the authentication with GitHub and other middleware.
 /// </summary>
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,12 +23,11 @@ if (builder.Environment.IsDevelopment())
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-/// <summary>
-/// The database path is set to the environment variable CHIRPDBPATH
-/// If the environment variable is not set the database will be created in the temp folder with the name chirp.db
-/// Or it will just use the already set path for the database
-/// This is to make sure the testing database is separate from the production database
-/// </summary>
+/*
+  The database path is set to the environment variable CHIRPDBPATH.
+  If the environment variable is not set, the database will be created in the temp folder with the name chirp.db.
+  Otherwise, the database will be created in the path specified by the environment variable.  
+*/
 string dbPath = Environment.GetEnvironmentVariable("CHIRPDBPATH") ?? Path.Combine(Path.GetTempPath(), "chirp.db");
 
 builder.Services.AddDbContext<ChirpDBContext>(options => options.UseSqlite($"Data Source={dbPath}"));
@@ -45,7 +44,7 @@ builder.Services.AddScoped<IAchievementService, AchievementService>();
 var clientId = builder.Configuration["authentication_github_clientId"];
 var clientSecret = builder.Configuration["authentication_github_clientSecret"];
 
-if(clientId == null || clientSecret == null) throw new NullReferenceException("clientId or clientSecret is null");
+if (clientId == null || clientSecret == null) throw new NullReferenceException("clientId or clientSecret is null");
 
 builder.Services.AddAuthentication(options =>
     {
@@ -79,18 +78,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-/// <summary>
-/// This is a custom redirect policy to the /Register and /Login page
-/// If the user is authenticated and tries to go to the /Register or /Login page they will be redirected to the home page
-/// </summary>
-//Custom redirect policy to the /Register and /Login page
+
+/*
+  This is a custom redirect policy for the /Register and /Login page
+  If the user is authenticated and tries to go to the /Register or /Login page they will be redirected to the home page
+*/
 app.Use(async (context, next) =>
 {
     if (context.Request.Path.StartsWithSegments("/Identity/Account/Register") && (context.User.Identity?.IsAuthenticated ?? true))
     {
         context.Response.Redirect("/");
     }
-    else if(context.Request.Path.StartsWithSegments("/Identity/Account/Login") && (context.User.Identity?.IsAuthenticated ?? true)) 
+    else if (context.Request.Path.StartsWithSegments("/Identity/Account/Login") && (context.User.Identity?.IsAuthenticated ?? true))
     {
         context.Response.Redirect("/");
     }
@@ -106,7 +105,7 @@ using (var scope = app.Services.CreateScope())
     using var context = scope.ServiceProvider.GetService<ChirpDBContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<Author>>();
     if (context == null) return;
-    if(DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
+    if (DbInitializer.CreateDb(context)) await DbInitializer.SeedDatabase(context, userManager);
 }
 
 //The tests use the instead of a delay to know when the server is ready
@@ -114,4 +113,4 @@ app.Logger.LogInformation("Application started and listening on port 5273");
 
 app.Run();
 
-public partial class Program() {}
+public partial class Program() { }

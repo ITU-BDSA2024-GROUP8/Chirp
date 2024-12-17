@@ -13,6 +13,9 @@ public interface IAchievementService
     public Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId);
 }
 
+/// <summary>
+/// AchievementService is for buissness logic regarding achievements.
+/// </summary>
 public class AchievementService : IAchievementService
 {
     private readonly IAchievementRepository _achievementRepository;

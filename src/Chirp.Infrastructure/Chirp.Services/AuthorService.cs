@@ -18,6 +18,9 @@ public interface IAuthorService
     public Task<string?> UpdateBioAsync(Author author, string? newBio);
 }
 
+/// <summary>
+/// AuthorService is for buissness logic regarding authors.
+/// </summary>
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;

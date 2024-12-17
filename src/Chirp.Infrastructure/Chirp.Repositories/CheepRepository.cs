@@ -6,7 +6,7 @@ using Chirp.Infrastructure.Chirp.Repositories;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 /// <summary>
-/// ICheepRepository is for creating the methods defined the interface ICheepRepository
+/// ICheepRepository is for defining the methods for the CheepRepository
 /// </summary>
 public interface ICheepRepository
 {
@@ -16,6 +16,9 @@ public interface ICheepRepository
     public Task PostCheepAsync(Cheep cheep);
 }
 
+/// <summary>
+/// CheepRepository is for interactions with the database regarding cheeps.
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext _dbContext;

@@ -4,8 +4,8 @@ using NUnit.Framework;
 namespace Chirp.Tests
 {
 /// <summary>
-/// End2End class is for testing the full functionality of the Chirp application
-/// It uses Playwright to automate the browser and test the application
+/// End2End class is for testing the full functionality of the Chirp application as seen by a real user.
+/// It uses Playwright to automate the browser interactions in the test.
 /// It tests the registration, login, logout, cheep, achievements, bio update, follow, unfollow, delete account, and other functionalities  
 /// </summary>
 
@@ -40,7 +40,7 @@ namespace Chirp.Tests
             playwright = await Playwright.CreateAsync();
             browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = true // Set to false if you want to see the browser UI
+                Headless = false // Set to false if you want to see the browser UI
             });
             context = await browser.NewContextAsync();
             page = await context.NewPageAsync();

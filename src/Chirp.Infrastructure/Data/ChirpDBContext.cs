@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Data;
 /// <summary>
-/// ChirpDBContext is for creating the database context for the application
-/// It inherits from IdentityDbContext to use the Identity framework
-/// It contains the DbSet for the models in the application
-/// It also contains the OnModelCreating method to define the relationships between the models
+/// ChirpDBContext is for creating the database context for the application.
+/// It inherits from IdentityDbContext to use the Identity framework.
+/// It contains the DbSet for the models in the application.
+/// It also contains the OnModelCreating method which defines how our entity classes map to the database schema.
 /// </summary>
 public class ChirpDBContext : IdentityDbContext<Author>
 {

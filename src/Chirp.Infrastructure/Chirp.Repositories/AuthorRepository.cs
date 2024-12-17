@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 /// <summary>
-/// IAuthorRepository is for creating the methods defined the interface AuthorRepository
+/// IAuthorRepository interface is for defining the methods for the AuthorRepository
 /// </summary>
 public interface IAuthorRepository
 {
@@ -18,6 +18,10 @@ public interface IAuthorRepository
     public Task<List<string>> GetFollowersAsync(string authorId);
     public Task<string?> UpdateBioAsync(Author author, string? newBio);
 }
+
+/// <summary>
+/// AuthorRepository is for interactions with the database regarding authors.
+/// </summary>
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _dbContext;

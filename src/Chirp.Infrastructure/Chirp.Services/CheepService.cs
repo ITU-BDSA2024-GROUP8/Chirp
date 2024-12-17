@@ -14,6 +14,9 @@ public interface ICheepService
     public Task PostCheepAsync(Cheep cheep);
 }
 
+/// <summary>
+/// CheepService is for buissness logic regarding cheeps.
+/// </summary>
 public class CheepService : ICheepService
 {
     private readonly ICheepRepository _cheepRepository;
