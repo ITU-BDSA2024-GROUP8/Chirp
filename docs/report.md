@@ -66,9 +66,15 @@ We have created three GitHub Actions workflows that carries out there different 
 
 Three UML activity diagrams can be seen below for each of our github action workflows respectively:
 
+The first diagram is of our build and test workflow, which focuses exclusively on validating changed by building and testing the code. It provides fast feedback as it does not produce any artifacts for release or deployment.
+
 ![GithubAction1 diagram](images/GithubAction1.svg)
 
+The second diagram not only builds and tests but also creates a versioned release which publishes executables for different environments (linux-x64, macOS, Windows0x64), that are ready for sharing.
+
 ![GithubAction2 diagram](images/GithubAction2.svg)
+
+The last diagram focuses on continuous deployment of the application to a live Azure Web App environment ensuring it's always up to date.
 
 ![GithubAction3 diagram](images/GithubAction3.svg)
 
