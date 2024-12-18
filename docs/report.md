@@ -147,7 +147,7 @@ The process is illustrated in the UML sequence diagram below:
 
 - Install [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-**Clone the Repository:**
+**Clone the repository:**
 
 Open a terminal and run:
 
@@ -156,7 +156,7 @@ git clone https://github.com/ITU-BDSA2024-GROUP8/Chirp.git
 cd <repository-folder>
 ```
 
-**Install Dependencies:**
+**Install dependencies:**
 
 Run:
 
@@ -174,7 +174,7 @@ dotnet user-secrets set "Authentication_GitHub_ClientSecret" "12345-Your-ClientS
 dotnet user-secrets set "Authentication_GitHub_ClientId" "123-Your-ClientId-123"
 ```
 
-**Run the Application:**
+**Run the application:**
 
 Start the server:
 
