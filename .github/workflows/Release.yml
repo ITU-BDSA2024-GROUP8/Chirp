@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - main # Trigger on pull requests to main
+  workflow_dispatch: # Allow manual dispatch
 
 jobs:
   build-and-release:
@@ -18,14 +19,14 @@ jobs:
     env:
       authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
       authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
-    
+
     steps:
       # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history and tags
-      
+
       # Auto-increment version and push tag (only on main branch push)
       - name: Bump Version and Tag
         if: github.ref == 'refs/heads/main'
@@ -34,23 +35,19 @@ jobs:
           # Fetch the latest version tag
           latest_tag=$(git describe --tags --abbrev=0 || echo "v0.0.0")
           echo "Latest tag: $latest_tag"
-
           # Parse the version (vX.Y.Z)
           major=$(echo $latest_tag | cut -d'.' -f1 | cut -c2-)
           minor=$(echo $latest_tag | cut -d'.' -f2)
           patch=$(echo $latest_tag | cut -d'.' -f3)
-
           # Increment the patch version
           patch=$((patch + 1))
           new_tag="v${major}.${minor}.${patch}"
           echo "New tag: $new_tag"
-
           # Create a new tag and push it
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git tag $new_tag
           git push origin $new_tag
-
           # Export the new tag
           echo "tag=$new_tag" >> $GITHUB_ENV
 
@@ -59,18 +56,16 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-      
+
       # Restore dependencies
       - name: Restore dependencies
         run: dotnet restore
-        
+
       # Build the solution
       - name: Build the solution
         run: dotnet build Chirp.sln --configuration Release --no-restore
 
-      - name: Build & Install
-        run: dotnet build
-      
+      # Install Playwright CLI
       - name: Install Playwright CLI
         run: dotnet tool install --global Microsoft.Playwright.CLI
 
@@ -79,8 +74,11 @@ jobs:
 
       # Run tests
       - name: Run tests
+        env:
+          authentication_github_clientId: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTID }}
+          authentication_github_clientSecret: ${{ secrets.AUTHENTICATION_GITHUB_CLIENTSECRET }}
         run: dotnet test --configuration Release --verbosity normal
-      
+
       # Publish executables (only for tagged pushes)
       - name: Publish Chirp Web Executable
         if: startsWith(github.ref, 'refs/tags/')
@@ -91,7 +89,48 @@ jobs:
             --output ./publish/linux-x64 \
             -r linux-x64 \
             /p:PublishSingleFile=true
-          
+
           dotnet publish src/Chirp.Web/Chirp.Web.csproj \
             --configuration Release \
             --self-contained true \
+            --output ./publish/win-x64 \
+            -r win-x64 \
+            /p:PublishSingleFile=true
+
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj \
+            --configuration Release \
+            --self-contained true \
+            --output ./publish/osx-x64 \
+            -r osx-x64 \
+            /p:PublishSingleFile=true
+
+      # Create ZIP files for release artifacts
+      - name: Create ZIP files
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          cd publish
+          zip -r chirp-linux-x64.zip linux-x64
+          zip -r chirp-win-x64.zip win-x64
+          zip -r chirp-osx-x64.zip osx-x64
+
+      # Upload release artifacts
+      - name: Upload Release Artifacts
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v3
+        with:
+          name: Chirp Release Artifacts
+          path: publish/*.zip
+
+      # Create GitHub Release
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "Release ${{ github.ref_name }}"
+          files: |
+            publish/chirp-linux-x64.zip
+            publish/chirp-win-x64.zip
+            publish/chirp-osx-x64.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
