@@ -116,11 +116,11 @@ The first diagram is of our build and test workflow, which focuses exclusively o
 
 The second diagram not only builds and tests but also creates a versioned release which publishes executables for different environments (linux-x64, macOS-x64, Windows-x64), that are ready for sharing.
 
-![Release diagram](images/GithubAction3.svg)
+![Release diagram](images/GithubAction2.svg)
 
 The last diagram focuses on continuous deployment of the application to a live Azure Web App environment ensuring it's always up to date.
 
-![Deployment diagram](images/GithubAction2.svg)
+![Deployment diagram](images/GithubAction3.svg)
 
 ## Teamwork
 
