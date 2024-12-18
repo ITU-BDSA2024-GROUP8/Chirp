@@ -28,7 +28,32 @@ A UML class diagram of the domain model, can be seen below.
 
 ### Architecture — In the small
 
+Illustrated below is our _Chirp!_ application in Onion Architecture. The different 
+layers are:
+
+UI Layer: Handles user interactions and renders pages using Razor Pages.
+
+Services Layer: Is responsible for data flow between the repository and UI layers.
+
+Repository Layer: Manages data access, interacting with the database via Entity Framework.
+
+Domain Layer: Contains DTOs and domain models.
+
+![Onion Architecture diagram](images/OnionArchitecture.png)
+
 ### Architecture of deployed application
+
+Local Architecture:
+The client accesses the web application, which is hosted locally and directly
+interacts with the local database to process and retrieve data(see the diagram below).
+
+![Onion Architecture diagram](images/ArchitectureLocal.svg)
+
+Global Architecture:
+Clients connect to the web server over the internet, allowing the server
+to communicate with the Azure database for data processing and storage(see the diagram below).
+
+![Onion Architecture diagram](images/ArchitectureGlobal.svg)
 
 ### User activities
 
