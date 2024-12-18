@@ -34,12 +34,9 @@ Illustrated below is our _Chirp!_ application in Onion Architecture. The differe
 layers are:
 
 - UI Layer: Handles user interactions and renders pages using Razor Pages.
-
 - Services Layer: Is responsible for data flow between the repository and UI layers.
-
 - Repository Layer: Manages data access, interacting with the database via Entity Framework.
-
-- Domain Layer: Contains DTOs and domain models.
+- Domain Layer: Contains DTOs, interfaces and the domain model.
 
 ![Onion architecture diagram](images/OnionArchitecture.png)
 
@@ -166,7 +163,7 @@ Open a terminal and run:
 
 ```sh
 git clone https://github.com/ITU-BDSA2024-GROUP8/Chirp.git
-cd <repository-folder>
+cd Chirp
 ```
 
 **Install dependencies:**
