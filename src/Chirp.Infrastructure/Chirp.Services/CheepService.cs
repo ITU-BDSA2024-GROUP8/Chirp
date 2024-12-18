@@ -1,6 +1,6 @@
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Models;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
 
 namespace Chirp.Infrastructure.Chirp.Services;
 

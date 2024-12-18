@@ -1,22 +1,11 @@
 ﻿using Chirp.Core.DTOs;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 
-public interface IAuthorRepository
-{
-    public Task<AuthorDTO?> GetAuthorByNameAsync(string name);
-    public Task<AuthorDTO?> GetAuthorByEmailAsync(string email);
-    public Task<AuthorDTO> NewAuthorAsync(string authorName, string authorEmail);
-    public Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
-    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
-    public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task<List<string>> GetFollowersAsync(string authorId);
-    public Task<string?> UpdateBioAsync(string authorId, string? newBio);
-}
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _dbContext;
@@ -48,7 +37,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO> NewAuthorAsync(string authorName, string authorEmail)
     {
-        var newAuthor = new Author
+        var newAuthor = new Author()
         {
             Name = authorName,
             Email = authorEmail,

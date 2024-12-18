@@ -1,18 +1,10 @@
 ﻿using Chirp.Core.DTOs;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Infrastructure.Chirp.Repositories;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
-
-public interface ICheepRepository
-{
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId);
-    public Task PostCheepAsync(Cheep cheep);
-}
 
 public class CheepRepository : ICheepRepository
 {

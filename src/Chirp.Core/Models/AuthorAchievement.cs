@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Chirp.Infrastructure.Models;
+namespace Chirp.Core.Models;
 
 public class AuthorAchievement
 {

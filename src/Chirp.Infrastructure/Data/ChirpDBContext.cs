@@ -1,4 +1,4 @@
-﻿using Chirp.Infrastructure.Models;
+﻿using Chirp.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +14,7 @@ public class ChirpDBContext : IdentityDbContext<Author>
     public DbSet<AuthorAchievement> AuthorAchievements { get; set; }
     
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
-    {
-        
-    }
+    {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

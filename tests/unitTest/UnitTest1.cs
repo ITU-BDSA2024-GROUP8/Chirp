@@ -1,3 +1,6 @@
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
+
 namespace unitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
@@ -6,7 +9,6 @@ using Xunit;
 using Util;
 using System.Threading.Tasks;
 using System;
-using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class UnitTest1

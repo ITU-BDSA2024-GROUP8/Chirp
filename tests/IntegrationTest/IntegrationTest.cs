@@ -1,10 +1,10 @@
+using Chirp.Core.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTest;
 using System;
 using Xunit;
-using Chirp.Infrastructure.Models;
 using Chirp.Infrastructure.Data;
 using Util;
 

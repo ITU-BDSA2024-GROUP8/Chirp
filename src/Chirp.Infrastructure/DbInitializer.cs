@@ -1,5 +1,5 @@
-﻿using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
+﻿using Chirp.Core.Models;
+using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;

@@ -1,21 +1,8 @@
 ﻿using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
+using Chirp.Core.Repositories;
+using Chirp.Core.Services;
 
 namespace Chirp.Infrastructure.Chirp.Services;
-
-public interface IAuthorService
-{
-    public Task<AuthorDTO?> GetAuthorByNameAsync(string name);
-    public Task<AuthorDTO?> GetAuthorByEmailAsync(string email);
-    public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
-    public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task<List<string>> GetFollowersAsync(string authorId);
-    public Task<string?> UpdateBioAsync(string authorId, string? newBio);
-}
 
 public class AuthorService : IAuthorService
 {

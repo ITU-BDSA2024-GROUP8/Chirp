@@ -1,8 +1,9 @@
 ﻿using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Chirp.Services;
-using Chirp.Infrastructure.Models;
+using Chirp.Core.Models;
+using Chirp.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ICheepService = Chirp.Infrastructure.Chirp.Services.ICheepService;
 
 namespace Chirp.Web.Pages.Base;
 
