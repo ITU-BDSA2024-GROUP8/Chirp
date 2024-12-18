@@ -46,7 +46,7 @@ layers are:
 ## Architecture of deployed application
 
 When a user wants to interact with our application, they can do so in two different ways.
-Being that the user can choose to either run it locally or globally.
+Being that the user can choose to either run it locally or remotely.
 
 Local Architecture:
 The client accesses the web application, which is hosted locally and directly
@@ -54,11 +54,11 @@ interacts with the local database to process and retrieve data (see the diagram 
 
 ![Architecture local diagram](images/ArchitectureLocal.svg)
 
-Global Architecture:
+Remote Architecture:
 Clients connect to the web server over the internet, allowing the server
 to communicate with the Azure database for data processing and storage (see the diagram below).
 
-![Architecture global diagram](images/ArchitectureGlobal.svg)
+![Architecture remote diagram](images/ArchitectureRemote.svg)
 
 ## User activities
 
