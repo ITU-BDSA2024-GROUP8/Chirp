@@ -1,29 +1,22 @@
 ﻿using Chirp.Core.DTOs;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
-using Chirp.Infrastructure.Chirp.Repositories;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 
-public interface ICheepRepository
-{
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId);
-    public Task PostCheepAsync(Cheep cheep);
-}
-
+/// <summary>
+/// CheepRepository is for interactions with the database regarding cheeps.
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext _dbContext;
-    private readonly IAuthorRepository _authorRepository;
     private readonly IAchievementRepository _achievementRepository;
 
-    public CheepRepository(ChirpDBContext dbContext, IAuthorRepository authorRepository, IAchievementRepository achievementRepository)
+    public CheepRepository(ChirpDBContext dbContext, IAchievementRepository achievementRepository)
     {
         _dbContext = dbContext;
-        _authorRepository = authorRepository;
         _achievementRepository = achievementRepository;
     }
     
@@ -88,7 +81,6 @@ public class CheepRepository : ICheepRepository
         var hasAchievement = await _dbContext.AuthorAchievements.AnyAsync(a => a.AuthorId == cheep.AuthorId && a.AchievementId == 2);
         
         _dbContext.Cheeps.Add(cheep);
-        cheep.Author.Cheeps.Add(cheep);
         await _dbContext.SaveChangesAsync();
 
         if (!hasAchievement) await _achievementRepository.AddNewAuthorAchievementAsync(cheep.AuthorId, 2);

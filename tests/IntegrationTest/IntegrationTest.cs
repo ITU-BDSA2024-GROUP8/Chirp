@@ -1,13 +1,17 @@
+using Chirp.Core.Models;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTest;
 using System;
 using Xunit;
-using Chirp.Infrastructure.Models;
 using Chirp.Infrastructure.Data;
 using Util;
 
+/// <summary>
+/// IntegrationTest class is designed to test the interactions between different components in the Chirp application.
+/// It tests the public timeline, private timeline, bio, cheeps, and default messages.
+/// </summary>
 public class IntegrationTest : IClassFixture<IntegrationTestFixture<Program>>
 {
     private readonly HttpClient _client;

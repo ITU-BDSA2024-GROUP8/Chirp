@@ -7,15 +7,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Chirp.Core.Models;
+using Chirp.Core.Services;
 using Chirp.Infrastructure.Chirp.Services;
 using Microsoft.AspNetCore.Authorization;
-using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+
 
 namespace Chirp.Web.Areas.Identity.Pages.Account
 {

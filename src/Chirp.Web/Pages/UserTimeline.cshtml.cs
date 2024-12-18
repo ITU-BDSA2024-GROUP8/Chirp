@@ -1,12 +1,16 @@
-using Chirp.Infrastructure.Chirp.Services;
-using Chirp.Infrastructure.Models;
+using Chirp.Core.Models;
+using Chirp.Core.Services;
 using Chirp.Web.Pages.Base;
 using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// UserTimelineModel class is for displaying the user's timeline.
+/// Here the user can see their own cheeps and the cheeps of the authors they follow.
+/// Users can also update their bio and see their achievements.
+/// </summary>
 public class UserTimelineModel : BaseCheepTimelinePage
 {
     [BindProperty]
@@ -22,20 +26,15 @@ public class UserTimelineModel : BaseCheepTimelinePage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-        (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
 
         var authorRequest = await _authorService.GetAuthorByNameAsync(author);
-
-        if (authorRequest == null){
-            return Page();
-        }
+        if (authorRequest == null) return Page();
         
         BioText.Bio = authorRequest.Bio;
 
-        if(User.Identity!.IsAuthenticated){
-            var currentAuthor = await _userManager.GetUserAsync(User);
-            var currentAuthorName = currentAuthor!.Name;
-            if(currentAuthorName == author){
+        if(User.Identity!.IsAuthenticated && AuthenticatedAuthor != null){
+            if(AuthenticatedAuthor.Name == author){
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, authorRequest.Id);
             } else {
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, authorRequest.Id);
@@ -50,18 +49,18 @@ public class UserTimelineModel : BaseCheepTimelinePage
     
     public async Task<ActionResult> OnPostUpdateBio(string? newBio)
     {
-        newBio = newBio?.Trim();
-        
         if (User.Identity?.IsAuthenticated != true) return Page();
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        if(AuthenticatedAuthor == null) return Page();
+        
+        newBio = newBio?.Trim();
         
         if (newBio?.Length > 300)
         {
             return Page();
         }
-        
-        var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _authorService.UpdateBioAsync(currentAuthor!, newBio);
+        await _authorService.UpdateBioAsync(AuthenticatedAuthor.Id, newBio);
         
         return RedirectToPage();
     }

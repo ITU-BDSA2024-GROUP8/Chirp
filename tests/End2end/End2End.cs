@@ -3,6 +3,12 @@ using NUnit.Framework;
 
 namespace Chirp.Tests
 {
+/// <summary>
+/// End2End class is for testing the full functionality of the Chirp application as seen by a real user.
+/// It uses Playwright to automate the browser interactions in the test.
+/// It tests the registration, login, logout, cheep, achievements, bio update, follow, unfollow, delete account, and other functionalities  
+/// </summary>
+
     [TestFixture]
     public class End2End
     {
@@ -83,7 +89,7 @@ namespace Chirp.Tests
             
             // Submit a new cheep
             var cheepMessage = "Hello, world!";
-            await page.FillAsync("input[name='Message']", cheepMessage);
+            await page.FillAsync("input[name='FormData.Message']", cheepMessage);
             await page.ClickAsync("input[type='submit']");
 
             // Wait for the cheep to appear

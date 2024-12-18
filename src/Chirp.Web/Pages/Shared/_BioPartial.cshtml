@@ -1,4 +1,4 @@
-﻿@using Chirp.Infrastructure.Chirp.Services
+﻿@using Chirp.Core.Services
 @model Chirp.Web.Pages.Models.BioModel;
 @inject IAuthorService AuthorService;
 
@@ -6,20 +6,20 @@
     var routeName = Model.RouteName;
     var isMyBio = Model.IsMyBio;
     var author = await AuthorService.GetAuthorByNameAsync(routeName!);
-    var hasBio = !string.IsNullOrEmpty(author!.Bio);
+    var hasBio = !string.IsNullOrEmpty(author?.Bio);
 }
 
 @if (isMyBio)
 {
     <div class="div-bio-style">
-        <p id="author-bio" class="p-bio">@(hasBio ? author.Bio : $"You have no bio yet...")</p>
+        <p id="author-bio" class="p-bio">@(hasBio ? author?.Bio : "You have no bio yet...")</p>
         <form class="bio-form" method="post" asp-page-handler="UpdateBio">
             <textarea type="text" name="newBio" class="edit-bio-text" id="editInput" asp-for="BioText.Bio"></textarea>
             <button id="save-button" class="bio-button" type="submit" onclick="enableEditing()">
                 <p class="p-bio-edit">Save</p>
                 <div><img src="/images/saveButton.svg" class="save-bio-button-image" alt="save" /></div>
             </button>
-            <button id="cancel-button" class="bio-button" type="button" onclick="disableEditing('@author.Bio')">
+            <button id="cancel-button" class="bio-button" type="button" onclick="disableEditing('@author?.Bio')">
                 <p class="p-bio">Cancel</p>
                 <div><img src="/images/cancelButton.svg" class="cancel-button-image" alt="cancel"/></div>
             </button>
@@ -33,5 +33,5 @@
 }
 else
 {
-    <p id="author-bio" class="p-bio">@(hasBio ? author.Bio : $"{author.Name} has no bio yet...")</p>
+    <p id="author-bio" class="p-bio">@(hasBio ? author?.Bio : $"{author?.Name} has no bio yet...")</p>
 }

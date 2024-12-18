@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Chirp.Web.Pages.Models
 @model Chirp.Web.Pages.PublicModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -7,8 +8,11 @@
 
 <div>
     <h2> Public Timeline </h2>
-    
-    <partial name="_CheepFormPartial" model="Model.FormData" />
+
+    @if (User.Identity!.IsAuthenticated && Model.AuthenticatedAuthor != null)
+    {
+        <partial name="_CheepFormPartial" model="new CheepFormModel { Author = Model.AuthenticatedAuthor, FormData = Model.FormData }" />
+    }
     
     @if (Model.Cheeps.Any())
     {

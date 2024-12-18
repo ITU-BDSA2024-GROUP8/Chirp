@@ -1,22 +1,21 @@
 ﻿using System.Data.Common;
-using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Util;
+
+/// <summary>
+/// IntegrationTestFixture class is for creating an in-memory database for testing used in integration tests
+/// </summary>
 
 /**
  * With help from https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-9.0
  */
+
 public class IntegrationTestFixture<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)

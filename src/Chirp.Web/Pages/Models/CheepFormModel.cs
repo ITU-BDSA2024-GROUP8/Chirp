@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Core.DTOs;
 
 namespace Chirp.Web.Pages.Models;
 
 public class CheepFormModel
 {
-    [Required (ErrorMessage = "Cheep can't be empty")]
-    [StringLength(160)]
-    public required string Message { get; set; }
+    public AuthorDTO Author { get; set; } = null!;
+    public CheepFormTextModel FormData { get; set; } = null!;
 }

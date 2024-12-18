@@ -1,10 +1,15 @@
-﻿using Chirp.Infrastructure.Models;
+﻿using Chirp.Core.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Data;
-
+/// <summary>
+/// ChirpDBContext is for creating the database context for the application.
+/// It inherits from IdentityDbContext to use the Identity framework.
+/// It contains the DbSet for the models in the application.
+/// It also contains the OnModelCreating method which defines how our entity classes map to the database schema.
+/// </summary>
 public class ChirpDBContext : IdentityDbContext<Author>
 {
     public DbSet<Cheep> Cheeps { get; set; }
@@ -14,9 +19,7 @@ public class ChirpDBContext : IdentityDbContext<Author>
     public DbSet<AuthorAchievement> AuthorAchievements { get; set; }
     
     public ChirpDBContext(DbContextOptions<ChirpDBContext> options) : base(options)
-    {
-        
-    }
+    {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
