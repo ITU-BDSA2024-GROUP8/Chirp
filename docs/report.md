@@ -190,14 +190,20 @@ Ensure you can register/login, view timelines, post cheeps and follow/unfollow a
 
 ### How to run test suite locally
 
-Once you have made sure you can run the program locally as described above, you have to install the required browsers for playwright to work. To do this, open a terminal.
+Once you have made sure you can run the program locally as described above, you have to install the required browsers for playwright to work. 
 
-Run:
+**Install required browsers:**
+Make sure to run the following commands one by one in this order.
+
+Install:
 
 ```sh
-pwsh bin/Debug/net8.0/playwright.ps1 install
+dotnet new tool-manifest
+dotnet tool install Microsoft.Playwright.CLI
+dotnet tool run playwright install
 ```
 
+**Run tests:**
 Make sure you are either in the base Chirp directory or in a specific test directory.
 
 Start tests/test:
