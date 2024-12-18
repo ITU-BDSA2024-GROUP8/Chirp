@@ -1,7 +1,6 @@
 @model Chirp.Web.Pages.Models.CheepFormModel
 
-@if (User.Identity!.IsAuthenticated)
-{
+@{
     var author = await UserManager.GetUserAsync(User);
 
     <div class="cheepbox">

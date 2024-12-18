@@ -7,8 +7,11 @@
 
 <div>
     <h2> Public Timeline </h2>
-    
-    <partial name="_CheepFormPartial" model="Model.FormData" />
+
+    @if (User.Identity!.IsAuthenticated && Model.AuthenticatedAuthor != null)
+    {
+        <partial name="_CheepFormPartial" model="Model.FormData" />
+    }
     
     @if (Model.Cheeps.Any())
     {

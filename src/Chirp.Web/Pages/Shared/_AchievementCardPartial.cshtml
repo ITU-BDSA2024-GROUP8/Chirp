@@ -1,10 +1,9 @@
 ﻿@using Chirp.Infrastructure.Chirp.Services
-@model Chirp.Infrastructure.Models.Author
+@model Chirp.Web.Pages.UserTimelineModel
 @inject IAchievementService Service;
 
 @{
-    var author = Model;
-    var achievement = await Service.GetAuthorNewestAchievementAsync(author.Id);
+    var achievement = await Service.GetAuthorNewestAchievementAsync(Model.AuthenticatedAuthor!.Id);
 }
     
 <div class="achievement-card">

@@ -1,4 +1,5 @@
-﻿using Chirp.Infrastructure.Data;
+﻿using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,15 +7,15 @@ namespace Chirp.Infrastructure.Chirp.Repositories;
 
 public interface IAuthorRepository
 {
-    public Task<Author?> GetAuthorByNameAsync(string name);
-    public Task<Author?> GetAuthorByEmailAsync(string email);
-    public Task<Author> NewAuthorAsync(string authorName, string authorEmail);
+    public Task<AuthorDTO?> GetAuthorByNameAsync(string name);
+    public Task<AuthorDTO?> GetAuthorByEmailAsync(string email);
+    public Task<AuthorDTO> NewAuthorAsync(string authorName, string authorEmail);
     public Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public Task UnfollowAuthorAsync(string currentAuthorId, string targetAuthorId);
     public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
     public Task<List<string>> GetFollowingAsync(string authorId);
     public Task<List<string>> GetFollowersAsync(string authorId);
-    public Task<string?> UpdateBioAsync(Author author, string? newBio);
+    public Task<string?> UpdateBioAsync(string authorId, string? newBio);
 }
 public class AuthorRepository : IAuthorRepository
 {
@@ -26,26 +27,26 @@ public class AuthorRepository : IAuthorRepository
         _dbContext = dbContext;
         _achievementRepository = achievementRepository;
     }
-
-    public async Task<Author?> GetAuthorByNameAsync(string name)
+    
+    public async Task<AuthorDTO?> GetAuthorByNameAsync(string name)
     {
         var query = from a in _dbContext.Authors
-                    where a.Name == name
-                    select a;
+            where a.Name == name
+            select new AuthorDTO { Id = a.Id, Name = a.Name, Email = a.Email, Bio = a.Bio };
 
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<Author?> GetAuthorByEmailAsync(string email)
+    public async Task<AuthorDTO?> GetAuthorByEmailAsync(string email)
     {
         var query = from a in _dbContext.Authors
                     where a.Email == email
-                    select a;
+                    select new AuthorDTO { Id = a.Id, Name = a.Name, Email = a.Email, Bio = a.Bio };
 
         return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<Author> NewAuthorAsync(string authorName, string authorEmail)
+    public async Task<AuthorDTO> NewAuthorAsync(string authorName, string authorEmail)
     {
         var newAuthor = new Author
         {
@@ -59,7 +60,7 @@ public class AuthorRepository : IAuthorRepository
         _dbContext.Authors.Add(newAuthor);
         await _dbContext.SaveChangesAsync();
 
-        return newAuthor;
+        return new AuthorDTO { Id = newAuthor.Id, Name = newAuthor.Name, Email = newAuthor.Email, Bio = newAuthor.Bio };;
     }
 
     public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
@@ -117,11 +118,14 @@ public class AuthorRepository : IAuthorRepository
         return await query.ToListAsync();
     }
     
-    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
+    public async Task<string?> UpdateBioAsync(string authorId, string? newBio)
     {
-        author.Bio = newBio;
+        var authorFromDb = await _dbContext.Authors.FindAsync(authorId);
+        if (authorFromDb == null) return null;
         
-        _dbContext.Authors.Update(author);
+        authorFromDb.Bio = newBio;
+        
+        _dbContext.Authors.Update(authorFromDb);
         
         await _dbContext.SaveChangesAsync();
 

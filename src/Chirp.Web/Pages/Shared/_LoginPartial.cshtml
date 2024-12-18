@@ -1,9 +1,11 @@
-@inject SignInManager<Author> SignInManager
+@using Chirp.Infrastructure.Chirp.Services
+@inject IAuthorService AuthorService
 
 <div class=navigation style="display: flex; justify-content: space-between;">
     @if (User.Identity!.IsAuthenticated)
     {
-        var author = await UserManager.GetUserAsync(User);
+        var email = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+        var author = await AuthorService.GetAuthorByEmailAsync(email!);
         
         <div>
             <a href="/@(author!.Name)">my timeline</a> |

@@ -16,8 +16,9 @@ public class PublicModel : BaseCheepTimelinePage
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
         (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
 
-        if(User.Identity!.IsAuthenticated){
+        if(User.Identity!.IsAuthenticated && AuthenticatedAuthor != null){
             await PopulateFollows();
         }
         

@@ -23,6 +23,7 @@ public class UserTimelineModel : BaseCheepTimelinePage
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
         (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
 
         var authorRequest = await _authorService.GetAuthorByNameAsync(author);
 
@@ -32,10 +33,8 @@ public class UserTimelineModel : BaseCheepTimelinePage
         
         BioText.Bio = authorRequest.Bio;
 
-        if(User.Identity!.IsAuthenticated){
-            var currentAuthor = await _userManager.GetUserAsync(User);
-            var currentAuthorName = currentAuthor!.Name;
-            if(currentAuthorName == author){
+        if(User.Identity!.IsAuthenticated && AuthenticatedAuthor != null){
+            if(AuthenticatedAuthor.Name == author){
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromUserTimelineAsync(PageNumber, authorRequest.Id);
             } else {
                 (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, authorRequest.Id);
@@ -50,18 +49,18 @@ public class UserTimelineModel : BaseCheepTimelinePage
     
     public async Task<ActionResult> OnPostUpdateBio(string? newBio)
     {
-        newBio = newBio?.Trim();
-        
         if (User.Identity?.IsAuthenticated != true) return Page();
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        if(AuthenticatedAuthor == null) return Page();
+        
+        newBio = newBio?.Trim();
         
         if (newBio?.Length > 300)
         {
             return Page();
         }
-        
-        var currentAuthor = await _userManager.GetUserAsync(User);
 
-        await _authorService.UpdateBioAsync(currentAuthor!, newBio);
+        await _authorService.UpdateBioAsync(AuthenticatedAuthor.Id, newBio);
         
         return RedirectToPage();
     }

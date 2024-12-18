@@ -37,7 +37,7 @@ public class UnitTest1
         var authorByName = await authorRepository.GetAuthorByNameAsync(author1.Name);
 
         //assert
-        Assert.Equal(author1, authorByName);
+        Assert.Equal(author1.Id, authorByName?.Id);
 
         //cleanup
         await context.Database.EnsureDeletedAsync();
@@ -67,7 +67,7 @@ public class UnitTest1
         var authorByEmail = await authorRepository.GetAuthorByEmailAsync(author1.Email);
 
         //assert
-        Assert.Equal(author1, authorByEmail);
+        Assert.Equal(author1.Id, authorByEmail?.Id);
 
         //cleanup
         await context.Database.EnsureDeletedAsync();
@@ -508,7 +508,7 @@ public class UnitTest1
         await context.SaveChangesAsync();
         
         //act
-        await authorRepository.UpdateBioAsync(author, bioText);
+        await authorRepository.UpdateBioAsync(author.Id, bioText);
         
         //arrange
         Assert.Equal(expected, author.Bio);

@@ -10,19 +10,14 @@ public class BaseCheepTimelinePage : BaseCheepDisplayPage
 {
     [BindProperty]
     public CheepFormModel? FormData { get; set; }
-    public Dictionary<string, bool> Follows { get; set; }
-    protected readonly IAuthorService _authorService;
     
 
-    public BaseCheepTimelinePage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, userManager)
-    {
-        _authorService = authorService;
-        Follows = new Dictionary<string, bool>();
-    }
+    public BaseCheepTimelinePage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
+    {}
 
     public async Task<ActionResult> OnPost()
     {
-        if (FormData == null || FormData.Message.Length > 300 || FormData.Message == null)
+        if (FormData == null || FormData.Message.Length > 300 || FormData?.Message == null)
         {
             return Page();
         }
@@ -44,12 +39,12 @@ public class BaseCheepTimelinePage : BaseCheepDisplayPage
     public async Task<ActionResult> OnPostFollowAuthor(string targetAuthorId)
     {
         if (User.Identity?.IsAuthenticated != true) return Page();
-        
-        var currentAuthor = await _userManager.GetUserAsync(User);
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        if(AuthenticatedAuthor == null) return Page();
 
-        if (targetAuthorId == currentAuthor!.Id) return Page();
+        if (targetAuthorId == AuthenticatedAuthor.Id) return Page();
 
-        await _authorService.FollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
+        await _authorService.FollowAuthorAsync(AuthenticatedAuthor.Id, targetAuthorId);
 
         return RedirectToPage();
     }
@@ -57,27 +52,24 @@ public class BaseCheepTimelinePage : BaseCheepDisplayPage
     public async Task<ActionResult> OnPostUnfollowAuthor(string targetAuthorId)
     {
         if (User.Identity?.IsAuthenticated != true) return Page();
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        if(AuthenticatedAuthor == null) return Page();
         
-        var currentAuthor = await _userManager.GetUserAsync(User);
-        
-        if (targetAuthorId == currentAuthor!.Id) return Page();
+        if (targetAuthorId == AuthenticatedAuthor.Id) return Page();
 
-        await _authorService.UnfollowAuthorAsync(currentAuthor!.Id, targetAuthorId);
+        await _authorService.UnfollowAuthorAsync(AuthenticatedAuthor.Id, targetAuthorId);
 
         return RedirectToPage();
     }
 
     public async Task PopulateFollows(){
-        var currentAuthor = await _userManager.GetUserAsync(User);
-        var currentAuthorId = currentAuthor!.Id;
-
         foreach (var cheep in Cheeps)
         {
             var targetAuthorId = cheep.AuthorId;
             if(Follows.ContainsKey(targetAuthorId)){
                 continue;
             }
-            var isFollowing = await _authorService.IsFollowingAsync(currentAuthorId, targetAuthorId);
+            var isFollowing = await _authorService.IsFollowingAsync(AuthenticatedAuthor!.Id, targetAuthorId);
             Follows[targetAuthorId] = isFollowing;
         }
     }
