@@ -20,9 +20,9 @@ _Chirp!_ revolves around five key entities:
 - **Cheep:** Represents posts with attributes like `Text` and `Timestamp`.
 - **AuthorFollower:** Tracks follower relationships between authors.
 - **Achievement:** Defines milestones with attributes like `Title` and `Description`.
-- **AuthorAchievement:** Links authors to unlocked achivements, with metadata like `AchievedAt`.
+- **AuthorAchievement:** Links authors to unlocked achievements, with metadata like `AchievedAt`.
 
-A UML class diagram of the domain model, can be seen below.
+A UML class diagram of the domain model can be seen below.
 
 ![Domain model diagram](images/domainModel.svg)
 
@@ -79,15 +79,15 @@ An **authorized** user can:
 - View About Me page
 - Delete all associated data via Forget Me
 
-We have illustrated, a typical scenario of a non-authorized users journey through our _Chirp!_ application.
+We have illustrated, a typical scenario of a non-authorized user's journey through our _Chirp!_ application.
 
 ![User activities nonauthorized diagram](images/userActivitiesNonAuthorized.svg)
 
-Likewise, a typical scenario of an authorized users journey, can be seen below.
+Likewise, a typical scenario of an authorized user's journey can be seen below.
 
 ![User activities authorized diagram](images/userActivitiesAuthorized.svg)
 
-> Note: Certain functionality of our Chirp! application, has been omitted in this Diagram to improve readablity. One such function is the ability to cancel while editing your bio. Additionally, while the diagram may suggest it is possible to post Cheeps on other users' private timelines, this is intentionally not allowed in our application, as users can only post Cheeps to public- or their own timelines.
+> Note: Certain functionality of our Chirp! application has been omitted in this Diagram to improve readability. One such function is the ability to cancel while editing your bio. Additionally, while the diagram may suggest it is possible to post Cheeps on other users' private timelines, this is intentionally not allowed in our application, as users can only post Cheeps to the  public- or their own timelines.
 
 ### Sequence of functionality/calls through _Chirp!_
 
@@ -99,15 +99,15 @@ The UML sequence diagram below illustrates the flow of messages and data within 
 
 ### Build, test, release, and deployment
 
-We have created three GitHub Actions workflows that carries out there different tasks:
+We have created three GitHub Actions workflows that carry out their different tasks:
 
 - **Build and Test:** Automates building the solution, installing dependencies, and running tests.
 - **Release:** Packages the application, creates artifacts, and publishes releases for tagged versions.
 - **Deployment:** Deploys the published application to Azure Web App for production.
 
-Three UML activity diagrams can be seen below for each of our github action workflows respectively:
+Three UML activity diagrams can be seen below for each of our GitHub action workflows respectively:
 
-The first diagram is of our build and test workflow, which focuses exclusively on validating changed by building and testing the code. It provides fast feedback as it does not produce any artifacts for release or deployment.
+The first diagram is of our build and test workflow, which focuses exclusively on validating changes by building and testing the code. It provides fast feedback as it does not produce any artifacts for release or deployment.
 
 ![GithubAction1 diagram](images/GithubAction1.svg)
 
@@ -166,7 +166,7 @@ dotnet restore
 
 **(Optional) Enable OAuth:**
 
-Follow GitHubs guide on [Creating an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) to obtain a Client-Secret and -Id. Once these are acquired, run:
+Follow GitHub's guide on [Creating an OAuth app](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) to obtain a Client-Secret and -Id. Once these are acquired, run:
 
 ```sh
 dotnet user-secrets init
@@ -185,7 +185,7 @@ dotnet run
 
 **Access the application:**
 
-Open your browser and nagivate to:
+Open your browser and navigate to:
 
 ```sh
 http://localhost:5273/
@@ -220,7 +220,7 @@ Start tests/test:
 dotnet test
 ```
 
-Do not stop the test manually since this can potentially cause the tests to fail until they have run through, so they can perform they clean up.
+Do not stop the test manually since this can potentially cause the tests to fail until they have run through, so they can perform the clean-up.
 
 ## Ethics
 
