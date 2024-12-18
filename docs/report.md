@@ -199,6 +199,7 @@ Ensure you can register/login, view timelines, post cheeps and follow/unfollow a
 Once you have made sure you can run the program locally as described above, you have to install the required browsers for playwright to work. 
 
 **Install required browsers:**
+
 Make sure to run the following commands one by one in this order.
 
 Install:
@@ -210,6 +211,7 @@ dotnet tool run playwright install
 ```
 
 **Run tests:**
+
 Make sure you are either in the base Chirp directory or in a specific test directory.
 
 Start tests/test:
