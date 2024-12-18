@@ -52,7 +52,7 @@ public class AuthorRepository : IAuthorRepository
         _dbContext.Authors.Add(newAuthor);
         await _dbContext.SaveChangesAsync();
 
-        return new AuthorDTO { Id = newAuthor.Id, Name = newAuthor.Name, Email = newAuthor.Email, Bio = newAuthor.Bio };;
+        return new AuthorDTO { Id = newAuthor.Id, Name = newAuthor.Name, Email = newAuthor.Email, Bio = newAuthor.Bio };
     }
 
     public async Task FollowAuthorAsync(string currentAuthorId, string targetAuthorId)
