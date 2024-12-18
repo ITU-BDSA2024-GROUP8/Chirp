@@ -1,4 +1,4 @@
-namespace unitTest;
+namespace UnitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
@@ -9,8 +9,13 @@ using System;
 using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
-public class UnitTest1
+/// <summary>
+/// UnitTest class is for testing the Chirp application.
+/// It tests the AuthorRepository, CheepRepository, and AchievementRepository
+/// </summary>
+public class UnitTests
 {
+    
     public static DateTime CurrentTime = DateTime.Now;
 
 

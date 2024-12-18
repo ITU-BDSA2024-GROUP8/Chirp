@@ -3,6 +3,9 @@ using Chirp.Infrastructure.Models;
 
 namespace Chirp.Infrastructure.Chirp.Services;
 
+/// <summary>
+/// IAchievementService interface is for defining the methods for the AchievementService
+/// </summary>
 public interface IAchievementService
 {
     public Task AddNewAuthorAchievementAsync(string authorId, int achievementId);
@@ -10,6 +13,9 @@ public interface IAchievementService
     public Task<List<Achievement>> GetAuthorAchievementsAsync(string authorId);
 }
 
+/// <summary>
+/// AchievementService is for buissness logic regarding achievements.
+/// </summary>
 public class AchievementService : IAchievementService
 {
     private readonly IAchievementRepository _achievementRepository;
