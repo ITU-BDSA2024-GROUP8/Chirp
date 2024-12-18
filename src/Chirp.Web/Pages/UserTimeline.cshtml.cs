@@ -4,10 +4,13 @@ using Chirp.Web.Pages.Base;
 using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ICheepService = Chirp.Infrastructure.Chirp.Services.ICheepService;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// UserTimelineModel class is for displaying the user's timeline.
+/// Here the user can see their own cheeps and the cheeps of the authors they follow.
+/// Users can also update their bio and see their achievements.
+/// </summary>
 public class UserTimelineModel : BaseCheepTimelinePage
 {
     [BindProperty]

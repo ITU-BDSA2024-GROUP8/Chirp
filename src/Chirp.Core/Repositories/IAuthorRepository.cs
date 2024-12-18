@@ -2,6 +2,9 @@
 
 namespace Chirp.Core.Repositories;
 
+/// <summary>
+/// IAuthorRepository interface is for defining the methods for the AuthorRepository
+/// </summary>
 public interface IAuthorRepository
 {
     public Task<AuthorDTO?> GetAuthorByNameAsync(string name);

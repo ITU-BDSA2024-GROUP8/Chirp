@@ -4,10 +4,14 @@ using Chirp.Web.Pages.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ICheepService = Chirp.Infrastructure.Chirp.Services.ICheepService;
 
 namespace Chirp.Web.Pages;
-
+/// <summary>
+/// AboutMeModel class is for displaying the current author's information.
+/// This includes the author's name, email, cheeps, and achievements.
+/// The forgetMe button allows the user to forget their account.
+/// This page helps us comply with GDPR regulations. 
+/// </summary>
 public class AboutMeModel : BaseCheepDisplayPage
 {
     protected readonly IAchievementService _achievementService;
@@ -32,6 +36,7 @@ public class AboutMeModel : BaseCheepDisplayPage
         }
         return Page();
     }
+
 
     public async Task<ActionResult> OnPostForgetMe(){
         if(!User.Identity!.IsAuthenticated) return Page();

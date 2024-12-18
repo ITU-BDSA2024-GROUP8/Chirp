@@ -3,10 +3,12 @@ using Chirp.Core.Models;
 using Chirp.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using ICheepService = Chirp.Infrastructure.Chirp.Services.ICheepService;
 
 namespace Chirp.Web.Pages.Base;
-
+/// <summary>
+/// BaseCheepDisplayPage is for all pages that display cheeps.
+/// In our case, this is the Public timeline, user timeline, and aboutMe page.
+/// </summary>
 public class BaseCheepDisplayPage : PageModel
 {
     public required List<CheepDTO> Cheeps { get; set; }

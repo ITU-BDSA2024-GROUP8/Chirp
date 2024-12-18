@@ -6,16 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 
+/// <summary>
+/// CheepRepository is for interactions with the database regarding cheeps.
+/// </summary>
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpDBContext _dbContext;
-    private readonly IAuthorRepository _authorRepository;
     private readonly IAchievementRepository _achievementRepository;
 
-    public CheepRepository(ChirpDBContext dbContext, IAuthorRepository authorRepository, IAchievementRepository achievementRepository)
+    public CheepRepository(ChirpDBContext dbContext, IAchievementRepository achievementRepository)
     {
         _dbContext = dbContext;
-        _authorRepository = authorRepository;
         _achievementRepository = achievementRepository;
     }
     

@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Chirp.Repositories;
 
+/// <summary>
+/// AuthorRepository is for interactions with the database regarding authors.
+/// </summary>
 public class AuthorRepository : IAuthorRepository
 {
     private readonly ChirpDBContext _dbContext;

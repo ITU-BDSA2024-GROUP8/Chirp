@@ -3,6 +3,9 @@ using Chirp.Core.Models;
 
 namespace Chirp.Core.Services;
 
+/// <summary>
+/// ICheepService is for defining the methods for the CheepService
+/// </summary>
 public interface ICheepService
 {
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);

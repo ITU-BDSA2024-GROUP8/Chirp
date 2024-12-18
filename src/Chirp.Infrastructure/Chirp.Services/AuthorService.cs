@@ -4,6 +4,9 @@ using Chirp.Core.Services;
 
 namespace Chirp.Infrastructure.Chirp.Services;
 
+/// <summary>
+/// AuthorService is for buissness logic regarding authors.
+/// </summary>
 public class AuthorService : IAuthorService
 {
     private readonly IAuthorRepository _authorRepository;

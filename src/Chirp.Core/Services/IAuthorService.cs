@@ -2,6 +2,9 @@
 
 namespace Chirp.Core.Services;
 
+/// <summary>
+/// IAuthorService interface is for defining the methods for the AuthorService
+/// </summary>
 public interface IAuthorService
 {
     public Task<AuthorDTO?> GetAuthorByNameAsync(string name);

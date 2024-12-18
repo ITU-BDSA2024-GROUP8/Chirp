@@ -3,7 +3,9 @@ using Chirp.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
-
+/// <summary>
+/// DbInitializer class is for creating the database and seeding it with initial data.
+/// </summary>
 public static class DbInitializer
 {
     public static bool CreateDb(ChirpDBContext context)

@@ -3,6 +3,9 @@ using Chirp.Core.Models;
 
 namespace Chirp.Core.Repositories;
 
+/// <summary>
+/// ICheepRepository is for defining the methods for the CheepRepository
+/// </summary>
 public interface ICheepRepository
 {
     public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);

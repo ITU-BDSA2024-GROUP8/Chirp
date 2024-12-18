@@ -3,7 +3,9 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Util;
-
+/// <summary>
+/// Util class is for creating an in-memory database for testing used in unit tests
+/// </summary>
 public class Util
 {
    

@@ -2,6 +2,9 @@
     
 namespace Chirp.Core.DTOs;
 
+/// <summary>
+/// AuthorDTO encapsulates data and minimizes unnecessary data exposure.
+/// </summary>
 public class AuthorDTO
 {
     public required string Id { get; set; }

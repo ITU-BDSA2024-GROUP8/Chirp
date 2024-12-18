@@ -3,10 +3,12 @@ using Chirp.Core.Services;
 using Chirp.Web.Pages.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ICheepService = Chirp.Infrastructure.Chirp.Services.ICheepService;
 
 namespace Chirp.Web.Pages.Base;
-
+/// <summary>
+/// BaseCheepTimelinePage is for all timeline pages that display cheeps.
+/// In our case, this is the Public timeline and user timeline.
+/// </summary>
 public class BaseCheepTimelinePage : BaseCheepDisplayPage
 {
     [BindProperty] 
