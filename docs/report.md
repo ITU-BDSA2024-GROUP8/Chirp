@@ -1,5 +1,7 @@
 # _Chirp!_ Project Report
+
 #### ITU BDSA 2024 Group `8`
+
 - Adrian Vincentz Otto <adot@itu.dk>
 - Bror Yang Nan Hansen <broh@itu.dk>
 - Carl Anders Stilvén <csti@itu.dk>
@@ -7,8 +9,11 @@
 - Marcus Hillersborg Vange <mhiv@itu.dk>
 
 ## Design and Architecture of _Chirp!_
+
 ### Domain model
+
 _Chirp!_ revolves around five key entities:
+
 - **Author:** Extends ASP.NET IdentityUser, enabling authentication and user management.
 - **Cheep:** Represents posts with attributes like `Text` and `Timestamp`.
 - **AuthorFollower:** Tracks follower relationships between authors.
@@ -26,13 +31,16 @@ A UML class diagram of the domain model, can be seen below.
 ### Architecture of deployed application
 
 ### User activities
+
 A **non-authorized** user can:
+
 - Register
 - Login
 - View public or private timelines
 - Navigate pages via buttons
 
 An **authorized** user can:
+
 - Logout
 - View public or private timelines
 - Navigate pages via buttons
@@ -57,7 +65,9 @@ Likewise, a typical scenario of an authorized users journey, can be seen below.
 
 
 ## Process
+
 ### Build, test, release, and deployment
+
 We have created three GitHub Actions workflows that carries out there different tasks:
 
 - **Build and Test:** Automates building the solution, installing dependencies, and running tests.
@@ -66,14 +76,22 @@ We have created three GitHub Actions workflows that carries out there different 
 
 Three UML activity diagrams can be seen below for each of our github action workflows respectively:
 
+The first diagram is of our build and test workflow, which focuses exclusively on validating changed by building and testing the code. It provides fast feedback as it does not produce any artifacts for release or deployment.
+
 ![GithubAction1 diagram](images/GithubAction1.svg)
 
+The second diagram not only builds and tests but also creates a versioned release which publishes executables for different environments (linux-x64, macOS, Windows0x64), that are ready for sharing.
+
 ![GithubAction2 diagram](images/GithubAction2.svg)
+
+The last diagram focuses on continuous deployment of the application to a live Azure Web App environment ensuring it's always up to date.
 
 ![GithubAction3 diagram](images/GithubAction3.svg)
 
 ### Teamwork
+
 As shown in the project board screenshot below, the following tasks are unresolved:
+
 - XXXX
 - XXXX
 - XXXX
@@ -81,6 +99,7 @@ As shown in the project board screenshot below, the following tasks are unresolv
 **INDSÆT BILLEDE HER**
 
 The development of _Chirp!_ followed an organized process, using the project board to keep track of tasks.
+
 1. **Issue creation:** New issues were created after lectures when new features were introduced, or when bugs were identified. An issue would initially be placed in `Todo`, and would include a clear description of the success criteria. A team member would be appointed responsible for resolving it.
 2. **Development:** Once assigned, the developer created a new branch from the main branch. The issue would be moved to `In Progress`. Progress would regularly be committed and pushed to the new branch.
 3. **Code review:** After implementing a feature, a pull request was created for code review. The developer would notify the reviewer, and the code would be evaluated.
@@ -92,6 +111,7 @@ The process is illustrated in the UML sequence diagram below:
 ![Team work diagram](images/teamWork.svg)
 
 ### How to make _Chirp!_ work locally
+
 **Prerequisites:**
 
 - Install [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
@@ -161,8 +181,11 @@ dotnet test
 Do not stop the test manually since this can potentially cause the tests to fail until they have run through, so they can perform they clean up.
 
 ## Ethics
+
 ### License
+
 We chose the MIT license for our application because it's simple and easy to use. It allows others to freely use, modify, and share our code as long as they include the original copyright and license notice.
 
 ### LLMs, ChatGPT, CoPilot, and others
+
 We used ChatGPT and GitHub Copilot to help us write code, debug issues, and brainstorm solutions. Their responses were often useful and provided good suggestions that sped up our workflow. However, there were times when the tools offered suggestions that were off the mark or incorrect, which occasionally slowed us down. Despite these issues, using LLMs overall made development faster and more efficient.
