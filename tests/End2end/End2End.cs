@@ -89,7 +89,7 @@ namespace Chirp.Tests
             
             // Submit a new cheep
             var cheepMessage = "Hello, world!";
-            await page.FillAsync("input[name='Message']", cheepMessage);
+            await page.FillAsync("input[name='FormData.Message']", cheepMessage);
             await page.ClickAsync("input[type='submit']");
 
             // Wait for the cheep to appear

@@ -1,16 +1,10 @@
 ﻿using System.Data.Common;
-using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Chirp.Services;
 using Chirp.Infrastructure.Data;
-using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Util;
 

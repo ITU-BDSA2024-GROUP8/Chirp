@@ -1,26 +1,24 @@
 @page
 @using Chirp.Web.Pages.Models
-@using Chirp.Infrastructure.Chirp.Services
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Chirp.Web.Pages.AboutMeModel
-@inject IAuthorService AuthorService;
 
 @{
     ViewData["Title"] = "Chirp!";
     ViewData["page"] = "about-me";
     Layout = "Shared/_Layout";
-    var author = await AuthorService.GetAuthorByNameAsync(Model.Name);
-    var hasBio = !string.IsNullOrEmpty(author!.Bio);
+    var author = Model.AuthenticatedAuthor;
+    var hasBio = !string.IsNullOrEmpty(author?.Bio);
 }
 
 <div>
     <h2>About Me</h2>
 
-    @if (User.Identity!.IsAuthenticated){
+    @if (User.Identity!.IsAuthenticated && author != null){
         <div>
             <h3>Profile Information</h3>
-            <p><strong>Name:</strong> @Model.Name</p>
-            <p><strong>Email:</strong> @Model.Email</p>
+            <p><strong>Name:</strong> @author.Name</p>
+            <p><strong>Email:</strong> @author.Email</p>
         </div>
     
         <div>
@@ -43,7 +41,7 @@
         <div>
             <h3>Followers and Following</h3>
             <div style="display: flex; gap: 20px;">
-                <partial name="_FollowStatCardPartial" model="new FollowStatCardModel { Author = author! }"/>
+                <partial name="_FollowStatCardPartial" model="new FollowStatCardModel { Author = author }"/>
             </div>
         </div>
 

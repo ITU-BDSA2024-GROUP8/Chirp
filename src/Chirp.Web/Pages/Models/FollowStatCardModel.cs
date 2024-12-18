@@ -1,8 +1,8 @@
-﻿using Chirp.Infrastructure.Models;
+﻿using Chirp.Core.DTOs;
 
 namespace Chirp.Web.Pages.Models;
 
 public class FollowStatCardModel
 {
-    public required Author Author { get; set; }
+    public required AuthorDTO Author { get; set; }
 }

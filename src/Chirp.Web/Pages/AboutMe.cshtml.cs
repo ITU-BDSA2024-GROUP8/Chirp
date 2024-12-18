@@ -1,5 +1,5 @@
-using Chirp.Infrastructure.Chirp.Services;
-using Chirp.Infrastructure.Models;
+using Chirp.Core.Models;
+using Chirp.Core.Services;
 using Chirp.Web.Pages.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -16,11 +16,9 @@ public class AboutMeModel : BaseCheepDisplayPage
 {
     protected readonly IAchievementService _achievementService;
     public required List<Achievement> Achievements { get; set; }
-    public required string Name { get; set; }
-    public required string Email { get; set; }
     
 
-    public AboutMeModel(ICheepService cheepService, IAchievementService achievementService, UserManager<Author> userManager) : base(cheepService, userManager)
+    public AboutMeModel(ICheepService cheepService, IAuthorService authorService, IAchievementService achievementService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
     {
         _achievementService = achievementService;
         Achievements = new List<Achievement>();
@@ -30,22 +28,18 @@ public class AboutMeModel : BaseCheepDisplayPage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-
-        if(User.Identity!.IsAuthenticated){
-            var currentAuthor = await _userManager.GetUserAsync(User);
-            Name = currentAuthor!.Name;
-            Email = currentAuthor.Email!;
-            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, currentAuthor.Id);
-            Achievements = await _achievementService.GetAuthorAchievementsAsync(currentAuthor.Id);
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        
+        if(User.Identity!.IsAuthenticated && AuthenticatedAuthor != null){
+            (Cheeps, CheepCount) = await _cheepService.GetCheepsFromAuthorAsync(PageNumber, AuthenticatedAuthor.Id);
+            Achievements = await _achievementService.GetAuthorAchievementsAsync(AuthenticatedAuthor.Id);
         }
         return Page();
     }
 
 
     public async Task<ActionResult> OnPostForgetMe(){
-        if(!User.Identity!.IsAuthenticated){
-            return Page();
-        }
+        if(!User.Identity!.IsAuthenticated) return Page();
 
         var currentAuthor = await _userManager.GetUserAsync(User);
 

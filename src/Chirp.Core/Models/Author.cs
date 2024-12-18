@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace Chirp.Infrastructure.Models;
+namespace Chirp.Core.Models;
 
 public class Author : IdentityUser
 {

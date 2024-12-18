@@ -9,8 +9,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Chirp.Core.Models;
+using Chirp.Core.Services;
 using Chirp.Infrastructure.Chirp.Services;
-using Chirp.Infrastructure.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
@@ -151,16 +152,16 @@ namespace Chirp.Web.Areas.Identity.Pages.Account
             }
             
             // Check for existing user with this email
-            var existingUser = await _userManager.FindByEmailAsync(email);
-            if (existingUser != null)
+            var existingUserWithEmail = await _userManager.FindByEmailAsync(email);
+            if (existingUserWithEmail != null)
             {
                 ErrorMessage = "An account with this email already exists.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
             // Check for existing user with this username
-            existingUser = await _authorService.GetAuthorByNameAsync(username);
-            if (existingUser != null)
+            var existingUserWithUserName = await _authorService.GetAuthorByNameAsync(username);
+            if (existingUserWithUserName != null)
             {
                 ErrorMessage = "An account with this username already exists.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });

@@ -1,22 +1,8 @@
-﻿using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Chirp.Core.DTOs;
+using Chirp.Core.Repositories;
+using Chirp.Core.Services;
 
 namespace Chirp.Infrastructure.Chirp.Services;
-/// <summary>
-/// IAuthorService interface is for defining the methods for the AuthorService
-/// </summary>
-public interface IAuthorService
-{
-    public Task<Author?> GetAuthorByNameAsync(string name);
-    public Task<Author?> GetAuthorByEmailAsync(string email);
-    public Task FollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task UnfollowAuthorAsync(string currentAuthorName, string targetAuthorName);
-    public Task<bool> IsFollowingAsync(string currentAuthorId, string targetAuthorId);
-    public Task<List<string>> GetFollowingAsync(string authorId);
-    public Task<List<string>> GetFollowersAsync(string authorId);
-    public Task<string?> UpdateBioAsync(Author author, string? newBio);
-}
 
 /// <summary>
 /// AuthorService is for buissness logic regarding authors.
@@ -30,12 +16,12 @@ public class AuthorService : IAuthorService
         _authorRepository = authorRepository;
     }
     
-    public async Task<Author?> GetAuthorByNameAsync(string name)
+    public async Task<AuthorDTO?> GetAuthorByNameAsync(string name)
     {
         return await _authorRepository.GetAuthorByNameAsync(name);
     }
     
-    public async Task<Author?> GetAuthorByEmailAsync(string email)
+    public async Task<AuthorDTO?> GetAuthorByEmailAsync(string email)
     {
         return await _authorRepository.GetAuthorByEmailAsync(email);
     }
@@ -63,8 +49,8 @@ public class AuthorService : IAuthorService
         return await _authorRepository.GetFollowersAsync(authorId);
     }
     
-    public async Task<string?> UpdateBioAsync(Author author, string? newBio)
+    public async Task<string?> UpdateBioAsync(string authorId, string? newBio)
     {
-        return await _authorRepository.UpdateBioAsync(author, newBio);
+        return await _authorRepository.UpdateBioAsync(authorId, newBio);
     }
 }
