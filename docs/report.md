@@ -1,12 +1,14 @@
-# _Chirp!_ Project Report
-
-#### ITU BDSA 2024 Group `8`
-
-- Adrian Vincentz Otto <adot@itu.dk>
-- Bror Yang Nan Hansen <broh@itu.dk>
-- Carl Anders Stilvén <csti@itu.dk>
-- Konrad Meno Adolph <koad@itu.dk>
-- Marcus Hillersborg Vange <mhiv@itu.dk>
+---
+title: _Chirp!_ Project Report
+subtitle: ITU BDSA 2024 Group `8`
+author:
+- "Adrian Vincentz Otto <adot@itu.dk>"
+- "Bror Yang Nan Hansen <broh@itu.dk>"
+- "Carl Anders Stilvén <csti@itu.dk>"
+- "Konrad Meno Adolph <koad@itu.dk>"
+- "Marcus Hillersborg Vange <mhiv@itu.dk>"
+numbersections: true
+---
 
 ## Design and Architecture of _Chirp!_
 
@@ -47,15 +49,17 @@ Local Architecture:
 The client accesses the web application, which is hosted locally and directly
 interacts with the local database to process and retrieve data(see the diagram below).
 
-![Onion Architecture diagram](images/ArchitectureLocal.svg)
+![Architecture Local diagram](images/ArchitectureLocal.svg)
 
 Global Architecture:
 Clients connect to the web server over the internet, allowing the server
 to communicate with the Azure database for data processing and storage(see the diagram below).
 
-![Onion Architecture diagram](images/ArchitectureGlobal.svg)
+![Architecture Global diagram](images/ArchitectureGlobal.svg)
 
 ### User activities
+
+We distinguish between two types of users: authorized and non-authorized. Authorized users are those who are logged in. Non-authorized users, on the other hand, are not logged in and have limited access to the application's features. Non-authorized users, can become authorized by either registering or logging in.
 
 A **non-authorized** user can:
 
@@ -87,7 +91,9 @@ Likewise, a typical scenario of an authorized users journey, can be seen below.
 
 ### Sequence of functionality/calls through _Chirp!_
 
+The UML sequence diagram below illustrates the flow of messages and data within _Chirp!_ when an unauthorized user sends an HTTP request to the root endpoint. If the user were authorized and viewing their own timeline, additional data such as followers, following, bio, and achievements would also be fetched.
 
+![Sequence of functionality](images/SequenceOfFunctionality.svg)
 
 ## Process
 
