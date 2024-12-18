@@ -123,11 +123,21 @@ The last diagram focuses on continuous deployment of the application to a live A
 
 As shown in the project board screenshot below, the following tasks are unresolved:
 
-- XXXX
-- XXXX
-- XXXX
+- Integration tests for authorized endpoints
 
-**INDSÆT BILLEDE HER**
+While the application does contain integration tests, it does not cover integration tests for authorized endpoints.
+These tests would require simulating an authorized user, which our final application does not support.
+However many of the errors that would be caught with the missing integration tests are already caught by our end to end tests.
+
+- Downloadable zip on about me page
+
+All information stored about the user is displayed on the About me page. However our application does not support downloading this information. We did not prioritize implementing this feature as it was optional.
+
+- Return to Chirp.CLI application
+
+We regrettably did not manage to get the Chirp.CLI application running on Azure. We also did not entirely finish testing. We meant to complete these tasks at a later time, but chose to prioritize working on the Chirp web application instead.
+
+![Final Project board](images/ProjectBoard.png)
 
 The development of _Chirp!_ followed an organized process, using the project board to keep track of tasks.
 
