@@ -111,7 +111,7 @@ The first diagram is of our build and test workflow, which focuses exclusively o
 
 ![Build and test diagram](images/GithubAction1.svg)
 
-The second diagram not only builds and tests but also creates a versioned release which publishes executables for different environments (linux-x64, macOS, Windows0x64), that are ready for sharing.
+The second diagram not only builds and tests but also creates a versioned release which publishes executables for different environments (linux-x64, macOS-x64, Windows-x64), that are ready for sharing.
 
 ![Release diagram](images/GithubAction2.svg)
 
