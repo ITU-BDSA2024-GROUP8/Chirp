@@ -8,28 +8,25 @@ namespace Chirp.Web.Pages.Base;
 
 public class BaseCheepTimelinePage : BaseCheepDisplayPage
 {
-    [BindProperty]
-    public CheepFormModel? FormData { get; set; }
-    
+    [BindProperty] 
+    public CheepFormTextModel FormData { get; set; } = null!;
 
-    public BaseCheepTimelinePage(ICheepService cheepService, IAuthorService authorService, UserManager<Author> userManager) : base(cheepService, authorService, userManager)
+
+    public BaseCheepTimelinePage(ICheepService cheepService, IAuthorService authorService,
+        UserManager<Author> userManager) : base(cheepService, authorService, userManager)
     {}
 
     public async Task<ActionResult> OnPost()
     {
-        if (FormData == null || FormData.Message.Length > 300 || FormData?.Message == null)
-        {
-            return Page();
-        }
-
-        var author = await _userManager.GetUserAsync(User);
-
-        if (author == null) return Page();
+        if (User.Identity?.IsAuthenticated != true) return Page();
+        if (FormData.Message == null || FormData.Message.Length > 300) return Page();
+        AuthenticatedAuthor = await GetAuthenticatedAuthor();
+        if(AuthenticatedAuthor == null) return Page();
         
         await _cheepService.PostCheepAsync(new Cheep
         {
-            AuthorId = author.Id,
-            Text = FormData!.Message,
+            AuthorId = AuthenticatedAuthor.Id,
+            Text = FormData.Message,
             TimeStamp = DateTime.Now
         });
 

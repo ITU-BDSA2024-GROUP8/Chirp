@@ -26,7 +26,7 @@
                  BioText = Model.BioText
             }' />
 
-            <partial name="_CheepFormPartial" model="Model.FormData" />
+            <partial name="_CheepFormPartial" model="new CheepFormModel { Author = Model.AuthenticatedAuthor, FormData = Model.FormData }" />
 
             <div style="display: flex; gap: 20px;">
                 <partial name="_FollowStatCardPartial" model="new FollowStatCardModel { Author = author }" />

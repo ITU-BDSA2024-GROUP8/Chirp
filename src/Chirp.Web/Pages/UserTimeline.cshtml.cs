@@ -22,14 +22,10 @@ public class UserTimelineModel : BaseCheepTimelinePage
     {
         var pageQuery = Request.Query["page"];
         PageNumber = int.TryParse(pageQuery, out var page) ? Math.Max(page, 1) : 1;
-        (Cheeps, CheepCount) = await _cheepService.GetCheepsAsync(PageNumber);
         AuthenticatedAuthor = await GetAuthenticatedAuthor();
 
         var authorRequest = await _authorService.GetAuthorByNameAsync(author);
-
-        if (authorRequest == null){
-            return Page();
-        }
+        if (authorRequest == null) return Page();
         
         BioText.Bio = authorRequest.Bio;
 
