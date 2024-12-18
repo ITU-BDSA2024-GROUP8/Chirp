@@ -1,4 +1,7 @@
-namespace UnitTest;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
+
+namespace unitTest;
 
 using Chirp.Infrastructure.Chirp.Repositories;
 using Chirp.Infrastructure.Data;
@@ -6,7 +9,6 @@ using Xunit;
 using Util;
 using System.Threading.Tasks;
 using System;
-using Chirp.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -15,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 public class UnitTests
 {
-    
     public static DateTime CurrentTime = DateTime.Now;
 
 
@@ -42,7 +43,7 @@ public class UnitTests
         var authorByName = await authorRepository.GetAuthorByNameAsync(author1.Name);
 
         //assert
-        Assert.Equal(author1, authorByName);
+        Assert.Equal(author1.Id, authorByName?.Id);
 
         //cleanup
         await context.Database.EnsureDeletedAsync();
@@ -72,7 +73,7 @@ public class UnitTests
         var authorByEmail = await authorRepository.GetAuthorByEmailAsync(author1.Email);
 
         //assert
-        Assert.Equal(author1, authorByEmail);
+        Assert.Equal(author1.Id, authorByEmail?.Id);
 
         //cleanup
         await context.Database.EnsureDeletedAsync();
@@ -107,8 +108,7 @@ public class UnitTests
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
         IAchievementRepository achievementRepository = new AchievementRepository(context);
-        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
-        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
+        ICheepRepository cheepRepository = new CheepRepository(context, achievementRepository);
         
         Achievement ach2 = new Achievement() { AchievementId = 2, Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
         context.Achievements.Add(ach2);
@@ -150,8 +150,7 @@ public class UnitTests
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
         var achievementRepo = new AchievementRepository(context);
-        var authorRepo = new AuthorRepository(context, achievementRepo);
-        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
+        var cheepRepo = new CheepRepository(context, achievementRepo);
 
         var a1 = new Author()
         {
@@ -198,8 +197,7 @@ public class UnitTests
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
         var achievementRepo = new AchievementRepository(context);
-        var authorRepo = new AuthorRepository(context, achievementRepo);
-        var cheepRepo = new CheepRepository(context, authorRepo, achievementRepo);
+        var cheepRepo = new CheepRepository(context, achievementRepo);
 
         var a1 = new Author()
         {
@@ -337,8 +335,7 @@ public class UnitTests
         //arrange
         ChirpDBContext context = await Util.CreateInMemoryDatabase();
         IAchievementRepository achievementRepository = new AchievementRepository(context);
-        IAuthorRepository authorRepository = new AuthorRepository(context, achievementRepository);
-        ICheepRepository cheepRepository = new CheepRepository(context, authorRepository, achievementRepository);
+        ICheepRepository cheepRepository = new CheepRepository(context, achievementRepository);
 
         Achievement ach1 = new Achievement() { Title = "Rookie Chirper", Description = "Welcome aboard! You signed up successfully to Chirp", ImagePath = "/images/Badges/Signup-badge.png" };
         Achievement ach2 = new Achievement() { Title = "Novice Cheepster", Description = "Congratulations! You created your first Cheep.", ImagePath = "/images/Badges/First-cheep-badge.png" };
@@ -513,7 +510,7 @@ public class UnitTests
         await context.SaveChangesAsync();
         
         //act
-        await authorRepository.UpdateBioAsync(author, bioText);
+        await authorRepository.UpdateBioAsync(author.Id, bioText);
         
         //arrange
         Assert.Equal(expected, author.Bio);

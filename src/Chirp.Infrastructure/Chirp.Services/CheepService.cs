@@ -1,18 +1,9 @@
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Chirp.Repositories;
-using Chirp.Infrastructure.Models;
+using Chirp.Core.Models;
+using Chirp.Core.Repositories;
+using Chirp.Core.Services;
 
 namespace Chirp.Infrastructure.Chirp.Services;
-/// <summary>
-/// ICheepService is for defining the methods for the CheepService
-/// </summary>
-public interface ICheepService
-{
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsAsync(int page);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromAuthorAsync(int page, string authorId);
-    public Task<(List<CheepDTO> cheeps, int totalCheepCount)> GetCheepsFromUserTimelineAsync(int page, string authorId);
-    public Task PostCheepAsync(Cheep cheep);
-}
 
 /// <summary>
 /// CheepService is for buissness logic regarding cheeps.
