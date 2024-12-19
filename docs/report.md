@@ -137,6 +137,7 @@ All information stored about the user is displayed on the About me page. However
 
 We regrettably did not manage to get the Chirp.CLI application running on Azure. We also did not entirely finish testing. We meant to complete these tasks at a later time, but chose to prioritize working on the Chirp web application instead.
 
+Below a diagram of our final project board can be seen with some of our uncompleted issues. 
 ![Final project board](images/ProjectBoard.png)
 
 The development of _Chirp!_ followed an organized process, using the project board to keep track of tasks.
