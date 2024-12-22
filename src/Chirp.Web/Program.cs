@@ -45,20 +45,21 @@ builder.Services.AddScoped<IAchievementService, AchievementService>();
 var clientId = builder.Configuration["authentication_github_clientId"];
 var clientSecret = builder.Configuration["authentication_github_clientSecret"];
 
-if (clientId == null || clientSecret == null) throw new NullReferenceException("clientId or clientSecret is null");
-
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultChallengeScheme = "GitHub";
-    })
-    .AddCookie()
-    .AddGitHub(o =>
-    {
-        o.ClientId = clientId;
-        o.ClientSecret = clientSecret;
-        o.CallbackPath = "/signin-github";
-        o.Scope.Add("user:email");
-    });
+if (clientId != null && clientSecret != null)
+{
+    builder.Services.AddAuthentication(options =>
+        {
+            options.DefaultChallengeScheme = "GitHub";
+        })
+        .AddCookie()
+        .AddGitHub(o =>
+        {
+            o.ClientId = clientId;
+            o.ClientSecret = clientSecret;
+            o.CallbackPath = "/signin-github";
+            o.Scope.Add("user:email");
+        });   
+}
 
 var app = builder.Build();
 
